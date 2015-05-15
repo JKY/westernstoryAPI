@@ -20,6 +20,7 @@ process.argv.forEach(function (val, index, array) {
 });
 
 // deploy
+
 function deploy(mode) {
     var javaConfig = "",
         propertyConfig = "",
