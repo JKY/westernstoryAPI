@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.DictionaryDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="listDictionariesByCode" resultType="DictionaryEntryModel">
+		SELECT id, comment, dictionaryId, text, isActive
+		FROM DictionaryEntry
+		WHERE isActive = 1 AND dictionaryId =
+		  (SELECT id FROM Dictionary WHERE code = #{code} AND isActive = 1)
+		ORDER BY createTime
+	</select>
+</mapper>

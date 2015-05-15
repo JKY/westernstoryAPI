@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.CommonPhoneDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="listCategories" resultType="CommonPhoneModel">
+		SELECT id, `name`, isActive, createTime, `order`
+		FROM CommonPhone
+		WHERE isActive = 1
+		ORDER BY `order` DESC
+		Limit #{start}, #{limit}
+	</select>
+
+    <select id="listPhones" resultType="CommonPhoneEntryModel">
+        SELECT Id, CommonPhoneId, Name, Phone, IsActive, ClickCount, CreateTime
+		FROM CommonPhoneEntry
+		WHERE isActive = 1 AND CommonPhoneId = (SELECT id FROM CommonPhone WHERE id = #{categoryId} AND isActive = 1)
+		ORDER BY ClickCount DESC
+		Limit #{start}, #{limit}
+    </select>
+</mapper>

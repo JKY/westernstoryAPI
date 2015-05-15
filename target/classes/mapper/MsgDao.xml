@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.MsgDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="list" resultType="MsgModel">
+		SELECT id, title, summary, thumbnail, isActive, isReaded, createTime
+		FROM Message
+		WHERE isActive = 1 AND userId = #{userId}
+		ORDER BY createTime DESC
+		LIMIT #{start},#{limit}
+	</select>
+
+    <update id="updateRead">
+        UPDATE Message SET isReaded = 1 WHERE id = #{id}
+    </update>
+
+    <update id="remove">
+        UPDATE Message SET isActive = 0 WHERE id = #{id}
+    </update>
+</mapper>

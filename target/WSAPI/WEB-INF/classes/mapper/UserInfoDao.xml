@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.UserInfoDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="getLoginUser" resultType="UserinfoModel">
+		SELECT id, userName, nickName, isActive, isLocked, isLocked, credit
+		FROM UserInfo
+		WHERE userName = #{userName} AND password = #{password} AND isActive = 1 AND isLocked = 0 Limit 1
+	</select>
+
+    <insert id="add" parameterType="UserInfoModel">
+        INSERT INTO WesternStory.UserInfo (
+          userName, password, nickName, isActive, isLocked, lastLoginIp, credit,
+          createTime, lastLoginTime)
+        VALUES (
+          #{userName}, #{password}, #{nickName}, 1, 0, #{lastLoginIp}, 0,
+          (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000))
+        <selectKey keyProperty="id" resultType="long">
+            SELECT
+            LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="getByUserName" resultType="UserinfoModel">
+        SELECT id, userName, nickName
+		FROM UserInfo
+		WHERE userName = #{userName} AND isActive = 1 AND isLocked = 0 Limit 1
+    </select>
+
+    <update id="updateLastLogin" parameterType="UserInfoModel">
+        UPDATE Userinfo SET lastLoginIp = #{lastLoginIp}, lastLoginTime = #{lastLoginTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE Userinfo SET password = #{password} WHERE id = #{id}
+    </update>
+</mapper>

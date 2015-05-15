@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.AddressDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="list" resultType="AddressModel">
+		SELECT id, address, mobile, name, isDefault, userId, isActive, createTime
+		FROM Address
+		WHERE isActive = 1 AND userId = #{userId}
+		ORDER BY updateTime DESC Limit 1
+	</select>
+
+    <insert id="add">
+        INSERT INTO Address (
+          address, name, mobile, isDefault, userId, isActive,
+          createTime, updateTime
+        ) VALUES (
+          #{address}, #{name}, #{mobile}, #{isDefault}, #{userId}, 1,
+           (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
+        )
+        <selectKey keyProperty="id" resultType="long">
+            SELECT
+            LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="update">
+        UPDATE Address SET address = #{address}, name = #{name}, mobile = #{mobile}, updateTime = (select UNIX_TIMESTAMP(NOW()) * 1000)
+        WHERE id = #{id}
+    </update>
+
+    <update id="remove">
+        UPDATE Address SET isActive = 0, updateTime = (select UNIX_TIMESTAMP(NOW()) * 1000)
+        WHERE id = #{id}
+    </update>
+
+    <update id="noDefault">
+        UPDATE Address SET isDefault = 0 WHERE userId = #{userId}
+    </update>
+
+    <update id="setDefault">
+        UPDATE Address SET isDefault = 1 WHERE id = #{id}
+    </update>
+</mapper>
