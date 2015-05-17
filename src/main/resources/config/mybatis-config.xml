@@ -15,5 +15,7 @@
         <mapper resource="mapper/CommonPhoneDao.xml"></mapper>
         <mapper resource="mapper/BusDao.xml"></mapper>
         <mapper resource="mapper/TicketDao.xml"></mapper>
+        <mapper resource="mapper/CommodityDao.xml"></mapper>
+        <mapper resource="mapper/CartDao.xml"></mapper>
     </mappers>
 </configuration>  

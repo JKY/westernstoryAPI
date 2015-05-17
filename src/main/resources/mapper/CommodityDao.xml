@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.CommodityDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+	<select id="get" resultType="CommodityModel">
+		SELECT Id, `Name`, CategoryId, PriceOriginal, PirceDiscount, CreateTime, Thumbnail, Summary, Info
+		FROM Commodity
+		WHERE IsActive = 1 AND CategoryId = #{categoryId}
+		ORDER BY CreateTime DESC
+		Limit #{start}, #{limit}
+	</select>
+
+    <select id="getByKeyword" resultType="CommodityModel">
+        SELECT Id, `Name`, CategoryId, PriceOriginal, PirceDiscount, CreateTime, Thumbnail, Summary, Info
+		FROM Commodity
+		WHERE IsActive = 1 AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+		ORDER BY CreateTime DESC
+		Limit #{start}, #{limit}
+    </select>
+
+    <select id="getLatest" resultType="CommodityModel">
+        SELECT Id, `Name`, CategoryId, PriceOriginal, PirceDiscount, CreateTime, Thumbnail, Summary, Info
+        FROM Commodity
+        WHERE IsActive = 1
+        ORDER BY CreateTime DESC
+        Limit #{start}, #{limit}
+    </select>
+</mapper>

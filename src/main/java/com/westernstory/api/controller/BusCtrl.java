@@ -73,7 +73,7 @@ public class BusCtrl {
             if (limit == null) {
                 limit = 10;
             }
-            int start = (page - 1) * limit;
+            Integer start = (page - 1) * limit;
             return new Response(true, busService.getByKeyword(keyword, start, limit));
         } catch (Exception e) {
             return new Response(false, e.getMessage());
