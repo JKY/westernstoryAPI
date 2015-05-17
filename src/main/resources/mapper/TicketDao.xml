@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.TicketDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="list" resultType="TicketModel">
+		SELECT id, discount, thumbnail, total, address, fromTime, toTime, createTime, qrCode
+		FROM Ticket
+		WHERE isActive = 1
+		ORDER BY fromTime DESC
+		Limit #{start}, #{limit}
+	</select>
+
+    <insert id="gain">
+      INSERT INTO UserTicket (
+        UserId, TicketId, Total, IsUsed, IsActive, CreateTime, UpdateTime
+      ) VALUE (
+        #{userId}, #{ticketId}, 1, 0, 1, (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
+      )
+    </insert>
+
+    <select id="getCount" resultType="int">
+        SELECT count(id)
+        FROM UserTicket
+        WHERE isActive = 1 AND ticketId = #{id}
+    </select>
+
+    <select id="getById" resultType="TicketModel">
+        SELECT id, discount, thumbnail, total, address, fromTime, toTime, createTime, qrCode
+        FROM Ticket
+        WHERE isActive = 1 AND id = #{id}
+        Limit 1
+    </select>
+</mapper>
