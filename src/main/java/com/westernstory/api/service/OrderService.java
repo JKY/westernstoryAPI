@@ -67,6 +67,7 @@ public class OrderService {
 
             if (!WsUtil.isEmpty(info)) {
                 String[] codes = info.split("\\|");
+                // 获取选中的sku
                 List<DictionaryEntryModel> selectedEntries = dictionarydao.getByEntryCodes(codes);
                 String tmp = "";
                 for (DictionaryEntryModel entry : selectedEntries) {
@@ -74,6 +75,7 @@ public class OrderService {
                 }
                 if (!WsUtil.isEmpty(tmp)) {
                     tmp = tmp.substring(0, tmp.length()-1);
+                    // 获取所有sku
                     entries = dictionarydao.getByDictCodes(tmp.split("\\|"));
                     for (DictionaryEntryModel entry : entries) {
                         entry.setIsSelected(false);
@@ -87,6 +89,7 @@ public class OrderService {
                 }
             }
 
+            // 组织sku
             List<DictionaryModel> skus = new ArrayList<DictionaryModel>();
             for (DictionaryEntryModel entry : entries) {
                 DictionaryModel tmp = null;
