@@ -56,7 +56,7 @@ public class OrderCtrl {
     public @ResponseBody Response detail(@RequestParam(value = "id", required = true) Integer id) {
 
         try {
-            return new Response(true, orderService.getById(id));
+            return new Response(true, orderService.getDetail(id));
         } catch (Exception e) {
             return new Response(false, e.getMessage());
         }

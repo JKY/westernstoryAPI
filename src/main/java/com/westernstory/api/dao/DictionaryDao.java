@@ -14,4 +14,20 @@ public interface DictionaryDao {
      * @throws Exception
      */
     List<DictionaryEntryModel> listDictionariesByCode(@Param("code")String code) throws Exception;
+
+    /**
+     * 通过dict codes 获取 SKU数据
+     * @param codes codes
+     * @return List<DictionaryEntryModel>
+     * @throws Exception
+     */
+    List<DictionaryEntryModel> getByDictCodes(@Param("codes")String[] codes) throws Exception;
+
+    /**
+     * 根据entry codes 获取 SKU数据
+     * @param codes codes
+     * @return List<DictionaryEntryModel>
+     * @throws Exception
+     */
+    List<DictionaryEntryModel> getByEntryCodes(@Param("codes")String[] codes) throws Exception;
 }

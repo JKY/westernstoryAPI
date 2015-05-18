@@ -1,11 +1,15 @@
 package com.westernstory.api.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 // Created by fedor on 15/5/13.
 public class CommodityModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    //
+    private List<DictionaryModel> skus;
 
     private Long id;
     private Long categoryId;
@@ -108,6 +112,14 @@ public class CommodityModel implements Serializable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public List<DictionaryModel> getSkus() {
+        return skus;
+    }
+
+    public void setSkus(List<DictionaryModel> skus) {
+        this.skus = skus;
     }
 
     public String getSummary() {

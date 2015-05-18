@@ -35,4 +35,12 @@ public interface CommodityDao {
      * @throws Exception
      */
     List<CommodityModel> getLatest(@Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+
+    /**
+     * 通过id获取商品详情
+     * @param id id
+     * @return CommodityModel
+     * @throws Exception
+     */
+    CommodityModel getById(@Param("id")Long id) throws Exception;
 }

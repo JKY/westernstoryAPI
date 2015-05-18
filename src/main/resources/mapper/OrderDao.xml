@@ -4,16 +4,19 @@
 <mapper namespace="com.westernstory.api.dao.OrderDao">
 
 	<select id="list" resultType="OrderModel">
-		SELECT id, comment, userId, commodityId, status, createTime, info, total, address, reason, isActive
-		FROM Order
-		WHERE isActive = 1
-		ORDER BY createTime DESC
+		SELECT t1.id, t1.comment, t1.userId, t1.commodityId, t1.status, t1.createTime,
+		  t1.info, t1.total, t1.address, t1.reason,
+		  t2.name AS commodityName, t2.thumbnail AS commodityThumbnail, t2.summary AS commoditySummary
+		FROM `Order` t1
+		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+		WHERE t1.isActive = 1 AND t2.isActive = 1
+		ORDER BY t1.createTime DESC
 		LIMIT #{start},#{limit}
 	</select>
 
-    <select id="getById">
+    <select id="getById" resultType="OrderModel">
         SELECT id, comment, userId, commodityId, status, createTime, info, total, address, reason, isActive
-		FROM Order
+		FROM `Order`
 		WHERE isActive = 1 AND id = #{id}
 		ORDER BY createTime DESC
 		Limit 1

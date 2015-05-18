@@ -85,4 +85,17 @@ public class CommodityCtrl {
             return new Response(false, e.getMessage());
         }
     }
+
+    /**
+     * 探索最新商品
+     * @return json
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public @ResponseBody Response detail(@RequestParam(value = "id", required = true) Long id) {
+        try {
+            return new Response(true, commodityService.getDetail(id));
+        } catch (Exception e) {
+            return new Response(false, e.getMessage());
+        }
+    }
 }

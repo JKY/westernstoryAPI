@@ -1,11 +1,19 @@
 package com.westernstory.api.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 // Created by fedor on 15/5/13.
 public class OrderModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    //
+    private String commodityName;
+    private String commodityThumbnail;
+    private String commoditySummary;
+    private List<DictionaryEntryModel> selectedSkus;
+    private List<DictionaryModel> skus;
 
     private Long id;
     private Long userId;
@@ -105,5 +113,45 @@ public class OrderModel implements Serializable {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public String getCommodityName() {
+        return commodityName;
+    }
+
+    public void setCommodityName(String commodityName) {
+        this.commodityName = commodityName;
+    }
+
+    public String getCommodityThumbnail() {
+        return commodityThumbnail;
+    }
+
+    public List<DictionaryEntryModel> getSelectedSkus() {
+        return selectedSkus;
+    }
+
+    public void setSelectedSkus(List<DictionaryEntryModel> selectedSkus) {
+        this.selectedSkus = selectedSkus;
+    }
+
+    public List<DictionaryModel> getSkus() {
+        return skus;
+    }
+
+    public void setSkus(List<DictionaryModel> skus) {
+        this.skus = skus;
+    }
+
+    public void setCommodityThumbnail(String commodityThumbnail) {
+        this.commodityThumbnail = commodityThumbnail;
+    }
+
+    public String getCommoditySummary() {
+        return commoditySummary;
+    }
+
+    public void setCommoditySummary(String commoditySummary) {
+        this.commoditySummary = commoditySummary;
     }
 }

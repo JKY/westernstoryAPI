@@ -26,4 +26,12 @@
         ORDER BY CreateTime DESC
         Limit #{start}, #{limit}
     </select>
+
+    <select id="getById" resultType="CommodityModel">
+        SELECT Id, `Name`, CategoryId, PriceOriginal, PirceDiscount, CreateTime, Thumbnail, Summary, Info, Content
+		FROM Commodity
+		WHERE IsActive = 1 AND id = #{id}
+		Limit 1
+    </select>
+
 </mapper>
