@@ -1,8 +1,8 @@
 package com.westernstory.api.controller;
 
-import com.westernstory.api.service.AdService;
 import com.westernstory.api.service.ArticleService;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class ArticleCtrl {
 
         try {
             return new Response(true, articleService.list(categoryId, start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }

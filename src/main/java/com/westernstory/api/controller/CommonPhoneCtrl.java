@@ -2,6 +2,7 @@ package com.westernstory.api.controller;
 
 import com.westernstory.api.service.CommonPhoneService;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ public class CommonPhoneCtrl {
             int start = (page - 1) * limit;
 
             return new Response(true, commonPhoneService.listCategories(start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -59,7 +60,7 @@ public class CommonPhoneCtrl {
             int start = (page - 1) * limit;
 
             return new Response(true, commonPhoneService.listPhones(categoryId, start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }

@@ -3,6 +3,7 @@ package com.westernstory.api.controller;
 import com.westernstory.api.model.AddressModel;
 import com.westernstory.api.service.AddressService;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class AddressCtrl {
         }
         try {
             return new Response(true, addressService.list(Long.valueOf(userId)));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -50,7 +51,7 @@ public class AddressCtrl {
         }
         try {
             return new Response(true, addressService.add(address));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -69,7 +70,7 @@ public class AddressCtrl {
         try {
             addressService.update(address);
             return new Response(true, "ok");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -86,7 +87,7 @@ public class AddressCtrl {
         try {
             addressService.remove(id);
             return new Response(true, "ok");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -104,7 +105,7 @@ public class AddressCtrl {
         try {
             addressService.updateDefault(Long.valueOf(id), Long.valueOf(userId));
             return new Response(true, "ok");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }

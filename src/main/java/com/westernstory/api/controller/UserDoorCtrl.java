@@ -4,6 +4,7 @@ import com.westernstory.api.model.UserInfoModel;
 import com.westernstory.api.service.UserInfoService;
 import com.westernstory.api.util.Md5;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class UserDoorCtrl {
                 return new Response(true, userinfo);
             }
             return new Response(false, "user not found");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -68,7 +69,7 @@ public class UserDoorCtrl {
 
             UserInfoModel userinfo = userInfoService.add(userName, password, nickName, ip);
             return new Response(true, userinfo);
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -93,7 +94,7 @@ public class UserDoorCtrl {
             }
             userInfoService.updatePassword(Long.valueOf(idString), password1);
             return new Response(true, "");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }

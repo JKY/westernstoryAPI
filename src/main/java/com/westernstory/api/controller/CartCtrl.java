@@ -2,6 +2,7 @@ package com.westernstory.api.controller;
 
 import com.westernstory.api.service.CartService;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class CartCtrl {
     public @ResponseBody Response list(@RequestParam(value = "userId", required = true) Long userId) {
         try {
             return new Response(true, cartService.list(userId));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -43,7 +44,7 @@ public class CartCtrl {
         try {
             String info = request.getParameter("info");
             return new Response(true, cartService.add(userId, cid, total, info));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -57,7 +58,7 @@ public class CartCtrl {
         try {
             cartService.remove(id);
             return new Response(true, "ok");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -71,7 +72,7 @@ public class CartCtrl {
         try {
             cartService.removeAll(userId);
             return new Response(true, "ok");
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }

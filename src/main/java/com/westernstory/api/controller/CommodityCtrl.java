@@ -2,6 +2,7 @@ package com.westernstory.api.controller;
 
 import com.westernstory.api.service.CommodityService;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ public class CommodityCtrl {
             Integer start = (page - 1) * limit;
 
             return new Response(true, commodityService.get(categoryId, start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -59,7 +60,7 @@ public class CommodityCtrl {
             }
             Integer start = (page - 1) * limit;
             return new Response(true, commodityService.getByKeyword(keyword, start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -81,7 +82,7 @@ public class CommodityCtrl {
             Integer start = (page - 1) * limit;
 
             return new Response(true, commodityService.getLatest(start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -94,7 +95,7 @@ public class CommodityCtrl {
     public @ResponseBody Response detail(@RequestParam(value = "id", required = true) Long id) {
         try {
             return new Response(true, commodityService.getDetail(id));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }

@@ -2,6 +2,7 @@ package com.westernstory.api.controller;
 
 import com.westernstory.api.service.OrderService;
 import com.westernstory.api.util.Response;
+import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class OrderCtrl {
 
         try {
             return new Response(true, orderService.list(Long.valueOf(userId), start, limit));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
@@ -57,7 +58,7 @@ public class OrderCtrl {
 
         try {
             return new Response(true, orderService.getDetail(id));
-        } catch (Exception e) {
+        } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
     }
