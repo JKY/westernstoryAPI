@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" build-on-make="true" name="WSAPI:war exploded">
-    <output-path>$PROJECT_DIR$/target/WSAPI</output-path>
+    <output-path>$PROJECT_DIR$/target/wsapi</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">

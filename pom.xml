@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.westerstory</groupId>
-    <artifactId>WSAPI</artifactId>
+    <artifactId>wsapi</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>WSAPI</name>
+    <name>wsapi</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -262,7 +262,7 @@
     </dependencies>
 
     <build>
-        <finalName>WSAPI</finalName>
+        <finalName>wsapi</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

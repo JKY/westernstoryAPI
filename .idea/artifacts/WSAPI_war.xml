@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" build-on-make="true" name="WSAPI:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="WSAPI.war">
+    <root id="archive" name="wsapi.war">
       <element id="artifact" artifact-name="WSAPI:war exploded" />
     </root>
   </artifact>
