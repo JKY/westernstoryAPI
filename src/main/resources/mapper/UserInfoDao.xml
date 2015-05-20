@@ -4,7 +4,7 @@
 <mapper namespace="com.westernstory.api.dao.UserInfoDao">
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
-	<select id="getLoginUser" resultType="UserinfoModel">
+	<select id="getLoginUser" resultType="UserInfoModel">
 		SELECT id, userName, nickName, isActive, isLocked, isLocked, credit
 		FROM UserInfo
 		WHERE userName = #{userName} AND password = #{password} AND isActive = 1 AND isLocked = 0 Limit 1
@@ -23,18 +23,18 @@
         </selectKey>
     </insert>
 
-    <select id="getByUserName" resultType="UserinfoModel">
+    <select id="getByUserName" resultType="UserInfoModel">
         SELECT id, userName, nickName
 		FROM UserInfo
 		WHERE userName = #{userName} AND isActive = 1 AND isLocked = 0 Limit 1
     </select>
 
     <update id="updateLastLogin" parameterType="UserInfoModel">
-        UPDATE Userinfo SET lastLoginIp = #{lastLoginIp}, lastLoginTime = #{lastLoginTime}
+        UPDATE UserInfo SET lastLoginIp = #{lastLoginIp}, lastLoginTime = #{lastLoginTime}
         WHERE id = #{id}
     </update>
 
     <update id="updatePassword">
-        UPDATE Userinfo SET password = #{password} WHERE id = #{id}
+        UPDATE UserInfo SET password = #{password} WHERE id = #{id}
     </update>
 </mapper>
