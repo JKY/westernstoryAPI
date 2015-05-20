@@ -7,6 +7,9 @@
         SELECT id, title, summary, status, thumbnail, categoryId, viewCount, isActive, publishTime, link
         FROM Article
         WHERE categoryId = #{categoryId} AND isActive = 1
+            <![CDATA[
+                AND publishTime <= (select UNIX_TIMESTAMP(NOW()) * 1000)
+            ]]>
         Limit #{start}, #{limit}
     </select>
 
@@ -23,5 +26,19 @@
                 </foreach>
             </trim>
             )
+    </select>
+
+    <select id="getById" resultType="ArticleModel">
+        SELECT id, title, summary, status, thumbnail, categoryId, viewCount, isActive, publishTime, link, content
+        FROM Article
+        WHERE isActive = 1 AND id = #{id}
+    </select>
+
+    <select id="getTagsByActicleId" resultType="ArticleTagModel">
+        SELECT t1.ID, t1.Name, t2.ArticleID as ArticleID
+        FROM ArticleTag as t1
+        LEfT JOIN ArticleTagRel as t2 on t1.ID=t2.TagID
+        WHERE
+        t1.isActive = 1 AND t2.IsActive = 1 and t2.ArticleID = #{articleId}
     </select>
 </mapper>

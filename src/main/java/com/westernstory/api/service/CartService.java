@@ -1,7 +1,9 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CartDao;
 import com.westernstory.api.model.CartModel;
+import com.westernstory.api.model.CommodityModel;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -28,6 +30,12 @@ public class CartService {
      */
     public List<CartModel> list(Long userId) throws ServiceException {
         try {
+            List<CartModel> list = cartDao.list(userId);
+            for (CartModel model : list) {
+                if (!WsUtil.isEmpty(model.getCommodityThumbnail())) {
+                    model.setCommodityThumbnail(Config.URL_UPLOAD + model.getCommodityThumbnail());
+                }
+            }
             return cartDao.list(userId);
         } catch (Exception e) {
             e.printStackTrace();

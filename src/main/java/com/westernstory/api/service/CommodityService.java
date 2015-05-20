@@ -1,5 +1,6 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CommodityDao;
 import com.westernstory.api.dao.DictionaryDao;
 import com.westernstory.api.model.CommodityModel;
@@ -36,7 +37,13 @@ public class CommodityService {
      */
     public List<CommodityModel> get(Integer categoryId, Integer start, Integer limit) throws ServiceException {
         try {
-            return commodityDao.get(categoryId, start, limit);
+            List<CommodityModel> list = commodityDao.get(categoryId, start, limit);
+            for (CommodityModel model : list) {
+                if (!WsUtil.isEmpty(model.getThumbnail())) {
+                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                }
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -53,7 +60,13 @@ public class CommodityService {
      */
     public List<CommodityModel> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
-            return commodityDao.getByKeyword(keyword, start, limit);
+            List<CommodityModel> list = commodityDao.getByKeyword(keyword, start, limit);
+            for (CommodityModel model : list) {
+                if (!WsUtil.isEmpty(model.getThumbnail())) {
+                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                }
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -69,7 +82,13 @@ public class CommodityService {
      */
     public  List<CommodityModel> getLatest(Integer start, Integer limit) throws ServiceException {
         try {
-            return commodityDao.getLatest(start, limit);
+            List<CommodityModel> list = commodityDao.getLatest(start, limit);
+            for (CommodityModel model : list) {
+                if (!WsUtil.isEmpty(model.getThumbnail())) {
+                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                }
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -124,6 +143,10 @@ public class CommodityService {
                     }
                 }
                 model.setSkus(dicts);
+            }
+
+            if (!WsUtil.isEmpty(model.getThumbnail())) {
+                model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
             }
             return model;
         } catch (Exception e) {

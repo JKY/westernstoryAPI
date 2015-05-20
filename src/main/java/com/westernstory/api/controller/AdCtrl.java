@@ -21,9 +21,9 @@ public class AdCtrl {
      * @return json
      */
     @RequestMapping(value = "/launch", method = RequestMethod.GET)
-    public @ResponseBody Response latestlaunch() {
+    public @ResponseBody Response getLaunch() {
         try {
-            return new Response(true, adService.getLastLaunch());
+            return new Response(true, adService.getLaunch());
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

@@ -25,4 +25,20 @@ public interface ArticleDao {
      * @throws Exception
      */
     List<ArticleTagModel> getTagsByActicleIds(@Param("articleIds")List<Long> articleIds) throws Exception;
+
+    /**
+     * 根据id获取文章详情
+     * @param id id
+     * @return ArticleModel
+     * @throws Exception
+     */
+    ArticleModel getById(@Param("id")Long id) throws Exception;
+
+    /**
+     * 根据文章id获取文章tags
+     * @param articleId articleId
+     * @return List<ArticleTagModel>
+     * @throws Exception
+     */
+    List<ArticleTagModel> getTagsByActicleId(@Param("articleId")Long articleId) throws Exception;
 }

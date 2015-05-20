@@ -1,5 +1,6 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.AdDao;
 import com.westernstory.api.model.AdModel;
 import com.westernstory.api.util.ServiceException;
@@ -23,9 +24,13 @@ public class AdService {
      * @return AdModel
      * @throws ServiceException
      */
-    public AdModel getLastLaunch() throws ServiceException {
+    public AdModel getLaunch() throws ServiceException {
         try {
-            return adDao.getLastLaunch();
+            AdModel adModel = adDao.getLaunch();
+            if (adModel != null) {
+                adModel.setImage(Config.URL_UPLOAD + adModel.getImage());
+            }
+            return adModel;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

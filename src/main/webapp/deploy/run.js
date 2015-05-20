@@ -30,17 +30,17 @@ function deploy(mode) {
 
     if(mode == 1) {
         // development
-        //javaConfig = "./development/Config.java";
+        javaConfig = "./development/Config.java";
         propertyConfig = "./development/config.properties";
         logback = "./development/logback.xml";
     } else if(mode == 2) {
         // qatesting
-        //javaConfig = "./qatesting/Config.java";
+        javaConfig = "./qatesting/Config.java";
         propertyConfig = "./qatesting/config.properties";
         logback = "./qatesting/logback.xml";
     } else {
         // production
-        //javaConfig = "./production/Config.java";
+        javaConfig = "./production/Config.java";
         propertyConfig = "./production/config.properties";
         logback = "./production/logback.xml";
     }
@@ -51,7 +51,7 @@ function deploy(mode) {
 
     if(javaConfig) {
         var rs = fs.createReadStream(javaConfig);
-        var ws = fs.createWriteStream('../../java/info/meihua/mhhome/config/Config.java');
+        var ws = fs.createWriteStream('../../java/com/westernstory/api/config/Config.java');
         rs.pipe(ws);
         ws.on('close',function(){
             console.log('---- Config.java completed ----');

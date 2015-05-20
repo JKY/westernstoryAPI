@@ -5,10 +5,12 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="list" resultType="CartModel">
-		SELECT id, commodityId, isActive, userId, total, info, createTime
-		FROM Cart
-		WHERE isActive = 1
-		ORDER BY createTime
+		SELECT t1.id, t1.commodityId, t1.isActive, t1.userId, t1.total, t1.info, t1.createTime,
+		  t2.name AS commodityName, t2.thumbnail AS commodityThumbnail
+		FROM Cart t1
+		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+		WHERE t1.isActive = 1 AND t2.isActive = 1
+		ORDER BY t1.createTime
 	</select>
 
     <select id="getByUidCid" resultType="CartModel">

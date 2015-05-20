@@ -13,6 +13,8 @@ public class AdModel implements Serializable {
     private String link;
     private Long categoryId;
     private Boolean isActive;
+    private Long startTime;
+    private Long endTime;
 
     public Long getId() {
         return id;
@@ -60,5 +62,21 @@ public class AdModel implements Serializable {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public Long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 }

@@ -1,0 +1,69 @@
+body {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.76);
+    -webkit-font-smoothing: antialiased;
+    font-family: "Hiragino Sans GB", "Open Sans", Arial, "Microsoft YaHei",
+    "微软雅黑", "STHeiti", "WenQuanYi Micro Hei", SimSun, sans-serif;
+}
+
+.title {
+    font-size: 2em;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    text-align: center;
+}
+
+.subinfo {
+    text-align: center;
+    margin-top: 12px;
+    margin-bottom: 31px;
+    font-size: 1.25em;
+}
+
+.subinfo, .summary {
+    margin-top: 25px;
+}
+
+.summary {
+    padding: 0 72px;
+    color: rgba(0, 0, 0, 0.46);
+    line-height: 2em;
+    font-size: 1.125em;
+    font-style: italic;
+    text-align: center;
+    margin-top: 28px;
+}
+
+.article-content {
+    padding: 0 140px;
+    padding-bottom: 30px;
+}
+
+@media (max-width:768px)
+{
+    .title
+    {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .tags {
+        padding: 0;
+    }
+    .summary
+    {
+        padding: 0;
+    }
+    .article-content
+    {
+        padding: 0;
+    }
+    .article-content img
+    {
+        max-width: 100%;
+    }
+
+    .art-content img{
+        width: auto;
+        height: auto;
+    }
+}

@@ -4,10 +4,13 @@
 <mapper namespace="com.westernstory.api.dao.AdDao">
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
-	<select id="getLastLaunch" resultType="AdModel">
-		SELECT id, comment, image, link, categoryId
+	<select id="getLaunch" resultType="AdModel">
+		SELECT id, comment, image, link, categoryId, startTime, endTime
 		FROM Ad
-		WHERE isActive = 1
-		ORDER BY createTime DESC Limit 1
+		WHERE isActive = 1 AND
+		  <![CDATA[
+            endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+		Limit 1
 	</select>
 </mapper>

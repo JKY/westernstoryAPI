@@ -9,5 +9,5 @@ public interface AdDao {
      * @return AdModel
      * @throws Exception
      */
-    AdModel getLastLaunch() throws Exception;
+    AdModel getLaunch() throws Exception;
 }

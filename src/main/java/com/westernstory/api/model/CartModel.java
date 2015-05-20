@@ -7,6 +7,10 @@ public class CartModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //
+    private String commodityName;
+    private String commodityThumbnail;
+
     private Long id;
     private Long commodityId;
     private Boolean isActive;
@@ -79,6 +83,22 @@ public class CartModel implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getCommodityName() {
+        return commodityName;
+    }
+
+    public void setCommodityName(String commodityName) {
+        this.commodityName = commodityName;
+    }
+
+    public String getCommodityThumbnail() {
+        return commodityThumbnail;
+    }
+
+    public void setCommodityThumbnail(String commodityThumbnail) {
+        this.commodityThumbnail = commodityThumbnail;
     }
 
     public Long getCreateTime() {

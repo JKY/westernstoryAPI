@@ -1,11 +1,15 @@
 package com.westernstory.api.controller;
 
+import com.westernstory.api.model.ArticleModel;
 import com.westernstory.api.service.ArticleService;
 import com.westernstory.api.util.Response;
 import com.westernstory.api.util.ServiceException;
+import com.westernstory.api.util.WsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 // Created by fedor on 15/5/13.
 @Controller
@@ -15,7 +19,7 @@ public class ArticleCtrl {
     @Autowired
     private ArticleService articleService = null;
     /**
-     * 获取最新开机广告
+     * 根据类别获取文章
      * @return json
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -34,6 +38,32 @@ public class ArticleCtrl {
             return new Response(true, articleService.list(categoryId, start, limit));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 文章详情
+     * @param request request
+     * @return ftl
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    public String getArticleDetail(HttpServletRequest request){
+
+        try {
+            String id = request.getParameter("id");
+            if (WsUtil.isEmpty(id)) {
+                return "404";
+            } else {
+                ArticleModel article = articleService.getDetail(Long.valueOf(id));
+                if (article == null) {
+                    return "404";
+                } else {
+                    request.setAttribute("article", article);
+                    return "article_detail";
+                }
+            }
+        } catch (ServiceException e) {
+            return "500";
         }
     }
 }

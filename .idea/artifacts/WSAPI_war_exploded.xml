@@ -53,6 +53,7 @@
           <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.2" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.9.0" />
+          <element id="library" level="project" name="Maven: org.freemarker:freemarker:2.3.20" />
         </element>
       </element>
       <element id="directory" name="META-INF">
