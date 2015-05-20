@@ -9,7 +9,7 @@ process.argv.forEach(function (val, index, array) {
     if(index == 2) {
         if(val == 'dev') {
             deploy(1);
-        } else if(val == 'qa') {
+        } else if(val == 'test') {
             deploy(2);
         } else if(val == 'pro') {
             deploy(9);
