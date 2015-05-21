@@ -24,4 +24,12 @@ public interface OrderDao {
      * @throws Exception
      */
     OrderModel getById(Integer id) throws Exception;
+
+    /**
+     * 处理中的订单数据量(排除已签收和已取消的订单)
+     * @param userId userId
+     * @return Integer
+     * @throws Exception
+     */
+    Integer countProcessingOrders(@Param("userId")Long userId) throws Exception;
 }

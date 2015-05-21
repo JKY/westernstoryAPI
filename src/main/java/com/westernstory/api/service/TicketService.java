@@ -1,5 +1,6 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.TicketDao;
 import com.westernstory.api.model.TicketModel;
 import com.westernstory.api.util.ServiceException;
@@ -29,7 +30,14 @@ public class TicketService {
      */
     public List<TicketModel> list(Integer start, Integer limit) throws ServiceException {
         try {
-            return ticketDao.list(start, limit);
+            List<TicketModel> list = ticketDao.list(start, limit);
+            for (TicketModel model : list) {
+                // 缩略图
+                if (!WsUtil.isEmpty(model.getThumbnail())) {
+                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                }
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

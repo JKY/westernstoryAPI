@@ -1,6 +1,8 @@
 package com.westernstory.api.dao;
 
+import com.westernstory.api.model.CommodityImageModel;
 import com.westernstory.api.model.CommodityModel;
+import com.westernstory.api.model.DictionaryEntryModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -43,4 +45,27 @@ public interface CommodityDao {
      * @throws Exception
      */
     CommodityModel getById(@Param("id")Long id) throws Exception;
+
+    /**
+     * 获取推荐类别
+     * @return DictionaryEntryModel
+     * @throws Exception
+     */
+    DictionaryEntryModel getHeadline() throws Exception;
+
+    /**
+     * 根据商品id获取商品缩略图
+     * @param commodityId commodityId
+     * @return CommodityImageModel
+     * @throws Exception
+     */
+    CommodityImageModel getThumbnail(@Param("commodityId")Long commodityId) throws Exception;
+
+    /**
+     *  根据商品id获取商品图片
+     * @param commodityId commodityId
+     * @return List<CommodityImageModel>
+     * @throws Exception
+     */
+    List<CommodityImageModel> getImages(@Param("commodityId")Long commodityId) throws Exception;
 }

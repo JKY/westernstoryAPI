@@ -5,7 +5,7 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="listDictionariesByCode" resultType="DictionaryEntryModel">
-		SELECT id, `name`, dictionaryId, code
+		SELECT id, `name`, dictionaryId, code, info
 		FROM DictionaryEntry
 		WHERE isActive = 1 AND dictionaryId =
 		  (SELECT id FROM Dictionary WHERE code = #{code} AND isActive = 1)

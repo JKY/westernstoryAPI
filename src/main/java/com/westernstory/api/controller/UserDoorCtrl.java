@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -94,6 +95,20 @@ public class UserDoorCtrl {
             }
             userInfoService.updatePassword(Long.valueOf(idString), password1);
             return new Response(true, "");
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 个人中心badge 各种数量值
+     * @return json
+     */
+    @RequestMapping(value = "/badge", method = RequestMethod.GET)
+    public @ResponseBody Response badge(@RequestParam(value = "userId", required = true) Long userId) {
+
+        try {
+            return new Response(true, userInfoService.getBadge(userId));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

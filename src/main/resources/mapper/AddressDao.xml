@@ -8,7 +8,7 @@
 		SELECT id, address, mobile, name, isDefault, userId, isActive, createTime
 		FROM Address
 		WHERE isActive = 1 AND userId = #{userId}
-		ORDER BY updateTime DESC Limit 1
+		ORDER BY updateTime DESC
 	</select>
 
     <insert id="add">
@@ -35,7 +35,7 @@
         WHERE id = #{id}
     </update>
 
-    <update id="noDefault">
+    <update id="clearDefault">
         UPDATE Address SET isDefault = 0 WHERE userId = #{userId}
     </update>
 

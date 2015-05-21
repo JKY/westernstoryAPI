@@ -7,9 +7,9 @@ public class Config {
 
     public static final String WEB_KEY = "43869527";
 
-    public static final String URL_ROOT = "http://120.26.115.144:8080/wsapi/"; // 根路径
+    public static final String URL_ROOT = "http://120.26.115.144:8080/wsapi/"; // API根路径
 
-    public static final String URL_STATIC = "http://120.26.115.144:808/"; // 图片上传路径（绝对）
+    public static final String URL_STATIC = "http://120.26.115.144:808/"; // 图片根路径
 
     public static final String PATH_UPLOAD = "/data/static/upload"; // 图片上传路径（相对）
 

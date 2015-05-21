@@ -1,5 +1,8 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.dao.MsgDao;
+import com.westernstory.api.dao.OrderDao;
+import com.westernstory.api.dao.TicketDao;
 import com.westernstory.api.dao.UserInfoDao;
 import com.westernstory.api.model.UserInfoModel;
 import com.westernstory.api.util.Md5;
@@ -10,12 +13,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
 public class UserInfoService {
     @Autowired
     private UserInfoDao userInfoDao = null;
+    @Autowired
+    private MsgDao msgDao = null;
+    @Autowired
+    private OrderDao orderDao = null;
+    @Autowired
+    private TicketDao ticketDao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -92,6 +105,29 @@ public class UserInfoService {
     public void updatePassword(Long id, String password) throws ServiceException {
         try {
             userInfoDao.updatePassword(id, Md5.toMD5(password));
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 个人中心badge 各种数量值
+     * @param userId userId
+     */
+    public Map<String, Integer> getBadge(Long userId) throws ServiceException {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        try {
+            if (userId != 0L) {
+                // 消息
+                map.put("msg", msgDao.countUnreadMsgs(userId));
+                // 订单
+                map.put("order", orderDao.countProcessingOrders(userId));
+                // 优惠券
+                map.put("ticket", ticketDao.countUnusedTickets(userId));
+            }
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

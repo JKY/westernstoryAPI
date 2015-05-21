@@ -1,7 +1,10 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.config.Config;
+import com.westernstory.api.dao.CommodityDao;
 import com.westernstory.api.dao.DictionaryDao;
 import com.westernstory.api.dao.OrderDao;
+import com.westernstory.api.model.CommodityImageModel;
 import com.westernstory.api.model.DictionaryEntryModel;
 import com.westernstory.api.model.DictionaryModel;
 import com.westernstory.api.model.OrderModel;
@@ -23,6 +26,8 @@ public class OrderService {
     private OrderDao orderDao = null;
     @Autowired
     private DictionaryDao dictionarydao = null;
+    @Autowired
+    private CommodityDao commodityDao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -43,6 +48,11 @@ public class OrderService {
                     String[] codes = info.split("\\|");
                     List<DictionaryEntryModel> entries = dictionarydao.getByEntryCodes(codes);
                     order.setSelectedSkus(entries);
+                }
+                // 商品图片
+                CommodityImageModel thumbnail = commodityDao.getThumbnail(order.getCommodityId());
+                if (thumbnail != null) {
+                    order.setCommodityThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
                 }
             }
             return orders;
@@ -123,6 +133,13 @@ public class OrderService {
             }
 
             order.setSkus(skus);
+
+            // 商品图片
+            List<CommodityImageModel> images = commodityDao.getImages(order.getCommodityId());
+            for (CommodityImageModel image : images) {
+                image.setImage(Config.URL_UPLOAD + image.getImage());
+            }
+            order.setImages(images);
 
             return order;
         } catch (Exception e) {

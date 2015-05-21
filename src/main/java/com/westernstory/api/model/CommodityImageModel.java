@@ -1,15 +1,16 @@
 package com.westernstory.api.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 // Created by fedor on 15/5/13.
-public class BusModel implements Serializable {
+public class CommodityImageModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String from;
-    private String to;
+    private Long commodityId;
+    private String image;
     private Boolean isActive;
     private Long createBy;
     private Long createTime;
@@ -22,22 +23,6 @@ public class BusModel implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
     }
 
     public Boolean getIsActive() {
@@ -72,12 +57,28 @@ public class BusModel implements Serializable {
         this.updateBy = updateBy;
     }
 
+    public Long getCommodityId() {
+        return commodityId;
+    }
+
+    public void setCommodityId(Long commodityId) {
+        this.commodityId = commodityId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Long getUpdateTime() {
         return updateTime;
+
     }
 
     public void setUpdateTime(Long updateTime) {
         this.updateTime = updateTime;
     }
-
 }

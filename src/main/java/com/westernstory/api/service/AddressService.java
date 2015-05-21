@@ -47,9 +47,13 @@ public class AddressService {
             List<AddressModel> list = addressDao.list(address.getUserId());
             if (list.size() == 0) {
                 address.setIsDefault(true);
-            } else {
-                address.setIsDefault(false);
             }
+
+            if (address.getIsDefault()) {
+                // 取消默认地址
+                addressDao.clearDefault(address.getUserId());
+            }
+
             addressDao.add(address);
             return address.getId();
         } catch (Exception e) {
@@ -97,7 +101,7 @@ public class AddressService {
      */
     public void updateDefault(Long id, Long userId) throws ServiceException {
         try {
-            addressDao.noDefault(userId);
+            addressDao.clearDefault(userId);
             addressDao.setDefault(id);
         } catch (Exception e) {
             e.printStackTrace();

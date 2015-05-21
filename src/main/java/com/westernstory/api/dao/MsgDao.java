@@ -18,11 +18,11 @@ public interface MsgDao {
     List<MsgModel> list(@Param("userId")Long userId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
 
     /**
-     * 标记为已读
-     * @param id id
+     * 根据uid标记消息已读（批量）
+     * @param userId userId
      * @throws Exception
      */
-    void updateRead(@Param("id")Long id) throws Exception;
+    void readByUid(Long userId) throws Exception;
 
     /**
      * 删除消息
@@ -30,4 +30,19 @@ public interface MsgDao {
      * @throws Exception
      */
     void remove(@Param("id")Long id) throws Exception;
+    /**
+     * 获取未读消息
+     * @param userId userId
+     * @return list
+     * @throws Exception
+     */
+    List<MsgModel> getUnreadMsgs(@Param("userId")Long userId) throws Exception;
+
+    /**
+     * 获取未读消息数量
+     * @param userId userId
+     * @return Integer
+     * @throws Exception
+     */
+    Integer countUnreadMsgs(@Param("userId")Long userId) throws Exception;
 }

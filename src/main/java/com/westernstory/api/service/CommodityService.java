@@ -3,9 +3,7 @@ package com.westernstory.api.service;
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CommodityDao;
 import com.westernstory.api.dao.DictionaryDao;
-import com.westernstory.api.model.CommodityModel;
-import com.westernstory.api.model.DictionaryEntryModel;
-import com.westernstory.api.model.DictionaryModel;
+import com.westernstory.api.model.*;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -31,7 +29,6 @@ public class CommodityService {
      * 根据类别获取商品列表
      * @param categoryId categoryId
      * @param start start
-     * @param start start
      * @return List<CommodityModel>
      * @throws ServiceException
      */
@@ -39,8 +36,9 @@ public class CommodityService {
         try {
             List<CommodityModel> list = commodityDao.get(categoryId, start, limit);
             for (CommodityModel model : list) {
-                if (!WsUtil.isEmpty(model.getThumbnail())) {
-                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
+                if (thumbnail != null) {
+                    model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
                 }
             }
             return list;
@@ -62,8 +60,9 @@ public class CommodityService {
         try {
             List<CommodityModel> list = commodityDao.getByKeyword(keyword, start, limit);
             for (CommodityModel model : list) {
-                if (!WsUtil.isEmpty(model.getThumbnail())) {
-                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
+                if (thumbnail != null) {
+                    model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
                 }
             }
             return list;
@@ -84,8 +83,9 @@ public class CommodityService {
         try {
             List<CommodityModel> list = commodityDao.getLatest(start, limit);
             for (CommodityModel model : list) {
-                if (!WsUtil.isEmpty(model.getThumbnail())) {
-                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
+                if (thumbnail != null) {
+                    model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
                 }
             }
             return list;
@@ -145,10 +145,38 @@ public class CommodityService {
                 model.setSkus(dicts);
             }
 
-            if (!WsUtil.isEmpty(model.getThumbnail())) {
-                model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+            // 商品图片
+            List<CommodityImageModel> images = commodityDao.getImages(model.getId());
+            for (CommodityImageModel image : images) {
+                image.setImage(Config.URL_UPLOAD + image.getImage());
             }
+            model.setImages(images);
+
             return model;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 获取推荐类别
+     * @return CommodityCategoryClass
+     * @throws ServiceException
+     */
+    public CommodityCategoryClass getHeadline() throws ServiceException {
+        try {
+            DictionaryEntryModel model = commodityDao.getHeadline();
+            if (model != null) {
+                CommodityCategoryClass category = new CommodityCategoryClass();
+                category.setId(model.getId());
+                category.setName(model.getName());
+                category.setIcon(Config.URL_UPLOAD + model.getCode() + ".png");
+                return category;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

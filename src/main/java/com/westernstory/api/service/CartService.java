@@ -2,8 +2,9 @@ package com.westernstory.api.service;
 
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CartDao;
+import com.westernstory.api.dao.CommodityDao;
 import com.westernstory.api.model.CartModel;
-import com.westernstory.api.model.CommodityModel;
+import com.westernstory.api.model.CommodityImageModel;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import java.util.List;
 public class CartService {
     @Autowired
     private CartDao cartDao = null;
+    @Autowired
+    private CommodityDao commodityDao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -32,8 +35,10 @@ public class CartService {
         try {
             List<CartModel> list = cartDao.list(userId);
             for (CartModel model : list) {
-                if (!WsUtil.isEmpty(model.getCommodityThumbnail())) {
-                    model.setCommodityThumbnail(Config.URL_UPLOAD + model.getCommodityThumbnail());
+                // 商品缩略图
+                CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
+                if (thumbnail != null) {
+                    model.setCommodityThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
                 }
             }
             return cartDao.list(userId);

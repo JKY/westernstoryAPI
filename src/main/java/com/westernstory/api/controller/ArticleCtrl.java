@@ -1,7 +1,11 @@
 package com.westernstory.api.controller;
 
+import com.westernstory.api.config.Config;
+import com.westernstory.api.model.ArticleCategoryClass;
 import com.westernstory.api.model.ArticleModel;
+import com.westernstory.api.model.DictionaryEntryModel;
 import com.westernstory.api.service.ArticleService;
+import com.westernstory.api.service.DictionaryService;
 import com.westernstory.api.util.Response;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
@@ -10,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 // Created by fedor on 15/5/13.
 @Controller
@@ -18,6 +24,35 @@ public class ArticleCtrl {
 
     @Autowired
     private ArticleService articleService = null;
+    @Autowired
+    private DictionaryService dictionaryService = null;
+
+    /**
+     * 文章分类列表
+     * @return json
+     */
+    @RequestMapping(value = "/categorylist", method = RequestMethod.GET)
+    public @ResponseBody Response categorylist(){
+
+        try {
+            List<ArticleCategoryClass> result = new ArrayList<ArticleCategoryClass>();
+            List<DictionaryEntryModel> models = dictionaryService.listDictionariesByCode("article_category");
+
+            for (DictionaryEntryModel model : models) {
+                ArticleCategoryClass category = new ArticleCategoryClass();
+                category.setId(model.getId());
+                category.setName(model.getName());
+                category.setColor(model.getInfo());
+                category.setIcon(Config.URL_UPLOAD + model.getCode() + ".png");
+                result.add(category);
+            }
+            return new Response(true, result);
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
+
     /**
      * 根据类别获取文章
      * @return json

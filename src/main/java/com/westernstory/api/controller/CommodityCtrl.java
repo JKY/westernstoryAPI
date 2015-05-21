@@ -1,6 +1,10 @@
 package com.westernstory.api.controller;
 
+import com.westernstory.api.config.Config;
+import com.westernstory.api.model.CommodityCategoryClass;
+import com.westernstory.api.model.DictionaryEntryModel;
 import com.westernstory.api.service.CommodityService;
+import com.westernstory.api.service.DictionaryService;
 import com.westernstory.api.util.Response;
 import com.westernstory.api.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // Created by fedor on 15/5/13.
 @Controller
 @RequestMapping(value = "/commodity")
@@ -17,6 +24,38 @@ public class CommodityCtrl {
 
     @Autowired
     private CommodityService commodityService = null;
+    @Autowired
+    private DictionaryService dictionaryService = null;
+
+    /**
+     * 文章分类列表
+     * @return json
+     */
+    @RequestMapping(value = "/categorylist", method = RequestMethod.GET)
+    public @ResponseBody Response categorylist(){
+
+        try {
+            List<CommodityCategoryClass> result = new ArrayList<CommodityCategoryClass>();
+            List<DictionaryEntryModel> models = dictionaryService.listDictionariesByCode("commodity_category");
+
+            for (DictionaryEntryModel model : models) {
+                CommodityCategoryClass category = new CommodityCategoryClass();
+                category.setId(model.getId());
+                category.setName(model.getName());
+                category.setIcon(Config.URL_UPLOAD + model.getCode() + ".png");
+                if ("1".equals(model.getInfo())) {
+                    category.setIsHeadline(true);
+                } else {
+                    category.setIsHeadline(false);
+                }
+                result.add(category);
+            }
+            return new Response(true, result);
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
     /**
      * 根据类别获取商品列表
      * @return json
@@ -95,6 +134,19 @@ public class CommodityCtrl {
     public @ResponseBody Response detail(@RequestParam(value = "id", required = true) Long id) {
         try {
             return new Response(true, commodityService.getDetail(id));
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取推荐类别
+     * @return json
+     */
+    @RequestMapping(value = "/headline", method = RequestMethod.GET)
+    public @ResponseBody Response headline() {
+        try {
+            return new Response(true, commodityService.getHeadline());
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

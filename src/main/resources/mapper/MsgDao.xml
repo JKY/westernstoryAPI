@@ -5,18 +5,30 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="list" resultType="MsgModel">
-		SELECT id, title, summary, thumbnail, isActive, isReaded, createTime
+		SELECT id, title, summary, thumbnail, createTime, isReaded
 		FROM Message
 		WHERE isActive = 1 AND userId = #{userId}
 		ORDER BY createTime DESC
 		LIMIT #{start},#{limit}
 	</select>
 
-    <update id="updateRead">
-        UPDATE Message SET isReaded = 1 WHERE id = #{id}
+    <update id="readByUid">
+        UPDATE Message SET isReaded = 1 WHERE userId = #{userId}
     </update>
 
     <update id="remove">
         UPDATE Message SET isActive = 0 WHERE id = #{id}
     </update>
+
+    <select id="getUnreadMsgs" resultType="MsgModel">
+        SELECT id, title, summary, thumbnail, createTime
+        FROM Message
+        WHERE isActive = 1 AND UserId = #{userId} AND isReaded = 0
+    </select>
+
+    <select id="countUnreadMsgs" resultType="int">
+        SELECT count(1)
+        FROM Message
+        WHERE isActive = 1 AND UserId = #{userId} AND isReaded = 0
+    </select>
 </mapper>

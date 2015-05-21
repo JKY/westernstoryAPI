@@ -19,6 +19,7 @@ public class BusEntryModel implements Serializable {
     private String to;
     private String fromTime;
     private String toTime;
+    private Boolean isSecondDay;
 
     public Long getId() {
         return id;
@@ -46,6 +47,14 @@ public class BusEntryModel implements Serializable {
 
     public Long getCreateBy() {
         return createBy;
+    }
+
+    public Boolean getIsSecondDay() {
+        return isSecondDay;
+    }
+
+    public void setIsSecondDay(Boolean isSecondDay) {
+        this.isSecondDay = isSecondDay;
     }
 
     public void setCreateBy(Long createBy) {

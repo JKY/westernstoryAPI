@@ -15,11 +15,19 @@ public class DictionaryEntryModel implements Serializable {
     private Boolean isSelected;
 
     private long id;
-    private String comment;
+    private String info;
     private Long dictionaryId;
     private String name;
     private Boolean isActive;
     private String code;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public long getId() {
         return id;
@@ -27,14 +35,6 @@ public class DictionaryEntryModel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public Long getDictionaryId() {

@@ -34,7 +34,7 @@ public interface AddressDao {
      * @param userId userId
      * @throws Exception
      */
-    void noDefault(@Param("userId")Long userId) throws Exception;
+    void clearDefault(@Param("userId")Long userId) throws Exception;
 
     /**
      * 修改地址

@@ -12,7 +12,7 @@
 	</select>
 
     <select id="getDetailById" resultType="BusEntryModel">
-        SELECT Id, BusId, `From`, `To`, FromTime, ToTime, IsActive, CreateTime, `Order`
+        SELECT Id, BusId, `From`, `To`, FromTime, ToTime, IsActive, CreateTime, `Order`, isSecondDay
 		FROM BusEntry
 		WHERE isActive = 1 AND BusId = (SELECT id FROM Bus WHERE id = #{busId} AND isActive = 1)
 		ORDER BY `Order` ASC

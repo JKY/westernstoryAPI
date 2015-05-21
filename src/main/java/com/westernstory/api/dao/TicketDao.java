@@ -38,4 +38,12 @@ public interface TicketDao {
      * @throws Exception
      */
     TicketModel getById(@Param("id")Long id) throws Exception;
+
+    /**
+     * 获取未被使用的优惠券的数量
+     * @param userId userId
+     * @return Integer
+     * @throws Exception
+     */
+    Integer countUnusedTickets(@Param("userId")Long userId) throws Exception;
 }

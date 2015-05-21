@@ -39,13 +39,12 @@ public class MsgService {
     }
 
     /**
-     * 标记为已读
-     * @param id id
-     * @throws ServiceException
+     * 根据uid标记消息已读
+     * @param userId userId
      */
-    public void updateRead(Long id) throws ServiceException {
+    public void updateReadByUid(Long userId) throws ServiceException {
         try {
-            msgDao.updateRead(id);
+            msgDao.readByUid(userId);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

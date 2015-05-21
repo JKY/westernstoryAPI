@@ -5,10 +5,13 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="list" resultType="TicketModel">
-		SELECT id, discount, thumbnail, total, address, fromTime, toTime, createTime, qrCode
+		SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, qrCode
 		FROM Ticket
 		WHERE isActive = 1
-		ORDER BY fromTime DESC
+		  <![CDATA[
+            AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+		ORDER BY startTime DESC
 		Limit #{start}, #{limit}
 	</select>
 
@@ -27,9 +30,13 @@
     </select>
 
     <select id="getById" resultType="TicketModel">
-        SELECT id, discount, thumbnail, total, address, fromTime, toTime, createTime, qrCode
+        SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, qrCode
         FROM Ticket
         WHERE isActive = 1 AND id = #{id}
         Limit 1
+    </select>
+
+    <select id="countUnusedTickets" resultType="int">
+        SELECT count(1) FROM UserTicket  WHERE isActive = 1 AND userId = #{userId} AND isUsed = 0
     </select>
 </mapper>

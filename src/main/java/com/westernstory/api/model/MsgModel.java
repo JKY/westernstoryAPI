@@ -41,6 +41,14 @@ public class MsgModel implements Serializable {
         this.summary = summary;
     }
 
+    public Boolean getIsReaded() {
+        return isReaded;
+    }
+
+    public void setIsReaded(Boolean isReaded) {
+        this.isReaded = isReaded;
+    }
+
     public String getThumbnail() {
         return thumbnail;
     }
@@ -71,14 +79,6 @@ public class MsgModel implements Serializable {
 
     public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
-    }
-
-    public Boolean getIsReaded() {
-        return isReaded;
-    }
-
-    public void setIsReaded(Boolean isReaded) {
-        this.isReaded = isReaded;
     }
 
     public Long getCreateTime() {

@@ -50,14 +50,14 @@ public class MsgCtrl {
 
     /**
      * 标记为已读
-     * @param id id
+     * @param userId userId
      * @return json
      */
     @RequestMapping(value = "/read", method = RequestMethod.POST)
-    public @ResponseBody Response read(@RequestParam(value = "id", required = true) Long id) {
+    public @ResponseBody Response read(@RequestParam(value = "userId", required = true) Long userId) {
 
         try {
-            msgService.updateRead(id);
+            msgService.updateReadByUid(userId);
             return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());

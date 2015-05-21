@@ -6,7 +6,7 @@
 
 	<select id="list" resultType="CartModel">
 		SELECT t1.id, t1.commodityId, t1.isActive, t1.userId, t1.total, t1.info, t1.createTime,
-		  t2.name AS commodityName, t2.thumbnail AS commodityThumbnail
+		  t2.name AS commodityName
 		FROM Cart t1
 		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
 		WHERE t1.isActive = 1 AND t2.isActive = 1

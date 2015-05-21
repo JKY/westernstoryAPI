@@ -8,17 +8,18 @@ public class TicketModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private Integer discount;
+    private String name;
     private String thumbnail;
     private Integer total;
     private String address;
-    private Long fromTime;
-    private Long toTime;
+    private Long startTime;
+    private Long endTime;
     private Long createBy;
     private Long createTime;
     private Long updateBy;
     private Long updateTime;
     private String qrCode;
+    private Boolean isActive;
 
     public Long getId() {
         return id;
@@ -26,14 +27,6 @@ public class TicketModel implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Integer getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
     }
 
     public String getThumbnail() {
@@ -58,22 +51,6 @@ public class TicketModel implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Long getFromTime() {
-        return fromTime;
-    }
-
-    public void setFromTime(Long fromTime) {
-        this.fromTime = fromTime;
-    }
-
-    public Long getToTime() {
-        return toTime;
-    }
-
-    public void setToTime(Long toTime) {
-        this.toTime = toTime;
     }
 
     public Long getCreateBy() {
@@ -124,6 +101,27 @@ public class TicketModel implements Serializable {
         this.isActive = isActive;
     }
 
-    private Boolean isActive;
+    public Long getStartTime() {
+        return startTime;
+    }
 
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

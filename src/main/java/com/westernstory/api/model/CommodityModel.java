@@ -10,21 +10,23 @@ public class CommodityModel implements Serializable {
 
     //
     private List<DictionaryModel> skus;
+    private List<CommodityImageModel> images;
+    private String thumbnail;
+    private String tagName;
 
     private Long id;
     private Long categoryId;
     private String name;
-    private Float priceOriginal;
-    private Float pirceDiscount;
+    private Float price;
     private Boolean isActive;
     private Long createBy;
     private Long createTime;
     private Long updateBy;
     private Long updateTime;
-    private String thumbnail;
     private String summary;
     private String content;
     private String info;
+    private Long tag;
 
     public Long getId() {
         return id;
@@ -48,22 +50,6 @@ public class CommodityModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Float getPriceOriginal() {
-        return priceOriginal;
-    }
-
-    public void setPriceOriginal(Float priceOriginal) {
-        this.priceOriginal = priceOriginal;
-    }
-
-    public Float getPirceDiscount() {
-        return pirceDiscount;
-    }
-
-    public void setPirceDiscount(Float pirceDiscount) {
-        this.pirceDiscount = pirceDiscount;
     }
 
     public Boolean getIsActive() {
@@ -106,14 +92,6 @@ public class CommodityModel implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
     public List<DictionaryModel> getSkus() {
         return skus;
     }
@@ -138,8 +116,48 @@ public class CommodityModel implements Serializable {
         this.content = content;
     }
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public List<CommodityImageModel> getImages() {
+        return images;
+    }
+
+    public void setImages(List<CommodityImageModel> images) {
+        this.images = images;
+    }
+
     public String getInfo() {
         return info;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Long getTag() {
+        return tag;
+    }
+
+    public void setTag(Long tag) {
+        this.tag = tag;
+    }
+
+    public String getTagName() {
+        return tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
     }
 
     public void setInfo(String info) {
