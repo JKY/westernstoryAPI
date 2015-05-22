@@ -5,7 +5,7 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="list" resultType="TicketModel">
-		SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, qrCode
+		SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, summary
 		FROM Ticket
 		WHERE isActive = 1
 		  <![CDATA[
@@ -30,7 +30,7 @@
     </select>
 
     <select id="getById" resultType="TicketModel">
-        SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, qrCode
+        SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, summary
         FROM Ticket
         WHERE isActive = 1 AND id = #{id}
         Limit 1

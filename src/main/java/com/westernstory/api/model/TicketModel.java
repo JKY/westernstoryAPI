@@ -18,7 +18,7 @@ public class TicketModel implements Serializable {
     private Long createTime;
     private Long updateBy;
     private Long updateTime;
-    private String qrCode;
+    private String summary;
     private Boolean isActive;
 
     public Long getId() {
@@ -85,14 +85,6 @@ public class TicketModel implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getQrCode() {
-        return qrCode;
-    }
-
-    public void setQrCode(String qrCode) {
-        this.qrCode = qrCode;
-    }
-
     public Boolean getIsActive() {
         return isActive;
     }
@@ -119,6 +111,14 @@ public class TicketModel implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public void setName(String name) {
