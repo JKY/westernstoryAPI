@@ -40,6 +40,8 @@ public class CommodityService {
                 if (thumbnail != null) {
                     model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
                 }
+                // TODO 商品折扣价格
+                model.setDiscount(0f);
             }
             return list;
         } catch (Exception e) {

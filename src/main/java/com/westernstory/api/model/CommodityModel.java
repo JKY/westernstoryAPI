@@ -13,6 +13,7 @@ public class CommodityModel implements Serializable {
     private List<CommodityImageModel> images;
     private String thumbnail;
     private String tagName;
+    private Float discount;
 
     private Long id;
     private Long categoryId;
@@ -158,6 +159,14 @@ public class CommodityModel implements Serializable {
 
     public void setTagName(String tagName) {
         this.tagName = tagName;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 
     public void setInfo(String info) {
