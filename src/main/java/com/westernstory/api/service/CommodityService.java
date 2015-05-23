@@ -38,7 +38,7 @@ public class CommodityService {
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
                 if (thumbnail != null) {
-                    model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
+                    model.setThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
                 // TODO 商品折扣价格
                 model.setDiscount(0f);
@@ -64,7 +64,7 @@ public class CommodityService {
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
                 if (thumbnail != null) {
-                    model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
+                    model.setThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
             }
             return list;
@@ -87,7 +87,7 @@ public class CommodityService {
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
                 if (thumbnail != null) {
-                    model.setThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
+                    model.setThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
             }
             return list;
@@ -150,7 +150,7 @@ public class CommodityService {
             // 商品图片
             List<CommodityImageModel> images = commodityDao.getImages(model.getId());
             for (CommodityImageModel image : images) {
-                image.setImage(Config.URL_UPLOAD + image.getImage());
+                image.setImage(Config.URL_STATIC + image.getImage());
             }
             model.setImages(images);
 
@@ -174,7 +174,7 @@ public class CommodityService {
                 CommodityCategoryClass category = new CommodityCategoryClass();
                 category.setId(model.getId());
                 category.setName(model.getName());
-                category.setIcon(Config.URL_UPLOAD + model.getCode() + ".png");
+                category.setIcon(Config.URL_STATIC + model.getCode() + ".png");
                 return category;
             } else {
                 return null;

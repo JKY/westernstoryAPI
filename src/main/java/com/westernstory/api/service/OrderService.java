@@ -52,7 +52,7 @@ public class OrderService {
                 // 商品图片
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(order.getCommodityId());
                 if (thumbnail != null) {
-                    order.setCommodityThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
+                    order.setCommodityThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
             }
             return orders;
@@ -137,7 +137,7 @@ public class OrderService {
             // 商品图片
             List<CommodityImageModel> images = commodityDao.getImages(order.getCommodityId());
             for (CommodityImageModel image : images) {
-                image.setImage(Config.URL_UPLOAD + image.getImage());
+                image.setImage(Config.URL_STATIC + image.getImage());
             }
             order.setImages(images);
 

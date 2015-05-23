@@ -34,7 +34,7 @@ public class TicketService {
             for (TicketModel model : list) {
                 // 缩略图
                 if (!WsUtil.isEmpty(model.getThumbnail())) {
-                    model.setThumbnail(Config.URL_UPLOAD + model.getThumbnail());
+                    model.setThumbnail(Config.URL_STATIC + model.getThumbnail());
                 }
             }
             return list;

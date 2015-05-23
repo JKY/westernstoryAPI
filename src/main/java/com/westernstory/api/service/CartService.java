@@ -38,7 +38,7 @@ public class CartService {
                 // 商品缩略图
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
                 if (thumbnail != null) {
-                    model.setCommodityThumbnail(Config.URL_UPLOAD + thumbnail.getImage());
+                    model.setCommodityThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
             }
             return cartDao.list(userId);

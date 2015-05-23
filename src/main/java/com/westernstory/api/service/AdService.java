@@ -28,7 +28,7 @@ public class AdService {
         try {
             AdModel adModel = adDao.getLaunch();
             if (adModel != null) {
-                adModel.setImage(Config.URL_UPLOAD + adModel.getImage());
+                adModel.setImage(Config.URL_STATIC + adModel.getImage());
             }
             return adModel;
         } catch (Exception e) {

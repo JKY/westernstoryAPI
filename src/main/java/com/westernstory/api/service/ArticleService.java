@@ -59,7 +59,7 @@ public class ArticleService {
                 }
                 // 缩略图
                 if (!WsUtil.isEmpty(article.getThumbnail())) {
-                    article.setThumbnail(Config.URL_UPLOAD + article.getThumbnail());
+                    article.setThumbnail(Config.URL_STATIC + article.getThumbnail());
                 }
                 // 正文路径
                 if (!WsUtil.isEmpty(article.getContent())) {
@@ -89,7 +89,7 @@ public class ArticleService {
                 article.setTags(artitcleDao.getTagsByActicleId(article.getId()));
                 // 缩略图
                 if (!WsUtil.isEmpty(article.getThumbnail())) {
-                    article.setThumbnail(Config.URL_UPLOAD + article.getThumbnail());
+                    article.setThumbnail(Config.URL_STATIC + article.getThumbnail());
                 }
                 // 正文路径
                 if (!WsUtil.isEmpty(article.getContent())) {
