@@ -5,7 +5,7 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="getLaunch" resultType="AdModel">
-		SELECT id, comment, image, link, startTime, endTime
+		SELECT id, name, content, image, link, startTime, endTime
 		FROM Ad
 		WHERE isActive = 1 AND categoryId = (SELECT id FROM DictionaryEntry WHERE code = 'launchad')
 		  <![CDATA[

@@ -8,7 +8,8 @@ public class AdModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String comment;
+    private String name;
+    private String content;
     private String image;
     private String link;
     private Long categoryId;
@@ -24,20 +25,28 @@ public class AdModel implements Serializable {
         this.id = id;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getLink() {
