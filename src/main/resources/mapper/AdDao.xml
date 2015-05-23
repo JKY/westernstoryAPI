@@ -7,7 +7,7 @@
 	<select id="getLaunch" resultType="AdModel">
 		SELECT id, name, content, image, link, startTime, endTime
 		FROM Ad
-		WHERE isActive = 1 AND categoryId = (SELECT id FROM DictionaryEntry WHERE code = 'launchad')
+		WHERE isActive = 1 AND categoryId = (SELECT id FROM DictionaryEntry WHERE code = 'ad_launch')
 		  <![CDATA[
             AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
 		  ]]>
