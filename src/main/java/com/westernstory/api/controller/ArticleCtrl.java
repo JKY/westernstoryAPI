@@ -58,7 +58,7 @@ public class ArticleCtrl {
      * @return json
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Response list(@RequestParam(value = "categoryId", required = true) Long categoryId,
+    public @ResponseBody Response list(@RequestParam(value = "categoryId", required = false) Long categoryId,
                                        @RequestParam(value = "page", required = false) Integer page,
                                        @RequestParam(value = "limit", required = false) Integer limit) {
         if (page == null) {

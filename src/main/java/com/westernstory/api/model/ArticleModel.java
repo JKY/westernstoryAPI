@@ -8,6 +8,9 @@ public class ArticleModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //
+    private String categoryName;
+
     private Long id;
     private String title;
     private String summary;
@@ -169,5 +172,13 @@ public class ArticleModel implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

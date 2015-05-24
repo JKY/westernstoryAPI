@@ -4,12 +4,17 @@
 <mapper namespace="com.westernstory.api.dao.ArticleDao">
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
     <select id="list" resultType="ArticleModel">
-        SELECT id, title, summary, status, thumbnail, categoryId, viewCount, isActive, publishTime, link
-        FROM Article
-        WHERE categoryId = #{categoryId} AND isActive = 1
+        SELECT t1.id, t1.title, t1.summary, t1.status, t1.thumbnail, t1.categoryId, t1.viewCount, t1.isActive,
+        t1.publishTime, t1.link, t2.name AS categoryName
+        FROM Article t1
+        LEFT JOIN DictionaryEntry t2 ON t2.id = t1.categoryId
+        WHERE t1.isActive = 1
             <![CDATA[
-                AND publishTime <= (select UNIX_TIMESTAMP(NOW()) * 1000)
+                AND t1.publishTime <= (select UNIX_TIMESTAMP(NOW()) * 1000)
             ]]>
+            <if test="categoryId != null and categoryId != ''">
+                AND t1.categoryId = #{categoryId}
+        </if>
         Limit #{start}, #{limit}
     </select>
 
