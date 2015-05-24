@@ -5,7 +5,7 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
     <select id="list" resultType="ArticleModel">
         SELECT t1.id, t1.title, t1.summary, t1.status, t1.thumbnail, t1.categoryId, t1.viewCount, t1.isActive,
-        t1.publishTime, t1.link, t2.name AS categoryName
+        t1.publishTime, t1.link, t2.name AS categoryName, t2.info AS categoryColor
         FROM Article t1
         LEFT JOIN DictionaryEntry t2 ON t2.id = t1.categoryId
         WHERE t1.isActive = 1

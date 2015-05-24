@@ -10,6 +10,7 @@ public class ArticleModel implements Serializable {
 
     //
     private String categoryName;
+    private String categoryColor;
 
     private Long id;
     private String title;
@@ -180,5 +181,13 @@ public class ArticleModel implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getCategoryColor() {
+        return categoryColor;
+    }
+
+    public void setCategoryColor(String categoryColor) {
+        this.categoryColor = categoryColor;
     }
 }
