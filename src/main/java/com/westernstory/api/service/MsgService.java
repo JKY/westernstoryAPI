@@ -1,5 +1,6 @@
 package com.westernstory.api.service;
 
+import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.MsgDao;
 import com.westernstory.api.model.MsgModel;
 import com.westernstory.api.util.ServiceException;
@@ -30,7 +31,14 @@ public class MsgService {
      */
     public List<MsgModel> list(Long userId, Integer start, Integer limit) throws ServiceException {
         try {
-            return msgDao.list(userId, start, limit);
+            List<MsgModel> list = msgDao.list(userId, start, limit);
+            for(MsgModel model : list) {
+                // 缩略图
+                if (!WsUtil.isEmpty(model.getThumbnail())) {
+                    model.setThumbnail(Config.URL_STATIC + model.getThumbnail());
+                }
+            }
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
