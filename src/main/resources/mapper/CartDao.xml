@@ -6,9 +6,10 @@
 
 	<select id="list" resultType="CartModel">
 		SELECT t1.id, t1.commodityId, t1.isActive, t1.userId, t1.total, t1.info, t1.createTime,
-		  t2.name AS commodityName
+		  t1.addressId, t2.price, t2.name AS commodityName, t3.address AS addressName
 		FROM Cart t1
 		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+		LEFT JOIN Address t3 ON t3.id = t1.addressId
 		WHERE t1.isActive = 1 AND t2.isActive = 1
 		ORDER BY t1.createTime
 	</select>
@@ -22,10 +23,10 @@
 
     <insert id="add">
         INSERT INTO Cart (
-          commodityId, isActive, userId, total, info,
+          commodityId, isActive, userId, total, info, addressId,
           createTime, updateTime
         ) VALUES (
-          #{commodityId}, 1, #{userId}, #{total}, #{info},
+          #{commodityId}, 1, #{userId}, #{total}, #{info}, #{addressId}
           (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
         )
         <selectKey keyProperty="id" resultType="long">
@@ -33,6 +34,12 @@
             LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <update id="update">
+        UPDATE Cart
+        SET total = #{total}, addressId = #{addressId}, info = #{info}
+        WHERE id = #{id}
+    </update>
 
     <update id="remove">
         UPDATE Cart SET isActive = 0 WHERE id = #{id}

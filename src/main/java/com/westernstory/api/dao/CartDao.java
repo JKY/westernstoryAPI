@@ -23,6 +23,13 @@ public interface CartDao {
     void add(CartModel cart) throws Exception;
 
     /**
+     * 修改购物车
+     * @param model model
+     * @throws Exception
+     */
+    void update(CartModel model) throws Exception;
+
+    /**
      * 通过uid、cid获取购物车商品
      * @param userId userId
      * @param cid cid

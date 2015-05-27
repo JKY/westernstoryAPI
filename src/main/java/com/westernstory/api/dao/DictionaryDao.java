@@ -29,5 +29,13 @@ public interface DictionaryDao {
      * @return List<DictionaryEntryModel>
      * @throws Exception
      */
-    List<DictionaryEntryModel> getByEntryCodes(@Param("codes")String[] codes) throws Exception;
+    List<DictionaryEntryModel> getByEntryCodes(@Param("codes") String[] codes) throws Exception;
+
+    /**
+     * 根据codes 获取code names
+     * @param codes codes
+     * @return codes
+     * @throws Exception
+     */
+    String[] getInfoName(@Param("codes") String[] codes) throws Exception;
 }

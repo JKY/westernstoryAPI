@@ -15,6 +15,7 @@ public class OrderModel implements Serializable {
     private List<DictionaryEntryModel> selectedSkus;
     private List<DictionaryModel> skus;
     private List<CommodityImageModel> images;
+    private Long addressId;
 
     private Long id;
     private Long userId;
@@ -28,6 +29,8 @@ public class OrderModel implements Serializable {
     private String address;
     private String reason;
     private Boolean isActive;
+    private Float price;
+    private Float discount;
 
     public Long getId() {
         return id;
@@ -171,5 +174,29 @@ public class OrderModel implements Serializable {
 
     public void setCommodityThumbnail(String commodityThumbnail) {
         this.commodityThumbnail = commodityThumbnail;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
     }
 }

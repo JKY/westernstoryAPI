@@ -40,10 +40,30 @@ public class CartCtrl {
     public @ResponseBody Response additem(HttpServletRequest request,
                                           @RequestParam(value = "userId", required = true) Long userId,
                                           @RequestParam(value = "cid", required = true) Long cid,
-                                          @RequestParam(value = "total", required = true) Integer total) {
+                                          @RequestParam(value = "total", required = true) Integer total,
+                                          @RequestParam(value = "addressId", required = true) Long addressId) {
         try {
             String info = request.getParameter("info");
-            return new Response(true, cartService.add(userId, cid, total, info));
+            return new Response(true, cartService.add(userId, cid, total, info, addressId));
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 添加到购物车
+     * @return json
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public @ResponseBody Response update(HttpServletRequest request,
+                                          @RequestParam(value = "userId", required = true) Long userId,
+                                          @RequestParam(value = "cid", required = true) Long cid,
+                                          @RequestParam(value = "total", required = true) Integer total,
+                                          @RequestParam(value = "addressId", required = true) Long addressId) {
+        try {
+            String info = request.getParameter("info");
+            cartService.update(userId, cid, total, info, addressId);
+            return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

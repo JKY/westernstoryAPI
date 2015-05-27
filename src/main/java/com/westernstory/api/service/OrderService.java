@@ -1,13 +1,13 @@
 package com.westernstory.api.service;
 
+import com.google.common.reflect.TypeToken;
 import com.westernstory.api.config.Config;
+import com.westernstory.api.dao.AddressDao;
 import com.westernstory.api.dao.CommodityDao;
 import com.westernstory.api.dao.DictionaryDao;
 import com.westernstory.api.dao.OrderDao;
-import com.westernstory.api.model.CommodityImageModel;
-import com.westernstory.api.model.DictionaryEntryModel;
-import com.westernstory.api.model.DictionaryModel;
-import com.westernstory.api.model.OrderModel;
+import com.westernstory.api.model.*;
+import com.westernstory.api.util.GsonUtil;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -28,6 +28,8 @@ public class OrderService {
     private DictionaryDao dictionarydao = null;
     @Autowired
     private CommodityDao commodityDao = null;
+    @Autowired
+    private AddressDao addressDao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -142,6 +144,58 @@ public class OrderService {
             order.setImages(images);
 
             return order;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 生成订单
+     * @param userId userId
+     * @param commodities commodities
+     * @throws ServiceException
+     */
+    public void add(Long userId, String commodities) throws ServiceException {
+        try {
+            List<OrderModel> list = (List<OrderModel>) GsonUtil.json2list(commodities, new TypeToken<List<OrderModel>>() {}.getType());
+            for (OrderModel model : list) {
+                model.setUserId(userId);
+                // 获取price, discount
+                CommodityModel commodity = commodityDao.getById(model.getCommodityId());
+                if(commodity == null) {
+                    throw new ServiceException("商品未找到");
+                }
+                model.setCommodityId(commodity.getId());
+                model.setPrice(commodity.getPrice());
+                // TODO 获取discount
+                Float discount = 0f;
+                model.setDiscount(discount);
+
+                // 获取info name
+                String[] infos = dictionarydao.getInfoName(model.getInfo().split("\\|"));
+                String infoString = "";
+                for (String info : infos) {
+                    infoString += info + "|";
+                }
+                if(!WsUtil.isEmpty(infoString)) {
+                    infoString = infoString.substring(0, infoString.length()-1);
+                }
+                if (infos.length != model.getInfo().split("\\|").length) {
+                    throw new ServiceException("规格配置错误");
+                }
+                model.setInfo(infoString);
+
+                // 获取address
+                AddressModel address = addressDao.getById(model.getAddressId());
+                if(address == null) {
+                    throw new ServiceException("未找到寄送地址");
+                }
+                model.setAddress(address.getAddress());
+
+                orderDao.add(model);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

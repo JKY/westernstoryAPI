@@ -10,6 +10,9 @@ public class CartModel implements Serializable {
     //
     private String commodityName;
     private String commodityThumbnail;
+    private String addressName;
+    private Float discount;
+    private Float price;
 
     private Long id;
     private Long commodityId;
@@ -20,6 +23,7 @@ public class CartModel implements Serializable {
     private String comment;
     private Long createTime;
     private Long updateTime;
+    private Long addressId;
 
     public Long getUpdateTime() {
         return updateTime;
@@ -107,5 +111,37 @@ public class CartModel implements Serializable {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }

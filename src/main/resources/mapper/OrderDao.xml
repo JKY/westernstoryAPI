@@ -27,4 +27,20 @@
     <select id="countProcessingOrders" resultType="int">
         SELECT count(1) FROM `Order` WHERE userId = #{userId} AND isActive = 1 AND status != 3 AND status != 5
     </select>
+
+    <insert id="add">
+        INSERT INTO `Order` (
+          userId, commodityId, status, comment, isActive,
+          total, info, address, price, discount, reason,
+          createTime, updateTime
+        ) VALUES (
+            #{userId}, #{commodityId}, 0, #{comment}, 1,
+            #{total}, #{info}, #{address}, #{price}, #{discount}, #{reason},
+            (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
+        )
+        <selectKey keyProperty="id" resultType="long">
+            SELECT
+            LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
 </mapper>

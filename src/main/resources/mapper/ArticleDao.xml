@@ -8,7 +8,7 @@
         t1.publishTime, t1.link, t2.name AS categoryName, t2.info AS categoryColor
         FROM Article t1
         LEFT JOIN DictionaryEntry t2 ON t2.id = t1.categoryId
-        WHERE t1.isActive = 1
+        WHERE t1.isActive = 1 AND t1.status = 1
             <![CDATA[
                 AND t1.publishTime <= (select UNIX_TIMESTAMP(NOW()) * 1000)
             ]]>
@@ -36,7 +36,7 @@
     <select id="getById" resultType="ArticleModel">
         SELECT id, title, summary, status, thumbnail, categoryId, viewCount, isActive, publishTime, link, content
         FROM Article
-        WHERE isActive = 1 AND id = #{id}
+        WHERE isActive = 1 AND status = 1 AND id = #{id}
     </select>
 
     <select id="getTagsByActicleId" resultType="ArticleTagModel">

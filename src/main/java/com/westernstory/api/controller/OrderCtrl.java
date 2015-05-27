@@ -62,4 +62,24 @@ public class OrderCtrl {
             return new Response(false, e.getMessage());
         }
     }
+
+    /**
+     * 立刻购买，形成订单
+     * @return json
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public @ResponseBody Response add(HttpServletRequest request,
+                                      @RequestParam(value = "userId", required = true) Long userId) {
+
+        try {
+            String commodities = request.getParameter("commodities");
+            if(WsUtil.isEmpty(commodities)) {
+                return new Response(false, "invalid params");
+            }
+            orderService.add(userId, commodities);
+            return new Response(true, "ok");
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
 }

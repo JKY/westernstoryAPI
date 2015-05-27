@@ -32,4 +32,11 @@ public interface OrderDao {
      * @throws Exception
      */
     Integer countProcessingOrders(@Param("userId")Long userId) throws Exception;
+
+    /**
+     * 生成订单
+     * @param model model
+     * @throws Exception
+     */
+    void add(OrderModel model) throws Exception;
 }

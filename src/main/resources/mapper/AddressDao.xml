@@ -42,4 +42,8 @@
     <update id="setDefault">
         UPDATE Address SET isDefault = 1 WHERE id = #{id}
     </update>
+
+    <select id="getById" resultType="AddressModel">
+        SELECT * FROM Address WHERE id = #{id}
+    </select>
 </mapper>

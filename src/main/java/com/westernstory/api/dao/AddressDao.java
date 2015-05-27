@@ -56,4 +56,12 @@ public interface AddressDao {
      * @throws Exception
      */
     void setDefault(Long id) throws Exception;
+
+    /**
+     * 根据ID获取Address
+     * @param id id
+     * @return AddressModel
+     * @throws Exception
+     */
+    AddressModel getById(@Param("id")Long id) throws Exception;
 }
