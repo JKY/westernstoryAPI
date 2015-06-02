@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.SpecDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+    <sql id="where">
+        <where>
+            t1.isActive = 1
+        </where>
+    </sql>
+
+	<select id="get" resultType="SpecModel">
+		SELECT t1.id, t1.name, t1.comment, t1.updateBy, t1.updateTime,
+          t1.isActive, t2.userName AS lastModifyUser
+        FROM Spec t1
+        LEFT JOIN Admin t2 ON t2.id = t1.updateBy
+        <include refid="where"></include>
+        <if test="orderby != null">
+            ORDER BY
+            <trim suffix="" suffixOverrides=",">
+                <foreach item="o" index="index" collection="orderby">
+                    ${o},
+                </foreach>
+            </trim>
+        </if>
+        <if test="orderby == null">
+            ORDER BY t1.createTime DESC
+        </if>
+		Limit #{start}, #{limit}
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(1)
+        FROM Spec t1
+        LEFT JOIN Admin t2 ON t2.id = t1.updateBy
+        <include refid="where"></include>
+    </select>
+
+    <insert id="add" parameterType="SpecModel">
+        INSERT INTO Spec (
+            name, isActive, createBy, updateBy,
+            createTime, updateTime)
+        VALUES (
+            #{name}, 1,  #{createBy}, #{updateBy},
+            (SELECT UNIX_TIMESTAMP()*1000), (SELECT UNIX_TIMESTAMP()*1000));
+        <selectKey keyProperty="id" resultType="long" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="SpecModel">
+        UPDATE Spec SET name = #{name},
+          updateBy = #{updateBy}, updateTime = (SELECT UNIX_TIMESTAMP()*1000)
+        WHERE id = #{id}
+    </update>
+
+    <update id="remove">
+        UPDATE Spec SET isActive=0, updateBy=#{updateBy}, updateTime=(SELECT UNIX_TIMESTAMP()*1000)
+        WHERE ID IN(
+        <trim suffix="" suffixOverrides="," >
+            <foreach item="item" index="index" collection="ids">
+                ${item},
+            </foreach>
+        </trim>
+        )
+    </update>
+
+    <select id="removeAllEntries">
+        UPDATE SpecEntry
+        SET isActive=0, updateBy=#{updateBy}, updateTime=(SELECT UNIX_TIMESTAMP()*1000)
+        WHERE specId = #{specId}
+    </select>
+
+    <select id="testRemoveSpec" resultType="CommoditySpecModel">
+      SELECT t1.commodityId, t1.specEntryId FROM CommoditySpec t1
+      LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+      WHERE t2.id = t1.commodityId AND t2.isActive = 1
+      AND t1.specEntryId IN (SELECT id FROM SpecEntry WHERE specId = #{specId})
+      Limit 1
+    </select>
+
+    <select id="testRemoveSpecEntry" resultType="CommoditySpecModel">
+        SELECT t1.commodityId, t1.specEntryId FROM CommoditySpec t1
+          LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+          WHERE t2.id = t1.commodityId AND t2.isActive = 1
+          AND t1.specEntryId = #{entryId}
+          Limit 1
+    </select>
+
+    <select id="removeById">
+        UPDATE Spec
+        SET isActive=0, updateBy=#{updateBy}, updateTime=(SELECT UNIX_TIMESTAMP()*1000)
+        WHERE id = #{id}
+    </select>
+
+    <select id="getEntries" resultType="SpecEntryModel">
+        SELECT t1.*, t2.userName AS lastModifyUser
+        FROM SpecEntry t1
+        LEFT JOIN Admin t2 ON t2.id = t1.updateBy
+        WHERE t1.specId = #{specId} AND t1.isActive = 1
+    </select>
+
+    <select id="getByName" resultType="SpecModel">
+        SELECT * FROM Spec
+        WHERE name = #{name} AND isActive = 1
+        limit 1
+    </select>
+
+    <select id="getByNameExceptId" resultType="SpecModel">
+        SELECT * FROM Spec
+        WHERE isActive = 1 AND name = #{name} AND id != #{id}
+        limit 1
+    </select>
+
+    <select id="getEntryByEntryName" resultType="SpecEntryModel">
+        SELECT * FROM SpecEntry
+        WHERE name = #{name} AND isActive = 1
+        limit 1
+    </select>
+
+    <select id="getEntryByEntryNameExceptId" resultType="SpecEntryModel">
+        SELECT * FROM SpecEntry
+        WHERE name = #{name} AND id != #{id}
+        AND isActive = 1
+        limit 1
+    </select>
+
+    <insert id="addEntry">
+        INSERT INTO SpecEntry (
+        specId, name, isActive, createBy, updateBy, info,
+        createTime, updateTime
+        ) VALUES (
+        #{specId}, #{name}, 1, #{createBy}, #{updateBy}, #{info},
+        (SELECT UNIX_TIMESTAMP()*1000), (SELECT UNIX_TIMESTAMP()*1000)
+        )
+    </insert>
+
+    <update id="updateEntry">
+        UPDATE SpecEntry SET name = #{name}, updateBy = #{updateBy},
+        updateTime = (SELECT UNIX_TIMESTAMP()*1000)
+        WHERE id = #{id}
+    </update>
+
+    <update id="removeEntries">
+        UPDATE SpecEntry
+        SET isActive=0, updateBy=#{updateBy}, updateTime=(SELECT UNIX_TIMESTAMP()*1000)
+        WHERE ID IN(
+        <trim suffix="" suffixOverrides="," >
+            <foreach item="item" index="index" collection="ids">
+                ${item},
+            </foreach>
+        </trim>
+        )
+    </update>
+
+    <select id="query" resultType="SpecModel">
+        SELECT id, name FROM Spec
+        WHERE name LIKE "%"#{name}"%"
+        AND isActive = 1
+        limit 20
+    </select>
+
+    <select id="queryExcept" resultType="SpecModel">
+        SELECT id, name FROM Spec
+        WHERE name LIKE "%"#{name}"%"
+        AND isActive = 1 AND id not in(
+        <trim suffix="" suffixOverrides="," >
+            <foreach item="item" index="index" collection="ids">
+                ${item},
+            </foreach>
+        </trim>
+        )
+        limit 20
+    </select>
+
+    <select id="queryEntry" resultType="SpecEntryModel">
+        SELECT id, name FROM SpecEntry
+        WHERE name LIKE "%"#{name}"%" AND specId = #{specId}
+        AND isActive = 1
+        limit 20
+    </select>
+
+    <select id="getEntriesBySpecInfo" resultType="SpecEntryModel">
+        SELECT t1.name AS specEntryName, t2.name AS specName FROM SpecEntry t1
+        LEFT JOIN Spec t2 ON t2.id = t1.specId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.id IN (
+            <trim suffix="" suffixOverrides="," >
+                <foreach item="item" index="index" collection="info">
+                    ${item},
+                </foreach>
+            </trim>
+        )
+    </select>
+
+</mapper>

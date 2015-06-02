@@ -37,6 +37,12 @@
     </select>
 
     <select id="countUnusedTickets" resultType="int">
-        SELECT count(1) FROM UserTicket  WHERE isActive = 1 AND userId = #{userId} AND isUsed = 0
+        SELECT count(1)
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+        AND t1.isUsed = 0 AND <![CDATA[
+              t2.endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
     </select>
 </mapper>

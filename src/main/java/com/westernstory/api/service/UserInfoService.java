@@ -99,12 +99,18 @@ public class UserInfoService {
     /**
      * 修改密码
      * @param id id
-     * @param password password
+     * @param oldpass 旧密码
+     * @param newpass 新密码
      * @throws ServiceException
      */
-    public void updatePassword(Long id, String password) throws ServiceException {
+    public void updatePassword(Long id, String oldpass, String newpass) throws ServiceException {
         try {
-            userInfoDao.updatePassword(id, Md5.toMD5(password));
+            String pass = userInfoDao.getPassword(id);
+            if (Md5.toMD5(oldpass.toLowerCase()).equals(pass)) {
+                userInfoDao.updatePassword(id, Md5.toMD5(newpass));
+            } else {
+                throw new ServiceException("原密码不正确");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

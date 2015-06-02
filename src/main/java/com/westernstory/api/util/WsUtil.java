@@ -228,4 +228,18 @@ public class WsUtil {
             return "服务器异常";
         }
     }
+
+    /**
+     * 将规格info转换List Long
+     * @param infoStr infoStr
+     * @return  List<Long>
+     */
+    public static List<Long> getInfoLong(String infoStr) {
+        List<Long> list = new ArrayList<Long>();
+        String[] infoArray = infoStr.split(",");
+        for (String info : infoArray) {
+            list.add(Long.valueOf(info));
+        }
+        return list;
+    }
 }

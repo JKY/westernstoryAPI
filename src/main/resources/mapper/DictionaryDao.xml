@@ -5,7 +5,7 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="listDictionariesByCode" resultType="DictionaryEntryModel">
-		SELECT id, `name`, dictionaryId, code, info
+		SELECT id, `name`, dictionaryId, code, info, icon
 		FROM DictionaryEntry
 		WHERE isActive = 1 AND dictionaryId =
 		  (SELECT id FROM Dictionary WHERE code = #{code} AND isActive = 1)
@@ -13,7 +13,7 @@
 	</select>
 
     <select id="getByDictCodes" resultType="DictionaryEntryModel">
-        SELECT t1.id, t1.dictionaryId, t1.name AS entryName, t1.code AS entryCode,
+        SELECT t1.id, t1.dictionaryId, t1.name AS entryName, t1.code AS entryCode, t1.icon,
           t2.name AS dictName, t2.code AS dictCode
         FROM DictionaryEntry t1
         LEFT JOIN Dictionary t2 ON t2.id = t1.dictionaryId
@@ -28,7 +28,7 @@
     </select>
 
     <select id="getByEntryCodes" resultType="DictionaryEntryModel">
-        SELECT t1.id, t1.dictionaryId, t1.name AS entryName, t1.code AS entryCode,
+        SELECT t1.id, t1.dictionaryId, t1.name AS entryName, t1.code AS entryCode, t1.icon,
           t2.name AS dictName, t2.code AS dictCode
         FROM DictionaryEntry t1
         LEFT JOIN Dictionary t2 ON t2.id = t1.dictionaryId

@@ -3,25 +3,33 @@ package com.westernstory.api.model;
 import java.io.Serializable;
 
 // Created by fedor on 15/5/13.
-public class MsgModel implements Serializable {
+public class SpecEntryModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     //
     private String lastModifyUser;
-    private Long readCount;
+    private String specName;
+    private String specEntryName;
 
 
     private Long id;
-    private String title;
-    private String summary;
-    private String thumbnail;
+    private String name;
+    private Long specId;
+    private String info;
     private Boolean isActive;
     private Long createTime;
     private Long updateTime;
     private Long createBy;
     private Long updateBy;
-    private String link;
+
+    public String getLastModifyUser() {
+        return lastModifyUser;
+    }
+
+    public void setLastModifyUser(String lastModifyUser) {
+        this.lastModifyUser = lastModifyUser;
+    }
 
     public Long getId() {
         return id;
@@ -31,28 +39,28 @@ public class MsgModel implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSummary() {
-        return summary;
+    public Long getSpecId() {
+        return specId;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setSpecId(Long specId) {
+        this.specId = specId;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getInfo() {
+        return info;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public Boolean getIsActive() {
@@ -95,27 +103,19 @@ public class MsgModel implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public String getLink() {
-        return link;
+    public String getSpecName() {
+        return specName;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setSpecName(String specName) {
+        this.specName = specName;
     }
 
-    public String getLastModifyUser() {
-        return lastModifyUser;
+    public String getSpecEntryName() {
+        return specEntryName;
     }
 
-    public void setLastModifyUser(String lastModifyUser) {
-        this.lastModifyUser = lastModifyUser;
-    }
-
-    public Long getReadCount() {
-        return readCount;
-    }
-
-    public void setReadCount(Long readCount) {
-        this.readCount = readCount;
+    public void setSpecEntryName(String specEntryName) {
+        this.specEntryName = specEntryName;
     }
 }

@@ -26,7 +26,7 @@
           commodityId, isActive, userId, total, info, addressId,
           createTime, updateTime
         ) VALUES (
-          #{commodityId}, 1, #{userId}, #{total}, #{info}, #{addressId}
+          #{commodityId}, 1, #{userId}, #{total}, #{info}, #{addressId},
           (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
         )
         <selectKey keyProperty="id" resultType="long">

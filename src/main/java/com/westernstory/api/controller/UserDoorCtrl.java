@@ -66,9 +66,9 @@ public class UserDoorCtrl {
             }
 
             String ip = WsUtil.getIpAddr(request);
-//            String agent = WsUtil.getDeviceAgent(request);
-
             UserInfoModel userinfo = userInfoService.add(userName, password, nickName, ip);
+
+            userinfo.setPassword(null);
             return new Response(true, userinfo);
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
@@ -90,11 +90,9 @@ public class UserDoorCtrl {
                     || "".equals(password1) || "".equals(password2) || "".equals(idString)) {
                 return new Response(false, "invalid params");
             }
-            if(!password1.equals(password2)) {
-                return new Response(false, "两次密码输入不一致");
-            }
-            userInfoService.updatePassword(Long.valueOf(idString), password1);
-            return new Response(true, "");
+
+            userInfoService.updatePassword(Long.valueOf(idString), password1, password2);
+            return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

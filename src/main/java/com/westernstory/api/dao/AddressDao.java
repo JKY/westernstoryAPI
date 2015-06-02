@@ -48,7 +48,7 @@ public interface AddressDao {
      * @param id id
      * @throws Exception
      */
-    void remove(@Param("id")String id) throws Exception;
+    void remove(@Param("id")Long id) throws Exception;
 
     /**
      * 设置为默认地址

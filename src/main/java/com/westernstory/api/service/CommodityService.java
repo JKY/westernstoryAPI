@@ -2,7 +2,6 @@ package com.westernstory.api.service;
 
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CommodityDao;
-import com.westernstory.api.dao.DictionaryDao;
 import com.westernstory.api.model.*;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
@@ -20,8 +19,6 @@ import java.util.List;
 public class CommodityService {
     @Autowired
     private CommodityDao commodityDao = null;
-    @Autowired
-    private DictionaryDao dictionarydao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -107,44 +104,41 @@ public class CommodityService {
     public CommodityModel getDetail(Long id) throws ServiceException {
         try {
             CommodityModel model = commodityDao.getById(id);
-            String info = model.getInfo();
-            // sku
-            if(!WsUtil.isEmpty(info)) {
-                String[] codes = info.split("\\|");
-                List<DictionaryEntryModel> entries = dictionarydao.getByDictCodes(codes);
-                List<DictionaryModel> dicts = new ArrayList<DictionaryModel>();
 
-                for (DictionaryEntryModel entry : entries) {
-                    Boolean has = false;
-                    for(DictionaryModel dict : dicts) {
-                        // entries add
-                        if (entry.getDictionaryId().equals(dict.getId())) {
-                            entry.setDictName(null);
-                            entry.setDictCode(null);
-                            entry.setDictionaryId(null);
-                            dict.getEntries().add(entry);
-                            has = true;
+            // Spec
+            List<CommoditySpecModel> css = commodityDao.getSpec(model.getId());
+            if (css.size() > 0) {
+                List<SpecModel> specResult = new ArrayList<SpecModel>();
+                for (CommoditySpecModel cs : css) {
+                    SpecModel tmp = null;
+                    for (SpecModel s : specResult) {
+                        if (cs.getSpecId().equals(s.getId())) {
+                            tmp = s;
                             break;
                         }
                     }
-                    if(!has) {
-                        // set entries
-                        DictionaryModel dict = new DictionaryModel();
-                        dict.setCode(entry.getDictCode());
-                        dict.setName(entry.getDictName());
-                        dict.setId(entry.getDictionaryId());
+                    if(tmp != null) {
+                        SpecEntryModel entry = new SpecEntryModel();
+                        entry.setId(cs.getSpecEntryId());
+                        entry.setName(cs.getSpecEntryName());
+                        tmp.getEntries().add(entry);
+                    } else {
+                        SpecEntryModel entry = new SpecEntryModel();
+                        entry.setId(cs.getSpecEntryId());
+                        entry.setName(cs.getSpecEntryName());
 
-                        List<DictionaryEntryModel> tmp = new ArrayList<DictionaryEntryModel>();
-                        entry.setDictName(null);
-                        entry.setDictCode(null);
-                        entry.setDictionaryId(null);
-                        tmp.add(entry);
-                        dict.setEntries(tmp);
+                        List<SpecEntryModel> entries = new ArrayList<SpecEntryModel>();
+                        entries.add(entry);
 
-                        dicts.add(dict);
+                        SpecModel spec = new SpecModel();
+                        spec.setId(cs.getSpecId());
+                        spec.setName(cs.getSpecName());
+                        spec.setEntries(entries);
+
+                        specResult.add(spec);
                     }
                 }
-                model.setSkus(dicts);
+                model.setSpecs(specResult);
             }
 
             // 商品图片
@@ -167,15 +161,12 @@ public class CommodityService {
      * @return CommodityCategoryClass
      * @throws ServiceException
      */
-    public CommodityCategoryClass getHeadline() throws ServiceException {
+    public DictionaryEntryModel getHeadline() throws ServiceException {
         try {
             DictionaryEntryModel model = commodityDao.getHeadline();
             if (model != null) {
-                CommodityCategoryClass category = new CommodityCategoryClass();
-                category.setId(model.getId());
-                category.setName(model.getName());
-                category.setIcon(Config.URL_STATIC + model.getCode() + ".png");
-                return category;
+                model.setIcon(Config.URL_STATIC + model.getIcon());
+                return model;
             } else {
                 return null;
             }

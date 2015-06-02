@@ -9,7 +9,7 @@ public class CommodityModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //
-    private List<DictionaryModel> skus;
+    private List<SpecModel> specs;
     private List<CommodityImageModel> images;
     private String thumbnail;
     private String tagName;
@@ -26,8 +26,8 @@ public class CommodityModel implements Serializable {
     private Long updateTime;
     private String summary;
     private String content;
-    private String info;
     private Long tag;
+    private Integer total;
 
     public Long getId() {
         return id;
@@ -93,14 +93,6 @@ public class CommodityModel implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public List<DictionaryModel> getSkus() {
-        return skus;
-    }
-
-    public void setSkus(List<DictionaryModel> skus) {
-        this.skus = skus;
-    }
-
     public String getSummary() {
         return summary;
     }
@@ -131,10 +123,6 @@ public class CommodityModel implements Serializable {
 
     public void setImages(List<CommodityImageModel> images) {
         this.images = images;
-    }
-
-    public String getInfo() {
-        return info;
     }
 
     public Float getPrice() {
@@ -169,7 +157,19 @@ public class CommodityModel implements Serializable {
         this.discount = discount;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
+    public List<SpecModel> getSpecs() {
+        return specs;
+    }
+
+    public void setSpecs(List<SpecModel> specs) {
+        this.specs = specs;
     }
 }

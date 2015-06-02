@@ -13,6 +13,10 @@ public class DictionaryEntryModel implements Serializable {
     private String entryCode;
     private String dictCode;
     private Boolean isSelected;
+    private String lastModifyUser;
+    private String iconURL;
+    private Long count;
+    private Boolean isHeadline;
 
     private long id;
     private String info;
@@ -20,6 +24,11 @@ public class DictionaryEntryModel implements Serializable {
     private String name;
     private Boolean isActive;
     private String code;
+    private Long createBy;
+    private Long updateBy;
+    private Long createTime;
+    private Long updateTime;
+    private String icon;
 
     public String getInfo() {
         return info;
@@ -109,5 +118,77 @@ public class DictionaryEntryModel implements Serializable {
 
         this.isActive = isActive;
 
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getLastModifyUser() {
+        return lastModifyUser;
+    }
+
+    public void setLastModifyUser(String lastModifyUser) {
+        this.lastModifyUser = lastModifyUser;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIconURL() {
+        return iconURL;
+    }
+
+    public void setIconURL(String iconURL) {
+        this.iconURL = iconURL;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public Boolean getIsHeadline() {
+        return isHeadline;
+    }
+
+    public void setIsHeadline(Boolean isHeadline) {
+        this.isHeadline = isHeadline;
     }
 }

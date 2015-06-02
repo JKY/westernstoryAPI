@@ -4,15 +4,15 @@
 <mapper namespace="com.westernstory.api.dao.CommodityDao">
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 	<select id="get" resultType="CommodityModel">
-		SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Info
+		SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total
 		FROM Commodity
-		WHERE IsActive = 1 AND CategoryId = #{categoryId}
+		WHERE IsActive = 1 AND status = 1 AND CategoryId = #{categoryId}
 		ORDER BY CreateTime DESC
 		Limit #{start}, #{limit}
 	</select>
 
     <select id="getByKeyword" resultType="CommodityModel">
-        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Info
+        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total
 		FROM Commodity
 		WHERE IsActive = 1 AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
 		ORDER BY CreateTime DESC
@@ -20,7 +20,7 @@
     </select>
 
     <select id="getLatest" resultType="CommodityModel">
-        SELECT t1.Id, t1.`Name`, t1.CategoryId, t1.Price, t1.CreateTime, t1.Summary, t1.Info, t2.name AS tagName
+        SELECT t1.Id, t1.`Name`, t1.CategoryId, t1.Price, t1.CreateTime, t1.Summary, t1.Total, t2.name AS tagName
         FROM Commodity t1
         LEFT JOIN DictionaryEntry t2 ON t2.id = t1.tag
         WHERE t1.IsActive = 1
@@ -29,7 +29,7 @@
     </select>
 
     <select id="getById" resultType="CommodityModel">
-        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Info, Content
+        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total, Content
 		FROM Commodity
 		WHERE IsActive = 1 AND id = #{id}
 		Limit 1
@@ -55,6 +55,14 @@
         FROM CommodityImage
         WHERE isActive = 1 AND commodityId = #{commodityId}
         ORDER BY createTime ASC
+    </select>
+
+    <select id="getSpec" resultType="CommoditySpecModel">
+        SELECT t1.commodityId, t1.specEntryId, t2.name AS specEntryName, t3.name AS specName, t3.id AS specId
+        FROM CommoditySpec t1
+        LEFT JOIN SpecEntry t2 ON t2.id = t1.specEntryId
+        LEFT JOIN Spec t3 ON t3.id = t2.specId
+        WHERE t1.commodityId = #{cid}
     </select>
 
 </mapper>

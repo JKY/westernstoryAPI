@@ -85,7 +85,7 @@ public class AddressCtrl {
             return new Response(false, "invalid params");
         }
         try {
-            addressService.remove(id);
+            addressService.remove(Long.valueOf(id));
             return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());

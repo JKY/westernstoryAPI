@@ -83,8 +83,15 @@ public class AddressService {
      * @param id id
      * @throws ServiceException
      */
-    public void remove(String id) throws ServiceException {
+    public void remove(Long id) throws ServiceException {
         try {
+            AddressModel model =  addressDao.getById(id);
+            if (model == null) {
+                throw new ServiceException("地址未找到");
+            }
+            if(model.getIsDefault()) {
+                throw new ServiceException("不能删除默认地址哦～");
+            }
             addressDao.remove(id);
         } catch (Exception e) {
             e.printStackTrace();

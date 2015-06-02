@@ -1,7 +1,6 @@
 package com.westernstory.api.controller;
 
 import com.westernstory.api.config.Config;
-import com.westernstory.api.model.CommodityCategoryClass;
 import com.westernstory.api.model.DictionaryEntryModel;
 import com.westernstory.api.service.CommodityService;
 import com.westernstory.api.service.DictionaryService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Created by fedor on 15/5/13.
@@ -35,22 +33,17 @@ public class CommodityCtrl {
     public @ResponseBody Response categorylist(){
 
         try {
-            List<CommodityCategoryClass> result = new ArrayList<CommodityCategoryClass>();
             List<DictionaryEntryModel> models = dictionaryService.listDictionariesByCode("commodity_category");
 
             for (DictionaryEntryModel model : models) {
-                CommodityCategoryClass category = new CommodityCategoryClass();
-                category.setId(model.getId());
-                category.setName(model.getName());
-                category.setIcon(Config.URL_UPLOAD + model.getCode() + ".png");
+                model.setIcon(Config.URL_STATIC + model.getIcon());
                 if ("1".equals(model.getInfo())) {
-                    category.setIsHeadline(true);
+                    model.setIsHeadline(true);
                 } else {
-                    category.setIsHeadline(false);
+                    model.setIsHeadline(false);
                 }
-                result.add(category);
             }
-            return new Response(true, result);
+            return new Response(true, models);
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

@@ -5,30 +5,33 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="list" resultType="MsgModel">
-		SELECT id, title, summary, thumbnail, createTime, isReaded
-		FROM Message
-		WHERE isActive = 1 AND userId = #{userId}
-		ORDER BY createTime DESC
+		SELECT t1.id, t2.title, t2.summary, t2.thumbnail, t1.createTime, t1.isReaded, t2.link
+		FROM MsgEntry t1
+		LEFT JOIN Msg t2 ON t2.id = t1.msgId
+		WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+		ORDER BY t1.createTime DESC
 		LIMIT #{start},#{limit}
 	</select>
 
     <update id="readByUid">
-        UPDATE Message SET isReaded = 1 WHERE userId = #{userId}
+        UPDATE MsgEntry SET isReaded = 1 WHERE userId = #{userId}
     </update>
 
     <update id="remove">
-        UPDATE Message SET isActive = 0 WHERE id = #{id}
+        UPDATE MsgEntry SET isActive = 0 WHERE id = #{id}
     </update>
 
     <select id="getUnreadMsgs" resultType="MsgModel">
-        SELECT id, title, summary, thumbnail, createTime
-        FROM Message
-        WHERE isActive = 1 AND UserId = #{userId} AND isReaded = 0
+        SELECT t1.id, t2.title, t2.summary, t2.thumbnail, t1.createTime, t2.link
+        FROM MsgEntry t1
+        LEFT JOIN Msg t2 ON t2.id = t1.msgId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.UserId = #{userId} AND t1.isReaded = 0
     </select>
 
     <select id="countUnreadMsgs" resultType="int">
-        SELECT count(1)
-        FROM Message
-        WHERE isActive = 1 AND UserId = #{userId} AND isReaded = 0
+        SELECT count(t1.id)
+        FROM MsgEntry t1
+        LEFT JOIN Msg t2 ON t2.id = t1.msgId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.UserId = #{userId} AND t1.isReaded = 0
     </select>
 </mapper>

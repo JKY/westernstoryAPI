@@ -17,5 +17,7 @@
         <mapper resource="mapper/TicketDao.xml"></mapper>
         <mapper resource="mapper/CommodityDao.xml"></mapper>
         <mapper resource="mapper/CartDao.xml"></mapper>
+        <mapper resource="mapper/SpecDao.xml"></mapper>
+        <mapper resource="mapper/SkuDao.xml"></mapper>
     </mappers>
 </configuration>  

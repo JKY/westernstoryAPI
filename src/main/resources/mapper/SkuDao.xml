@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.SkuDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+    <insert id="add" parameterType="SkuModel">
+        INSERT INTO Sku (
+          commodityId, spec, total, createBy, updateBy, createTime, updateTime)
+        VALUES (
+        #{commodityId}, #{spec},  #{total}, #{createBy}, #{updateBy}, (SELECT UNIX_TIMESTAMP()*1000), (SELECT UNIX_TIMESTAMP()*1000));
+        <selectKey keyProperty="id" resultType="long" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <select id="getByCommodityId" resultType="SkuModel">
+        SELECT t1.commodityId, t1.spec, t1.total, t2.buys
+        FROM Sku t1
+        LEFT JOIN (
+          SELECT sum(total) AS buys,commodityId, info
+          FROM `Order`
+          WHERE status != 5
+          GROUP BY commodityId, info
+        ) t2 ON t2.commodityId = t1.commodityId AND t2.info = t1.spec
+        LEFT JOIN Commodity t3 ON t3.id = t1.commodityId
+        WHERE t3.isActive = 1 AND
+              t1.commodityId = #{commodityId}
+    </select>
+</mapper>

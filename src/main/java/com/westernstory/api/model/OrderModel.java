@@ -12,8 +12,7 @@ public class OrderModel implements Serializable {
     private String commodityName;
     private String commodityThumbnail;
     private String commoditySummary;
-    private List<DictionaryEntryModel> selectedSkus;
-    private List<DictionaryModel> skus;
+    private List<SpecEntryModel> selectedSpec;
     private List<CommodityImageModel> images;
     private Long addressId;
 
@@ -132,16 +131,12 @@ public class OrderModel implements Serializable {
         return commodityThumbnail;
     }
 
-    public List<DictionaryEntryModel> getSelectedSkus() {
-        return selectedSkus;
+    public List<SpecEntryModel> getSelectedSpec() {
+        return selectedSpec;
     }
 
-    public void setSelectedSkus(List<DictionaryEntryModel> selectedSkus) {
-        this.selectedSkus = selectedSkus;
-    }
-
-    public List<DictionaryModel> getSkus() {
-        return skus;
+    public void setSelectedSpec(List<SpecEntryModel> selectedSpec) {
+        this.selectedSpec = selectedSpec;
     }
 
     public List<CommodityImageModel> getImages() {
@@ -158,10 +153,6 @@ public class OrderModel implements Serializable {
 
     public void setCommoditySummary(String commoditySummary) {
         this.commoditySummary = commoditySummary;
-    }
-
-    public void setSkus(List<DictionaryModel> skus) {
-        this.skus = skus;
     }
 
     public Long getUpdateTime() {

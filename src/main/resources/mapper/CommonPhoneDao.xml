@@ -8,15 +8,15 @@
 		SELECT id, `name`, isActive, createTime, `order`
 		FROM CommonPhone
 		WHERE isActive = 1
-		ORDER BY `order` DESC
+		ORDER BY createTime DESC
 		Limit #{start}, #{limit}
 	</select>
 
     <select id="listPhones" resultType="CommonPhoneEntryModel">
-        SELECT Id, CommonPhoneId, Name, Phone, IsActive, ClickCount, CreateTime
+        SELECT Id, CommonPhoneId, Name, Phone, IsActive, CreateTime
 		FROM CommonPhoneEntry
 		WHERE isActive = 1 AND CommonPhoneId = (SELECT id FROM CommonPhone WHERE id = #{categoryId} AND isActive = 1)
-		ORDER BY ClickCount DESC
+		ORDER BY createTime DESC
 		Limit #{start}, #{limit}
     </select>
 </mapper>

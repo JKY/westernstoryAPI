@@ -34,7 +34,11 @@ public class ImgReplacer {
 			boolean classExists = false;
             for (int i = 1; i < m.groupCount() + 1; i++) {
                 if (i == 2) { // image src
-                    sb.append(" src=\"" + prefix + m.group(2) + "\"");
+                    if (m.group(2).indexOf("http:") != 0) {
+                        sb.append(" src=\"" + prefix + m.group(2) + "\"");
+                    } else {
+                        sb.append(" src=\"" + m.group(2) + "\"");
+                    }
                     continue;
                 }
 
@@ -63,7 +67,7 @@ public class ImgReplacer {
 
     public static void main(String[] args) throws Exception {
         String str1 = "<img src=\"/editor/2015/03/31/20150331112727_569.jpg\" alt=\"\" width=\"600\" height=\"391\" title=\"\" align=\"\"/><img src=\"/editor/2015/03/31/20150331112727_569.jpg\" alt=\"\" width=\"600\" height=\"391\" title=\"\" align=\"\"/>";
-        String str2 = "<img src='/editor/2015/03/31/20150331112727_569.jpg'>";
+        String str2 = "<img src='http://editor/2015/03/31/20150331112727_569.jpg'>";
         System.out.println(ImgReplacer.addPrefix(str1, "http://www.baidu.com/"));
         System.out.println(ImgReplacer.addPrefix(str2, "http://www.baidu.com/"));
     }

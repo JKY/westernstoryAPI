@@ -2,10 +2,7 @@ package com.westernstory.api.service;
 
 import com.google.common.reflect.TypeToken;
 import com.westernstory.api.config.Config;
-import com.westernstory.api.dao.AddressDao;
-import com.westernstory.api.dao.CommodityDao;
-import com.westernstory.api.dao.DictionaryDao;
-import com.westernstory.api.dao.OrderDao;
+import com.westernstory.api.dao.*;
 import com.westernstory.api.model.*;
 import com.westernstory.api.util.GsonUtil;
 import com.westernstory.api.util.ServiceException;
@@ -25,7 +22,7 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao = null;
     @Autowired
-    private DictionaryDao dictionarydao = null;
+    private SpecDao specDao = null;
     @Autowired
     private CommodityDao commodityDao = null;
     @Autowired
@@ -45,11 +42,11 @@ public class OrderService {
         try {
             List<OrderModel> orders = orderDao.list(userId, start, limit);
             for (OrderModel order : orders) {
-                String info = order.getInfo();
-                if(!WsUtil.isEmpty(info)) {
-                    String[] codes = info.split("\\|");
-                    List<DictionaryEntryModel> entries = dictionarydao.getByEntryCodes(codes);
-                    order.setSelectedSkus(entries);
+                String infoStr = order.getInfo();
+                if(!WsUtil.isEmpty(infoStr)) {
+                    List<Long> info = WsUtil.getInfoLong(infoStr);
+                    List<SpecEntryModel> entries = specDao.getEntriesBySpecInfo(info);
+                    order.setSelectedSpec(entries);
                 }
                 // 商品图片
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(order.getCommodityId());
@@ -74,67 +71,13 @@ public class OrderService {
     public OrderModel getDetail(Integer id) throws ServiceException {
         try {
             OrderModel order = orderDao.getById(id);
-            List<DictionaryEntryModel> entries = new ArrayList<DictionaryEntryModel>();
             String info = order.getInfo();
 
             if (!WsUtil.isEmpty(info)) {
-                String[] codes = info.split("\\|");
-                // 获取选中的sku
-                List<DictionaryEntryModel> selectedEntries = dictionarydao.getByEntryCodes(codes);
-                String tmp = "";
-                for (DictionaryEntryModel entry : selectedEntries) {
-                    tmp += entry.getDictCode() + "|";
-                }
-                if (!WsUtil.isEmpty(tmp)) {
-                    tmp = tmp.substring(0, tmp.length()-1);
-                    // 获取所有sku
-                    entries = dictionarydao.getByDictCodes(tmp.split("\\|"));
-                    for (DictionaryEntryModel entry : entries) {
-                        entry.setIsSelected(false);
-                        for (DictionaryEntryModel selected : selectedEntries) {
-                            if (entry.getEntryCode().equals(selected.getEntryCode())) {
-                                entry.setIsSelected(true);
-                                break;
-                            }
-                        }
-                    }
-                }
+
+                List<SpecEntryModel> entries = specDao.getEntriesBySpecInfo(WsUtil.getInfoLong(info));
+                order.setSelectedSpec(entries);
             }
-
-            // 组织sku
-            List<DictionaryModel> skus = new ArrayList<DictionaryModel>();
-            for (DictionaryEntryModel entry : entries) {
-                DictionaryModel tmp = null;
-                for (DictionaryModel sku : skus) {
-                    if (sku.getCode().equals(entry.getDictCode())) {
-                        tmp = sku;
-                        break;
-                    }
-                }
-
-                if(tmp == null) {
-                    DictionaryModel dict = new DictionaryModel();
-                    dict.setName(entry.getDictName());
-                    dict.setCode(entry.getDictCode());
-                    dict.setId(entry.getDictionaryId());
-
-                    List<DictionaryEntryModel> dictEntries = new ArrayList<DictionaryEntryModel>();
-                    entry.setDictName(null);
-                    entry.setDictCode(null);
-                    entry.setDictionaryId(null);
-                    dictEntries.add(entry);
-
-                    dict.setEntries(dictEntries);
-                    skus.add(dict);
-                } else {
-                    entry.setDictName(null);
-                    entry.setDictCode(null);
-                    entry.setDictionaryId(null);
-                    tmp.getEntries().add(entry);
-                }
-            }
-
-            order.setSkus(skus);
 
             // 商品图片
             List<CommodityImageModel> images = commodityDao.getImages(order.getCommodityId());
@@ -173,19 +116,37 @@ public class OrderService {
                 Float discount = 0f;
                 model.setDiscount(discount);
 
-                // 获取info name
-                String[] infos = dictionarydao.getInfoName(model.getInfo().split("\\|"));
-                String infoString = "";
-                for (String info : infos) {
-                    infoString += info + "|";
+                // 获取info
+                String info = model.getInfo();
+                if (!WsUtil.isEmpty(info)) {
+                    String[] infoArray = info.split(",");
+                    List<CommoditySpecModel> specs = commodityDao.getSpec(commodity.getId());
+
+                    if(infoArray.length != specs.size()) {
+                        throw new ServiceException("规格参数数量不一致");
+                    }
+
+                    List<String> infoList = new ArrayList<String>();
+                    for (String tmp : infoArray) {
+                        boolean has = false;
+                        for (CommoditySpecModel spec : specs) {
+                            if(spec.getSpecEntryId().toString().equals(tmp)) {
+                                has = true;
+                                break;
+                            }
+                        }
+                        if(has && !infoList.contains(tmp)) {
+                            infoList.add(tmp);
+                        }
+                    }
+                    if (infoList.size() != specs.size()) {
+                        throw new ServiceException("规格参数错误");
+                    }
+
+                    // 验证数量 todo
+
+                    model.setInfo(info);
                 }
-                if(!WsUtil.isEmpty(infoString)) {
-                    infoString = infoString.substring(0, infoString.length()-1);
-                }
-                if (infos.length != model.getInfo().split("\\|").length) {
-                    throw new ServiceException("规格配置错误");
-                }
-                model.setInfo(infoString);
 
                 // 获取address
                 AddressModel address = addressDao.getById(model.getAddressId());

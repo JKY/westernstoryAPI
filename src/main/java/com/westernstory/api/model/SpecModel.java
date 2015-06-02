@@ -1,27 +1,34 @@
 package com.westernstory.api.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 // Created by fedor on 15/5/13.
-public class MsgModel implements Serializable {
+public class SpecModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     //
     private String lastModifyUser;
-    private Long readCount;
+    private List<SpecEntryModel> entries;
 
 
     private Long id;
-    private String title;
-    private String summary;
-    private String thumbnail;
+    private String name;
+    private String comment;
     private Boolean isActive;
     private Long createTime;
     private Long updateTime;
     private Long createBy;
     private Long updateBy;
-    private String link;
+
+    public String getLastModifyUser() {
+        return lastModifyUser;
+    }
+
+    public void setLastModifyUser(String lastModifyUser) {
+        this.lastModifyUser = lastModifyUser;
+    }
 
     public Long getId() {
         return id;
@@ -31,28 +38,20 @@ public class MsgModel implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getComment() {
+        return comment;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Boolean getIsActive() {
@@ -95,27 +94,11 @@ public class MsgModel implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public String getLink() {
-        return link;
+    public List<SpecEntryModel> getEntries() {
+        return entries;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getLastModifyUser() {
-        return lastModifyUser;
-    }
-
-    public void setLastModifyUser(String lastModifyUser) {
-        this.lastModifyUser = lastModifyUser;
-    }
-
-    public Long getReadCount() {
-        return readCount;
-    }
-
-    public void setReadCount(Long readCount) {
-        this.readCount = readCount;
+    public void setEntries(List<SpecEntryModel> entries) {
+        this.entries = entries;
     }
 }

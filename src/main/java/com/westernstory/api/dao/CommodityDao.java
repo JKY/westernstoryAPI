@@ -2,6 +2,7 @@ package com.westernstory.api.dao;
 
 import com.westernstory.api.model.CommodityImageModel;
 import com.westernstory.api.model.CommodityModel;
+import com.westernstory.api.model.CommoditySpecModel;
 import com.westernstory.api.model.DictionaryEntryModel;
 import org.apache.ibatis.annotations.Param;
 
@@ -68,4 +69,11 @@ public interface CommodityDao {
      * @throws Exception
      */
     List<CommodityImageModel> getImages(@Param("commodityId")Long commodityId) throws Exception;
+    /**
+     * 通过商品id获取商品规格
+     * @param cid cid
+     * @return List<CommoditySpecModel>
+     * @throws Exception
+     */
+    List<CommoditySpecModel> getSpec(Long cid) throws Exception;
 }
