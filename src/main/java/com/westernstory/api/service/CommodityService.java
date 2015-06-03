@@ -154,7 +154,7 @@ public class CommodityService {
 
             // 正文路径
             if (!WsUtil.isEmpty(model.getContent())) {
-                model.setContent(ImgReplacer.addPrefix(model.getContent(), Config.URL_STATIC));
+                model.setContent(ImgReplacer.addPrefix(model.getContent(), Config.URL_STATIC_NOSLASH));
             }
 
             return model;
