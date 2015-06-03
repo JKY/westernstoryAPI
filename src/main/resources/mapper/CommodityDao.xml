@@ -14,7 +14,7 @@
     <select id="getByKeyword" resultType="CommodityModel">
         SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total
 		FROM Commodity
-		WHERE IsActive = 1 status = 1 AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+		WHERE IsActive = 1 AND status = 1 AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
 		ORDER BY CreateTime DESC
 		Limit #{start}, #{limit}
     </select>
