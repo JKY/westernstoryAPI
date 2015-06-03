@@ -108,7 +108,9 @@ public class CommodityService {
     public CommodityModel getDetail(Long id) throws ServiceException {
         try {
             CommodityModel model = commodityDao.getById(id);
-
+            if(model == null) {
+                throw new ServiceException("商品未找到");
+            }
             // Spec
             List<CommoditySpecModel> css = commodityDao.getSpec(model.getId());
             if (css.size() > 0) {
