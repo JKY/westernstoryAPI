@@ -1,10 +1,8 @@
 package com.westernstory.api.service;
 
-import com.google.common.reflect.TypeToken;
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.*;
 import com.westernstory.api.model.*;
-import com.westernstory.api.util.GsonUtil;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -12,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Created by fedor on 15/5/13.
@@ -22,7 +19,11 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao = null;
     @Autowired
+    private CartDao cartDao = null;
+    @Autowired
     private SpecDao specDao = null;
+    @Autowired
+    private SkuDao skuDao = null;
     @Autowired
     private CommodityDao commodityDao = null;
     @Autowired
@@ -44,7 +45,7 @@ public class OrderService {
             for (OrderModel order : orders) {
                 String infoStr = order.getInfo();
                 if(!WsUtil.isEmpty(infoStr)) {
-                    List<Long> info = WsUtil.getInfoLong(infoStr);
+                    List<Long> info = WsUtil.getInfoList(infoStr);
                     List<SpecEntryModel> entries = specDao.getEntriesBySpecInfo(info);
                     order.setSelectedSpec(entries);
                 }
@@ -75,7 +76,7 @@ public class OrderService {
 
             if (!WsUtil.isEmpty(info)) {
 
-                List<SpecEntryModel> entries = specDao.getEntriesBySpecInfo(WsUtil.getInfoLong(info));
+                List<SpecEntryModel> entries = specDao.getEntriesBySpecInfo(WsUtil.getInfoList(info));
                 order.setSelectedSpec(entries);
             }
 
@@ -95,68 +96,87 @@ public class OrderService {
     }
 
     /**
-     * 生成订单
-     * @param userId userId
-     * @param commodities commodities
+     * 购买，生成订单
      * @throws ServiceException
      */
-    public void add(Long userId, String commodities) throws ServiceException {
+    public void add(OrderModel order) throws ServiceException {
         try {
-            List<OrderModel> list = (List<OrderModel>) GsonUtil.json2list(commodities, new TypeToken<List<OrderModel>>() {}.getType());
-            for (OrderModel model : list) {
-                model.setUserId(userId);
-                // 获取price, discount
-                CommodityModel commodity = commodityDao.getById(model.getCommodityId());
-                if(commodity == null) {
-                    throw new ServiceException("商品未找到");
-                }
-                model.setCommodityId(commodity.getId());
-                model.setPrice(commodity.getPrice());
-                // TODO 获取discount
-                Float discount = 0f;
-                model.setDiscount(discount);
-
-                // 获取info
-                String info = model.getInfo();
-                if (!WsUtil.isEmpty(info)) {
-                    String[] infoArray = info.split(",");
-                    List<CommoditySpecModel> specs = commodityDao.getSpec(commodity.getId());
-
-                    if(infoArray.length != specs.size()) {
-                        throw new ServiceException("规格参数数量不一致");
-                    }
-
-                    List<String> infoList = new ArrayList<String>();
-                    for (String tmp : infoArray) {
-                        boolean has = false;
-                        for (CommoditySpecModel spec : specs) {
-                            if(spec.getSpecEntryId().toString().equals(tmp)) {
-                                has = true;
-                                break;
-                            }
-                        }
-                        if(has && !infoList.contains(tmp)) {
-                            infoList.add(tmp);
-                        }
-                    }
-                    if (infoList.size() != specs.size()) {
-                        throw new ServiceException("规格参数错误");
-                    }
-
-                    // 验证数量 todo
-
-                    model.setInfo(info);
-                }
-
-                // 获取address
-                AddressModel address = addressDao.getById(model.getAddressId());
-                if(address == null) {
-                    throw new ServiceException("未找到寄送地址");
-                }
-                model.setAddress(address.getAddress());
-
-                orderDao.add(model);
+            Long cid = order.getCommodityId();
+            // 商品是否存在
+            CommodityModel commodityModel = commodityDao.getById(cid);
+            if(commodityModel == null) {
+                throw new ServiceException("商品未找到");
             }
+            // 获取address
+            AddressModel address = addressDao.getById(order.getAddressId());
+            if(address == null) {
+                throw new ServiceException("未找到寄送地址");
+            }
+            order.setAddress(address.getAddress());
+
+            // TODO 获取discount
+            Float discount = 0f;
+            order.setDiscount(discount);
+
+            // 获取info
+            String info = order.getInfo();
+            if (!WsUtil.isEmpty(info)) {
+                List<CommoditySpecModel> specs = commodityDao.getSpec(cid);
+                if(WsUtil.isCorrectSpec(info, specs)) {
+                    order.setInfo(info);
+                } else {
+                    order.setInfo(null);
+                }
+            }
+
+            ///////////////////// 验证数量 //////////////////////
+            List<SKUModel> skus = skuDao.getByCommodityId(cid);
+            SKUModel sku = WsUtil.getSku(skus, info);
+            Integer left;
+            if (sku != null) {
+                left = sku.getTotal() - sku.getBuys();
+            } else {
+                Integer tmp = commodityDao.getBuyCountFromNoneSpec(cid);
+                tmp = tmp == null? 0: tmp;
+                left = commodityModel.getTotal() - tmp;
+            }
+            if(left <= 0) {
+                throw new ServiceException("对不起，库存不足了");
+            }
+
+            order.setNumber(WsUtil.getUniqNumber(order.getUserId()));
+            order.setIsPaid(false); // TODO
+
+            orderDao.add(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+    /**
+     * 从购物车中购买
+     * @param userId userId
+     * @throws ServiceException
+     */
+    public void addFromCart(Long userId) throws ServiceException {
+        try {
+            List<CartModel> list = cartDao.list(userId);
+            for (CartModel cart : list) {
+                OrderModel order = new OrderModel();
+                order.setInfo(cart.getInfo());
+                order.setTotal(cart.getTotal());
+                order.setUserId(cart.getUserId());
+                order.setCommodityId(cart.getCommodityId());
+                order.setAddressId(cart.getAddressId());
+                order.setComment(cart.getComment());
+                order.setDiscount(cart.getDiscount());
+                order.setPrice(cart.getPrice());
+
+                this.add(order);
+            }
+            // 清空购物车
+            cartDao.removeAll(userId);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

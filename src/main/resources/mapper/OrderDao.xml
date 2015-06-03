@@ -31,11 +31,11 @@
     <insert id="add">
         INSERT INTO `Order` (
           userId, commodityId, status, comment, isActive,
-          total, info, address, price, discount, reason,
+          total, info, address, price, discount, reason, `number`, isPaid,
           createTime, updateTime
         ) VALUES (
             #{userId}, #{commodityId}, 0, #{comment}, 1,
-            #{total}, #{info}, #{address}, #{price}, #{discount}, #{reason},
+            #{total}, #{info}, #{address}, #{price}, #{discount}, #{reason}, #{number}, #{isPaid},
             (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
         )
         <selectKey keyProperty="id" resultType="long">

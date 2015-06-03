@@ -1,15 +1,14 @@
 package com.westernstory.api.controller;
 
+import com.westernstory.api.model.AddressModel;
+import com.westernstory.api.model.OrderModel;
 import com.westernstory.api.service.OrderService;
 import com.westernstory.api.util.Response;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,19 +63,29 @@ public class OrderCtrl {
     }
 
     /**
-     * 立刻购买，形成订单
+     * 立刻购买
      * @return json
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody Response add(HttpServletRequest request,
-                                      @RequestParam(value = "userId", required = true) Long userId) {
+    public @ResponseBody Response add(@ModelAttribute("order") OrderModel order) {
+        try {
+            orderService.add(order);
+            return new Response(true, "ok");
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 从购物车中购买
+     * @param userId userId
+     * @return json
+     */
+    @RequestMapping(value = "/addfromcart", method = RequestMethod.POST)
+    public @ResponseBody Response addFromCart(@RequestParam(value = "userId", required = true) Long userId) {
 
         try {
-            String commodities = request.getParameter("commodities");
-            if(WsUtil.isEmpty(commodities)) {
-                return new Response(false, "invalid params");
-            }
-            orderService.add(userId, commodities);
+            orderService.addFromCart(userId);
             return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());

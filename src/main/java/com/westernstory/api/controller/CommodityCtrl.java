@@ -144,4 +144,20 @@ public class CommodityCtrl {
             return new Response(false, e.getMessage());
         }
     }
+
+    /**
+     * 获取商品sku对应商品的库存的数量
+     * @param commodityId commodityId
+     * @param info info
+     * @return json
+     */
+    @RequestMapping(value = "/sku/sum", method = RequestMethod.GET)
+    public @ResponseBody Response getSkuSum(@RequestParam(value = "commodityId", required = true) Long commodityId,
+                                            @RequestParam(value = "info", required = false) String info) {
+        try {
+            return new Response(true, commodityService.getSkuSum(commodityId, info));
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
 }

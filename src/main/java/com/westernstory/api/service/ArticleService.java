@@ -86,7 +86,7 @@ public class ArticleService {
                 }
                 // 正文路径
                 if (!WsUtil.isEmpty(article.getContent())) {
-                    article.setContent(ImgReplacer.addPrefix(article.getContent(), Config.URL_EDITOR));
+                    article.setContent(ImgReplacer.addPrefix(article.getContent(), Config.URL_STATIC));
                 }
             }
             return article;

@@ -76,4 +76,12 @@ public interface CommodityDao {
      * @throws Exception
      */
     List<CommoditySpecModel> getSpec(Long cid) throws Exception;
+
+    /**
+     * 通过商品id获取购买人的个数
+     * @param commodityId commodityId
+     * @return count
+     * @throws Exception
+     */
+    Integer getBuyCountFromNoneSpec(Long commodityId) throws Exception;
 }

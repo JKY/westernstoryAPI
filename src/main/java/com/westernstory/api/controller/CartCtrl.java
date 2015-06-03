@@ -1,14 +1,12 @@
 package com.westernstory.api.controller;
 
+import com.westernstory.api.model.CartModel;
 import com.westernstory.api.service.CartService;
 import com.westernstory.api.util.Response;
 import com.westernstory.api.util.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,14 +35,9 @@ public class CartCtrl {
      * @return json
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody Response additem(HttpServletRequest request,
-                                          @RequestParam(value = "userId", required = true) Long userId,
-                                          @RequestParam(value = "cid", required = true) Long cid,
-                                          @RequestParam(value = "total", required = true) Integer total,
-                                          @RequestParam(value = "addressId", required = true) Long addressId) {
+    public @ResponseBody Response additem(@ModelAttribute("cart") CartModel cart) {
         try {
-            String info = request.getParameter("info");
-            return new Response(true, cartService.add(userId, cid, total, info, addressId));
+            return new Response(true, cartService.add(cart));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
@@ -55,14 +48,9 @@ public class CartCtrl {
      * @return json
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public @ResponseBody Response update(HttpServletRequest request,
-                                          @RequestParam(value = "userId", required = true) Long userId,
-                                          @RequestParam(value = "cid", required = true) Long cid,
-                                          @RequestParam(value = "total", required = true) Integer total,
-                                          @RequestParam(value = "addressId", required = true) Long addressId) {
+    public @ResponseBody Response update(@ModelAttribute("cart") CartModel cart) {
         try {
-            String info = request.getParameter("info");
-            cartService.update(userId, cid, total, info, addressId);
+            cartService.update(cart);
             return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());

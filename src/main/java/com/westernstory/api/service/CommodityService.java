@@ -2,7 +2,9 @@ package com.westernstory.api.service;
 
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CommodityDao;
+import com.westernstory.api.dao.SkuDao;
 import com.westernstory.api.model.*;
+import com.westernstory.api.util.ImgReplacer;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ import java.util.List;
 public class CommodityService {
     @Autowired
     private CommodityDao commodityDao = null;
+    @Autowired
+    private SkuDao skuDao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -148,6 +152,11 @@ public class CommodityService {
             }
             model.setImages(images);
 
+            // 正文路径
+            if (!WsUtil.isEmpty(model.getContent())) {
+                model.setContent(ImgReplacer.addPrefix(model.getContent(), Config.URL_STATIC));
+            }
+
             return model;
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,6 +179,42 @@ public class CommodityService {
             } else {
                 return null;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 获取商品相应的sku对应的库存数量
+     * @param cid cid
+     * @param info info
+     * @return int
+     * @throws ServiceException
+     */
+    public Integer getSkuSum(Long cid, String info) throws ServiceException {
+
+        try {
+            CommodityModel commodityModel = commodityDao.getById(cid);
+            if(commodityModel == null) {
+                throw new ServiceException("商品未找到");
+            }
+
+            List<SKUModel> skus = skuDao.getByCommodityId(cid);
+            SKUModel sku = WsUtil.getSku(skus, info);
+            Integer left;
+            if (sku != null) {
+                left = sku.getTotal() - sku.getBuys();
+            } else {
+                Integer tmp = commodityDao.getBuyCountFromNoneSpec(cid);
+                tmp = tmp == null? 0: tmp;
+                left = commodityModel.getTotal() - tmp;
+            }
+            if(left <= 0) {
+                left = 0;
+            }
+            return left;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

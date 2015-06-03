@@ -1,6 +1,8 @@
 package com.westernstory.api.util;
 
 import com.westernstory.api.config.Config;
+import com.westernstory.api.model.CommoditySpecModel;
+import com.westernstory.api.model.SKUModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -234,12 +236,80 @@ public class WsUtil {
      * @param infoStr infoStr
      * @return  List<Long>
      */
-    public static List<Long> getInfoLong(String infoStr) {
-        List<Long> list = new ArrayList<Long>();
+    public static List<Long> getInfoList(String infoStr) {
+        Set<Long> set = new HashSet<Long>();
         String[] infoArray = infoStr.split(",");
         for (String info : infoArray) {
-            list.add(Long.valueOf(info));
+            set.add(Long.valueOf(info));
         }
-        return list;
+        return new ArrayList<Long>(set);
+    }
+
+    /**
+     * 根据info获取SKU
+     * @param skus skus
+     * @param info info
+     * @return SKUModel
+     */
+    public static SKUModel getSku(List<SKUModel> skus, String info) {
+        SKUModel model = null;
+        if (!WsUtil.isEmpty(info)) {
+            List<Long> infoList = getInfoList(info);
+            for (SKUModel sku : skus) {
+                List<Long> skuInfoList = WsUtil.getInfoList(sku.getSpec());
+                if(skuInfoList.size() == infoList.size()) {
+                    int tmp = 0;
+                    for (Long specEntryId : infoList) {
+                        if(skuInfoList.contains(specEntryId)) {
+                            tmp++;
+                        }
+                    }
+                    if(tmp == infoList.size()) {
+                        if(sku.getBuys() == null) {
+                            sku.setBuys(0);
+                        }
+                        model = sku;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return model;
+    }
+
+    /**
+     * info是否在规格列表中正确存在
+     * @param info info
+     * @param specs specs
+     * @return boolean
+     */
+    public static boolean isCorrectSpec(String info, List<CommoditySpecModel> specs) {
+        List<Long> infoArray = WsUtil.getInfoList(info);
+        if(infoArray.size() != specs.size()) {
+            return false;
+        }
+
+        List<Long> infoList = new ArrayList<Long>();
+        for (Long tmp : infoArray) {
+            boolean has = false;
+            for (CommoditySpecModel spec : specs) {
+                if(spec.getSpecEntryId().equals(tmp)) {
+                    has = true;
+                    break;
+                }
+            }
+            if(has && !infoList.contains(tmp)) {
+                infoList.add(tmp);
+            }
+        }
+        if (infoList.size() != specs.size()) {
+            return false;
+        }
+        return true;
+    }
+
+    public static String getUniqNumber(Long userId) {
+        return System.currentTimeMillis() + "_" + userId;
     }
 }

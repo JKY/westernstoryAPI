@@ -3,8 +3,11 @@ package com.westernstory.api.service;
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.CartDao;
 import com.westernstory.api.dao.CommodityDao;
+import com.westernstory.api.dao.SkuDao;
 import com.westernstory.api.model.CartModel;
 import com.westernstory.api.model.CommodityImageModel;
+import com.westernstory.api.model.CommodityModel;
+import com.westernstory.api.model.SKUModel;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -20,6 +23,8 @@ import java.util.List;
 public class CartService {
     @Autowired
     private CartDao cartDao = null;
+    @Autowired
+    private SkuDao skuDao = null;
     @Autowired
     private CommodityDao commodityDao = null;
 
@@ -53,27 +58,37 @@ public class CartService {
 
     /**
      * 添加到购物车
-     * @param userId userId
-     * @param cid cid
-     * @param total total
-     * @param info info
-     * @param addressId addressId
-     * @return id
+     * @param cart cart
      * @throws ServiceException
      */
-    public Long add(Long userId, Long cid, Integer total, String info, Long addressId) throws ServiceException {
+    public Long add(CartModel cart) throws ServiceException {
         try {
-            CartModel model = cartDao.getByUidCid(userId, cid);
+            Long cid = cart.getCommodityId();
+            CartModel model = cartDao.getByUidCid(cart.getUserId(), cid);
             if (model != null) {
                 throw new ServiceException("购物车中已存在该商品");
             }
-            CartModel cart = new CartModel();
-            cart.setIsActive(true);
-            cart.setCommodityId(cid);
-            cart.setInfo(info);
-            cart.setTotal(total);
-            cart.setUserId(userId);
-            cart.setAddressId(addressId);
+
+            String info = cart.getInfo();
+            ///////////////////// 验证数量 //////////////////////
+            List<SKUModel> skus = skuDao.getByCommodityId(cid);
+            SKUModel sku = WsUtil.getSku(skus, info);
+            Integer left;
+            if (sku != null) {
+                left = sku.getTotal() - sku.getBuys();
+            } else {
+                CommodityModel commodityModel = commodityDao.getById(cid);
+                if(commodityModel != null) {
+                    Integer tmp = commodityDao.getBuyCountFromNoneSpec(cid);
+                    tmp = tmp == null? 0: tmp;
+                    left = commodityModel.getTotal() - tmp;
+                } else {
+                    throw new ServiceException("商品不存在");
+                }
+            }
+            if(left <= 0) {
+                throw new ServiceException("对不起，库存不足了");
+            }
             cartDao.add(cart);
             return cart.getId();
         } catch (Exception e) {
@@ -85,22 +100,38 @@ public class CartService {
 
     /**
      * 修改购物车
-     * @param userId userId
-     * @param cid  cid
-     * @param total total
-     * @param info info
-     * @param addressId addressId
+     * @param cart cart
      */
-    public void update(Long userId, Long cid, Integer total, String info, Long addressId)  throws ServiceException {
+    public void update(CartModel cart)  throws ServiceException {
         try {
-            CartModel model = cartDao.getByUidCid(userId, cid);
+            Long cid = cart.getCommodityId();
+            CartModel model = cartDao.getByUidCid(cart.getUserId(), cid);
             if (model == null) {
                 throw new ServiceException("购物车中不存在该商品");
             }
-            model.setInfo(info);
-            model.setTotal(total);
-            model.setAddressId(addressId);
-            cartDao.update(model);
+
+            String info = cart.getInfo();
+            ///////////////////// 验证数量 //////////////////////
+            List<SKUModel> skus = skuDao.getByCommodityId(cid);
+            SKUModel sku = WsUtil.getSku(skus, info);
+            Integer left;
+            if (sku != null) {
+                left = sku.getTotal() - sku.getBuys();
+            } else {
+                CommodityModel commodityModel = commodityDao.getById(cid);
+                if(commodityModel != null) {
+                    Integer tmp = commodityDao.getBuyCountFromNoneSpec(cid);
+                    tmp = tmp == null? 0: tmp;
+                    left = commodityModel.getTotal() - tmp;
+                } else {
+                    throw new ServiceException("商品不存在");
+                }
+            }
+            if(left <= 0) {
+                throw new ServiceException("对不起，库存不足了");
+            }
+
+            cartDao.update(cart);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

@@ -30,6 +30,8 @@ public class OrderModel implements Serializable {
     private Boolean isActive;
     private Float price;
     private Float discount;
+    private String number;
+    private Boolean isPaid;
 
     public Long getId() {
         return id;
@@ -189,5 +191,21 @@ public class OrderModel implements Serializable {
 
     public void setDiscount(Float discount) {
         this.discount = discount;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public Boolean getIsPaid() {
+        return isPaid;
+    }
+
+    public void setIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
     }
 }

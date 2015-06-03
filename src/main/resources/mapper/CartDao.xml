@@ -10,7 +10,7 @@
 		FROM Cart t1
 		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
 		LEFT JOIN Address t3 ON t3.id = t1.addressId
-		WHERE t1.isActive = 1 AND t2.isActive = 1
+		WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
 		ORDER BY t1.createTime
 	</select>
 
