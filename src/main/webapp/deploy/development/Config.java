@@ -9,7 +9,9 @@ public class Config {
 
     public static final String URL_ROOT = "http://127.0.0.1:8080/wsapi/"; // API根路径
 
-    public static final String URL_STATIC = "http://127.0.0.1/static/"; // 图片根路径
+    public static final String URL_STATIC_NOSLASH = "http://127.0.0.1/static";
+
+    public static final String URL_STATIC = URL_STATIC_NOSLASH + "/"; // 图片根路径
 
     public static final String PATH_UPLOAD = "/Users/fedor/works/static/upload"; // 图片上传路径（相对）
 
