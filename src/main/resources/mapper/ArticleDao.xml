@@ -15,6 +15,7 @@
             <if test="categoryId != null and categoryId != ''">
                 AND t1.categoryId = #{categoryId}
         </if>
+        ORDER BY t1.publishTime DESC
         Limit #{start}, #{limit}
     </select>
 
