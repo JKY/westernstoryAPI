@@ -5,7 +5,7 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
     <insert id="add" parameterType="SkuModel">
-        INSERT INTO Sku (
+        INSERT INTO SKU (
           commodityId, spec, total, createBy, updateBy, createTime, updateTime)
         VALUES (
         #{commodityId}, #{spec},  #{total}, #{createBy}, #{updateBy}, (SELECT UNIX_TIMESTAMP()*1000), (SELECT UNIX_TIMESTAMP()*1000));
@@ -16,7 +16,7 @@
 
     <select id="getByCommodityId" resultType="SkuModel">
         SELECT t1.commodityId, t1.spec, t1.total, t2.buys
-        FROM Sku t1
+        FROM SKU t1
         LEFT JOIN (
           SELECT sum(total) AS buys,commodityId, info
           FROM `Order`
