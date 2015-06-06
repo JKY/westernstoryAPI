@@ -48,7 +48,7 @@ public class CartService {
                 // TODO discount
                 model.setDiscount(0f);
             }
-            return cartDao.list(userId);
+            return list;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
