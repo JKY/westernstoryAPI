@@ -183,4 +183,20 @@ public class OrderService {
             throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
         }
     }
+
+    /**
+     * 取消订单
+     * @param id id
+     * @param reason reason
+     * @throws ServiceException
+     */
+    public void doCancel(Long id, String reason) throws ServiceException {
+        try {
+            orderDao.cancel(id, reason);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
 }

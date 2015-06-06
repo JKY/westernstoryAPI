@@ -39,4 +39,10 @@ public interface OrderDao {
      * @throws Exception
      */
     void add(OrderModel model) throws Exception;
+    /**
+     * 取消订单
+     * @param id id
+     * @throws Exception
+     */
+    void cancel(@Param("id") Long id, @Param("reason") String reason) throws Exception;
 }

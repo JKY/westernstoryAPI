@@ -5,7 +5,7 @@
 
 	<select id="list" resultType="OrderModel">
 		SELECT t1.id, t1.comment, t1.userId, t1.commodityId, t1.status, t1.createTime,
-		  t1.info, t1.total, t1.address, t1.reason,
+		  t1.info, t1.total, t1.address, t1.reason, t1.number,
 		  t2.name AS commodityName, t2.summary AS commoditySummary
 		FROM `Order` t1
 		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
@@ -43,4 +43,10 @@
             LAST_INSERT_ID() AS id
         </selectKey>
     </insert>
+
+    <update id="cancel">
+        UPDATE `Order`
+        set status = 4, reason = #{reason}
+        WHERE id = #{id}
+    </update>
 </mapper>

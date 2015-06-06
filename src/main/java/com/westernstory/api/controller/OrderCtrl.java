@@ -91,4 +91,21 @@ public class OrderCtrl {
             return new Response(false, e.getMessage());
         }
     }
+
+    /**
+     * 取消订单
+     * @param id id
+     * @param reason reason
+     * @return json
+     */
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
+    public @ResponseBody Response cancel(@RequestParam(value = "id", required = true) Long id,
+                                         @RequestParam(value = "reason", required = true) String reason) {
+        try {
+            orderService.doCancel(id, reason);
+            return new Response(true, "ok");
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
 }

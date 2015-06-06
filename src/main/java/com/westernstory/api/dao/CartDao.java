@@ -50,5 +50,5 @@ public interface CartDao {
      * @param userId userId
      * @throws Exception
      */
-    void removeAll(@Param("userId")Long userId) throws Exception;
+    void removeAll(@Param("userId") Long userId) throws Exception;
 }
