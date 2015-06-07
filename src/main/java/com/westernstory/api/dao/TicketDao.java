@@ -14,7 +14,17 @@ public interface TicketDao {
      * @return List
      * @throws Exception
      */
-    List<TicketModel> list(@Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<TicketModel> list(@Param("keyword")String keyword, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+
+    /**
+     * 我的优惠券列表
+     * @param userId userId
+     * @param start start
+     * @param limit limit
+     * @return List<TicketModel>
+     * @throws Exception
+     */
+    List<TicketModel> getMyList(@Param("userId")Long userId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
 
     /**
      * 获取ticket

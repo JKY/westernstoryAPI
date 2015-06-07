@@ -28,9 +28,33 @@ public class TicketService {
      * @return List
      * @throws ServiceException
      */
-    public List<TicketModel> list(Integer start, Integer limit) throws ServiceException {
+    public List<TicketModel> list(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
-            List<TicketModel> list = ticketDao.list(start, limit);
+            List<TicketModel> list = ticketDao.list(keyword, start, limit);
+            for (TicketModel model : list) {
+                // 缩略图
+                if (!WsUtil.isEmpty(model.getThumbnail())) {
+                    model.setThumbnail(Config.URL_STATIC + model.getThumbnail());
+                }
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 我的优惠券列表
+     * @param userId userId
+     * @param start userId
+     * @param limit limit
+     * @return
+     */
+    public List<TicketModel>  getMyList(Long userId, Integer start, Integer limit) throws ServiceException {
+        try {
+            List<TicketModel> list = ticketDao.getMyList(userId, start, limit);
             for (TicketModel model : list) {
                 // 缩略图
                 if (!WsUtil.isEmpty(model.getThumbnail())) {

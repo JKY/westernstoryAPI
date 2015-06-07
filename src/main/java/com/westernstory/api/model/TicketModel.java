@@ -7,6 +7,9 @@ public class TicketModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    //
+    private Long ticketId;
+
     private Long id;
     private String name;
     private String thumbnail;
@@ -123,5 +126,13 @@ public class TicketModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 }
