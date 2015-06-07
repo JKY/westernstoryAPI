@@ -23,7 +23,7 @@
           t2.name, t2.thumbnail, t2.total, t2.address, t2.startTime, t2.endTime, t2.summary
         FROM UserTicket t1
         LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
-        WHERE t2.isActive = 1 AND t1.isActive = 1
+        WHERE t2.isActive = 1 AND t1.isActive = 1 AND t1.userId = #{userId}
         ORDER BY t1.createTime DESC
         Limit #{start}, #{limit}
     </select>
