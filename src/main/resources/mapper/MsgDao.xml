@@ -13,6 +13,13 @@
 		LIMIT #{start},#{limit}
 	</select>
 
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM MsgEntry t1
+        LEFT JOIN Msg t2 ON t2.id = t1.msgId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+    </select>
+
     <update id="readByUid">
         UPDATE MsgEntry SET isReaded = 1 WHERE userId = #{userId}
     </update>

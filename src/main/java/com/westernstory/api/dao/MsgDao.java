@@ -45,4 +45,12 @@ public interface MsgDao {
      * @throws Exception
      */
     Integer countUnreadMsgs(@Param("userId")Long userId) throws Exception;
+
+    /**
+     * 根据用户id查询总消息数
+     * @param userId userId
+     * @return long
+     * @throws Exception
+     */
+    Long count(@Param("userId")Long userId) throws Exception;
 }

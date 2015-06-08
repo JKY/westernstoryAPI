@@ -41,4 +41,12 @@ public interface ArticleDao {
      * @throws Exception
      */
     List<ArticleTagModel> getTagsByActicleId(@Param("articleId")Long articleId) throws Exception;
+
+    /**
+     * 总数
+     * @param categoryId categoryId
+     * @return long
+     * @throws Exception
+     */
+    Long count(@Param("categoryId")Long categoryId) throws Exception;
 }

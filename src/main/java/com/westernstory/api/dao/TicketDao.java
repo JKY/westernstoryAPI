@@ -1,6 +1,7 @@
 package com.westernstory.api.dao;
 
 import com.westernstory.api.model.TicketModel;
+import com.westernstory.api.model.UserTicketModel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -56,4 +57,29 @@ public interface TicketDao {
      * @throws Exception
      */
     Integer countUnusedTickets(@Param("userId")Long userId) throws Exception;
+
+    /**
+     * 根据关键字查询总数
+     * @param keyword keyword
+     * @return long
+     * @throws Exception
+     */
+    Long count(@Param("keyword")String keyword) throws Exception;
+
+    /**
+     * 通过user id 获取总数
+     * @param userId userId
+     * @return long
+     * @throws Exception
+     */
+    Long countByUser(@Param("userId")Long userId) throws Exception;
+
+    /**
+     * 通过id、userId 获取优惠券
+     * @param ticketId ticketId
+     * @param userId userId
+     * @return UserTicketModel
+     * @throws Exception
+     */
+    UserTicketModel getUserTicket(@Param("ticketId")Long ticketId, @Param("userId")Long userId) throws Exception;
 }

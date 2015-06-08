@@ -19,6 +19,18 @@
         Limit #{start}, #{limit}
     </select>
 
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM Article t1
+        WHERE t1.isActive = 1 AND t1.status = 1
+        <![CDATA[
+                AND t1.publishTime <= (select UNIX_TIMESTAMP(NOW()) * 1000)
+            ]]>
+        <if test="categoryId != null and categoryId != ''">
+            AND t1.categoryId = #{categoryId}
+        </if>
+    </select>
+
     <select id="getTagsByActicleIds" resultType="ArticleTagModel">
         SELECT t1.ID, t1.Name, t2.ArticleID as ArticleID
         FROM ArticleTag as t1

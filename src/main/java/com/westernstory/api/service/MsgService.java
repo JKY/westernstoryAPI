@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -29,8 +31,9 @@ public class MsgService {
      * @return List
      * @throws ServiceException
      */
-    public List<MsgModel> list(Long userId, Integer start, Integer limit) throws ServiceException {
+    public Map<String, Object> list(Long userId, Integer start, Integer limit) throws ServiceException {
         try {
+            Map<String, Object> map = new HashMap<String, Object>();
             List<MsgModel> list = msgDao.list(userId, start, limit);
             for(MsgModel model : list) {
                 // 缩略图
@@ -38,7 +41,9 @@ public class MsgService {
                     model.setThumbnail(Config.URL_STATIC + model.getThumbnail());
                 }
             }
-            return list;
+            map.put("items", list);
+            map.put("count", msgDao.count(userId));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

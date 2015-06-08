@@ -11,12 +11,30 @@
 		Limit #{start}, #{limit}
 	</select>
 
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM Commodity
+        WHERE IsActive = 1 AND status = 1 AND CategoryId = #{categoryId}
+    </select>
+
     <select id="getByKeyword" resultType="CommodityModel">
         SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total
 		FROM Commodity
-		WHERE IsActive = 1 AND status = 1 AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+		WHERE IsActive = 1 AND status = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+        </if>
 		ORDER BY CreateTime DESC
 		Limit #{start}, #{limit}
+    </select>
+
+    <select id="countByKeyword" resultType="long">
+        SELECT count(1)
+		FROM Commodity
+		WHERE IsActive = 1 AND status = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+        </if>
     </select>
 
     <select id="getLatest" resultType="CommodityModel">
@@ -26,6 +44,12 @@
         WHERE t1.IsActive = 1 AND t1.status = 1
         ORDER BY t1.CreateTime DESC
         Limit #{start}, #{limit}
+    </select>
+
+    <select id="countLatest" resultType="long">
+         SELECT count(1)
+        FROM Commodity t1
+        WHERE t1.IsActive = 1 AND t1.status = 1
     </select>
 
     <select id="getById" resultType="CommodityModel">

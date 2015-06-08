@@ -18,6 +18,18 @@
 		Limit #{start}, #{limit}
 	</select>
 
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM Ticket
+        WHERE isActive = 1
+        <![CDATA[
+            AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+        </if>
+    </select>
+
     <select id="getMyList" resultType="TicketModel">
         SELECT t1.id, t1.TicketId, t1.createTime,
           t2.name, t2.thumbnail, t2.total, t2.address, t2.startTime, t2.endTime, t2.summary
@@ -26,6 +38,13 @@
         WHERE t2.isActive = 1 AND t1.isActive = 1 AND t1.userId = #{userId}
         ORDER BY t1.createTime DESC
         Limit #{start}, #{limit}
+    </select>
+
+    <select id="countByUser" resultType="long">
+        SELECT count(1)
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t2.isActive = 1 AND t1.isActive = 1 AND t1.userId = #{userId}
     </select>
 
     <insert id="gain">
@@ -46,6 +65,13 @@
         SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, summary
         FROM Ticket
         WHERE isActive = 1 AND id = #{id}
+        Limit 1
+    </select>
+
+    <select id="getUserTicket" resultType="UserTicketModel">
+        SELECT id, ticketId, userId
+        FROM UserTicket
+        WHERE isActive = 1 AND ticketId = #{ticketId} AND userId = #{userId}
         Limit 1
     </select>
 

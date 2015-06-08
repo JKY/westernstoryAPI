@@ -14,6 +14,13 @@
 		LIMIT #{start},#{limit}
 	</select>
 
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM `Order` t1
+        LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+        WHERE t1.isActive = 1 AND t2.isActive = 1
+    </select>
+
     <select id="getById" resultType="OrderModel">
         SELECT t1.id, t1.comment, t1.userId, t1.commodityId, t1.status, t1.createTime, t1.info, t1.number,
           t1.total, t1.address, t1.reason, t2.name AS commodityName, t2.summary AS commoditySummary

@@ -21,6 +21,13 @@
         Limit 1
     </select>
 
+    <select id="getById" resultType="CartModel">
+        SELECT id, commodityId, isActive, userId, total, info, createTime
+        FROM Cart
+        WHERE isActive = 1 AND id = #{id}
+        Limit 1
+    </select>
+
     <insert id="add">
         INSERT INTO Cart (
           commodityId, isActive, userId, total, info, addressId,

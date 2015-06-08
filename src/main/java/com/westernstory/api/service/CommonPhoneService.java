@@ -1,8 +1,6 @@
 package com.westernstory.api.service;
 
 import com.westernstory.api.dao.CommonPhoneDao;
-import com.westernstory.api.model.CommonPhoneEntryModel;
-import com.westernstory.api.model.CommonPhoneModel;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -10,7 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -28,9 +27,13 @@ public class CommonPhoneService {
      * @return List
      * @throws ServiceException
      */
-    public List<CommonPhoneModel> listCategories(Integer start, Integer limit) throws ServiceException {
+    public Map<String, Object> listCategories(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
-            return commonPhoneDao.listCategories(start, limit);
+            Map<String, Object> map = new HashMap<String, Object>();
+
+            map.put("items", commonPhoneDao.listCategories(keyword, start, limit));
+            map.put("count", commonPhoneDao.countCategories(keyword, start, limit));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -46,9 +49,12 @@ public class CommonPhoneService {
      * @return List
      * @throws ServiceException
      */
-    public  List<CommonPhoneEntryModel> listPhones(Long categoryId, int start, Integer limit) throws ServiceException {
+    public  Map<String, Object> listPhones(String keyword, Long categoryId, int start, Integer limit) throws ServiceException {
         try {
-            return commonPhoneDao.listPhones(categoryId, start, limit);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("items", commonPhoneDao.listPhones(keyword, categoryId, start, limit));
+            map.put("count", commonPhoneDao.countPhones(keyword, categoryId, start, limit));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

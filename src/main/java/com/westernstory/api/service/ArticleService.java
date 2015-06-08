@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -29,8 +31,9 @@ public class ArticleService {
      * @param limit limit
      * @return List<ArticleModel>
      */
-    public List<ArticleModel> list(Long categoryId, Integer start, Integer limit) throws ServiceException {
+    public Map<String, Object> list(Long categoryId, Integer start, Integer limit) throws ServiceException {
         try {
+            Map<String, Object> map = new HashMap<String, Object>();
             List<ArticleModel> articles = artitcleDao.list(categoryId, start, limit);
 
             // 获取文章tags
@@ -60,7 +63,11 @@ public class ArticleService {
                     article.setThumbnail(Config.URL_STATIC + article.getThumbnail());
                 }
             }
-            return articles;
+
+            map.put("items", articles);
+            map.put("count", artitcleDao.count(categoryId));
+
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

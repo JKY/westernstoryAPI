@@ -23,7 +23,8 @@ public class CommonPhoneCtrl {
      */
     @RequestMapping(value = "/categorylist", method = RequestMethod.GET)
     public @ResponseBody Response categorylist(@RequestParam(value = "page", required = false) Integer page,
-                                               @RequestParam(value = "limit", required = false) Integer limit) {
+                                               @RequestParam(value = "limit", required = false) Integer limit,
+                                               @RequestParam(value = "keyword", required = false) String keyword) {
         try {
             if (page == null) {
                 page = 1;
@@ -33,7 +34,7 @@ public class CommonPhoneCtrl {
             }
             int start = (page - 1) * limit;
 
-            return new Response(true, commonPhoneService.listCategories(start, limit));
+            return new Response(true, commonPhoneService.listCategories(keyword, start, limit));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
@@ -49,7 +50,8 @@ public class CommonPhoneCtrl {
     @RequestMapping(value = "/phonelist", method = RequestMethod.GET)
     public @ResponseBody Response phonelist(@RequestParam(value = "categoryId", required = true) Long categoryId,
                                                 @RequestParam(value = "page", required = false) Integer page,
-                                                @RequestParam(value = "limit", required = false) Integer limit) {
+                                                @RequestParam(value = "limit", required = false) Integer limit,
+                                                @RequestParam(value = "keyword", required = false) String keyword) {
         try {
             if (page == null) {
                 page = 1;
@@ -59,7 +61,7 @@ public class CommonPhoneCtrl {
             }
             int start = (page - 1) * limit;
 
-            return new Response(true, commonPhoneService.listPhones(categoryId, start, limit));
+            return new Response(true, commonPhoneService.listPhones(keyword, categoryId, start, limit));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

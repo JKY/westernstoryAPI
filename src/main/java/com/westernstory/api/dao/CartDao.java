@@ -51,4 +51,12 @@ public interface CartDao {
      * @throws Exception
      */
     void removeAll(@Param("userId") Long userId) throws Exception;
+
+    /**
+     * 通过id 获取购物车model
+     * @param id id
+     * @return CartModel
+     * @throws Exception
+     */
+    CartModel getById(@Param("id")Long id) throws Exception;
 }

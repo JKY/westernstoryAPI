@@ -8,15 +8,39 @@
 		SELECT id, `name`, isActive, createTime, `order`
 		FROM CommonPhone
 		WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
 		ORDER BY createTime DESC
 		Limit #{start}, #{limit}
 	</select>
+
+    <select id="countCategories" resultType="long">
+        SELECT count(1)
+        FROM CommonPhone
+        WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
+    </select>
 
     <select id="listPhones" resultType="CommonPhoneEntryModel">
         SELECT Id, CommonPhoneId, Name, Phone, IsActive, CreateTime
 		FROM CommonPhoneEntry
 		WHERE isActive = 1 AND CommonPhoneId = (SELECT id FROM CommonPhone WHERE id = #{categoryId} AND isActive = 1)
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
 		ORDER BY createTime DESC
 		Limit #{start}, #{limit}
+    </select>
+
+    <select id="countPhones" resultType="long">
+        SELECT count(1)
+        FROM CommonPhoneEntry
+        WHERE isActive = 1 AND CommonPhoneId = (SELECT id FROM CommonPhone WHERE id = #{categoryId} AND isActive = 1)
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
     </select>
 </mapper>

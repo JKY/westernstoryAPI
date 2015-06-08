@@ -104,11 +104,13 @@ public class CartService {
      */
     public void update(CartModel cart)  throws ServiceException {
         try {
-            Long cid = cart.getCommodityId();
-            CartModel model = cartDao.getByUidCid(cart.getUserId(), cid);
+            CartModel model = cartDao.getById(cart.getId());
+//            CartModel model = cartDao.getByUidCid(cart.getUserId(), cid);
             if (model == null) {
                 throw new ServiceException("购物车中不存在该商品");
             }
+
+            Long cid = model.getCommodityId();
 
             String info = cart.getInfo();
             ///////////////////// 验证数量 //////////////////////

@@ -45,4 +45,12 @@ public interface OrderDao {
      * @throws Exception
      */
     void cancel(@Param("id") Long id, @Param("reason") String reason) throws Exception;
+
+    /**
+     * 根据用户id获取order总数
+     * @param userId userId
+     * @return long
+     * @throws Exception
+     */
+    Long count(@Param("userId") Long userId) throws Exception;
 }

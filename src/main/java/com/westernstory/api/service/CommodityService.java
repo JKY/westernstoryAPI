@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -33,8 +35,10 @@ public class CommodityService {
      * @return List<CommodityModel>
      * @throws ServiceException
      */
-    public List<CommodityModel> get(Integer categoryId, Integer start, Integer limit) throws ServiceException {
+    public Map<String, Object> get(Integer categoryId, Integer start, Integer limit) throws ServiceException {
         try {
+            Map<String, Object> map = new HashMap<String, Object>();
+
             List<CommodityModel> list = commodityDao.get(categoryId, start, limit);
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
@@ -44,7 +48,9 @@ public class CommodityService {
                 // TODO 商品折扣价格
                 model.setDiscount(0f);
             }
-            return list;
+            map.put("items", list);
+            map.put("count", commodityDao.count(categoryId));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -59,8 +65,10 @@ public class CommodityService {
      * @param limit limit
      * @return List<CommodityModel>
      */
-    public List<CommodityModel> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
+    public  Map<String, Object> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
+            Map<String, Object> map = new HashMap<String, Object>();
+
             List<CommodityModel> list = commodityDao.getByKeyword(keyword, start, limit);
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
@@ -68,7 +76,9 @@ public class CommodityService {
                     model.setThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
             }
-            return list;
+            map.put("items", list);
+            map.put("count", commodityDao.countByKeyword(keyword));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -82,8 +92,10 @@ public class CommodityService {
      * @param limit limit
      * @return List<CommodityModel>
      */
-    public  List<CommodityModel> getLatest(Integer start, Integer limit) throws ServiceException {
+    public Map<String, Object> getLatest(Integer start, Integer limit) throws ServiceException {
         try {
+            Map<String, Object> map = new HashMap<String, Object>();
+
             List<CommodityModel> list = commodityDao.getLatest(start, limit);
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
@@ -91,7 +103,9 @@ public class CommodityService {
                     model.setThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
             }
-            return list;
+            map.put("items", list);
+            map.put("count", commodityDao.countLatest());
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

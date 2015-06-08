@@ -84,4 +84,27 @@ public interface CommodityDao {
      * @throws Exception
      */
     Integer getBuyCountFromNoneSpec(Long commodityId) throws Exception;
+
+    /**
+     * 根据分类获取总数
+     * @param categoryId categoryId
+     * @return long
+     * @throws Exception
+     */
+    Long count(@Param("categoryId")Integer categoryId) throws Exception;
+
+    /**
+     * 根据关键查询商品总数
+     * @param keyword keyword
+     * @return long
+     * @throws Exception
+     */
+    Long countByKeyword(@Param("keyword")String keyword) throws Exception;
+
+    /**
+     * 获取最新商品总数
+     * @return long
+     * @throws Exception
+     */
+    Long countLatest() throws Exception;
 }

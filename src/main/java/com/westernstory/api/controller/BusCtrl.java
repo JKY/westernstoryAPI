@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 // Created by fedor on 15/5/13.
 @Controller
 @RequestMapping(value = "/tool/bus")
@@ -25,7 +27,8 @@ public class BusCtrl {
      * @return json
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Response categorylist(@RequestParam(value = "page", required = false) Integer page,
+    public @ResponseBody Response categorylist(HttpServletRequest request,
+                                               @RequestParam(value = "page", required = false) Integer page,
                                                @RequestParam(value = "limit", required = false) Integer limit) {
         try {
             if (page == null) {
@@ -36,7 +39,7 @@ public class BusCtrl {
             }
             int start = (page - 1) * limit;
 
-            return new Response(true, busService.list(start, limit));
+            return new Response(true, busService.list(request.getParameter("keyword"), start, limit));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

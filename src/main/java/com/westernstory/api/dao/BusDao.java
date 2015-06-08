@@ -15,7 +15,7 @@ public interface BusDao {
      * @return List
      * @throws Exception
      */
-    List<BusModel> list(@Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
+    List<BusModel> list(@Param("keyword") String keyword, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
     /**
      * 获取班车详情
      * @param busId busId
@@ -33,4 +33,11 @@ public interface BusDao {
      * @throws Exception
      */
     List<BusModel> getByKeyword(@Param("keyword") String keyword, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
+
+    /**
+     * 查询总数
+     * @return long
+     * @throws Exception
+     */
+    Long count(@Param("keyword") String keyword) throws Exception;
 }

@@ -2,7 +2,6 @@ package com.westernstory.api.service;
 
 import com.westernstory.api.dao.BusDao;
 import com.westernstory.api.model.BusEntryModel;
-import com.westernstory.api.model.BusModel;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
 import org.slf4j.Logger;
@@ -10,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -28,9 +29,12 @@ public class BusService {
      * @return List
      * @throws ServiceException
      */
-    public List<BusModel> list(int start, Integer limit) throws ServiceException {
+    public Map<String, Object> list(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
-            return busDao.list(start, limit);
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("items", busDao.list(keyword, start, limit));
+            map.put("count", busDao.count(keyword));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
@@ -62,13 +66,12 @@ public class BusService {
      * @return List
      * @throws ServiceException
      */
-    public List<BusModel> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
+    public Map<String, Object> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
+        Map<String, Object> map = new HashMap<String, Object>();
         try {
-            if (WsUtil.isEmpty(keyword)) {
-                return busDao.list(start, limit);
-            } else {
-                return busDao.getByKeyword(keyword, start, limit);
-            }
+            map.put("items", busDao.list(keyword, start, limit));
+            map.put("count", busDao.count(keyword));
+            return map;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

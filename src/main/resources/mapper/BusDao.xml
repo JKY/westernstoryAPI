@@ -7,9 +7,21 @@
 		SELECT id, `From`, `To`, IsActive, CreateTime
 		FROM Bus
 		WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`from` LIKE "%"#{keyword}"%" OR `to` LIKE "%"#{keyword}"%")
+        </if>
 		ORDER BY `From` DESC
 		Limit #{start}, #{limit}
 	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(1)
+		FROM Bus
+		WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`from` LIKE "%"#{keyword}"%" OR `to` LIKE "%"#{keyword}"%")
+        </if>
+    </select>
 
     <select id="getDetailById" resultType="BusEntryModel">
         SELECT Id, BusId, `From`, `To`, FromTime, ToTime, IsActive, CreateTime, `Order`, isSecondDay
