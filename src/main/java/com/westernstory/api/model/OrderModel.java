@@ -8,6 +8,8 @@ public class OrderModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final Integer STATUS_ADD = 1; // 已下单
+
     //
     private String commodityName;
     private String commodityThumbnail;

@@ -150,7 +150,7 @@ public class OrderService {
 
             order.setNumber(WsUtil.getUniqNumber(order.getUserId()));
             order.setIsPaid(false); // TODO
-
+            order.setStatus(OrderModel.STATUS_ADD);
             orderDao.add(order);
         } catch (Exception e) {
             e.printStackTrace();
