@@ -140,13 +140,9 @@ public class OrderService {
             ///////////////////// 验证数量 //////////////////////
             List<SKUModel> skus = skuDao.getByCommodityId(cid);
             SKUModel sku = WsUtil.getSku(skus, info);
-            Integer left;
+            Integer left = 0;
             if (sku != null) {
                 left = sku.getTotal() - sku.getBuys();
-            } else {
-                Integer tmp = commodityDao.getBuyCountFromNoneSpec(cid);
-                tmp = tmp == null? 0: tmp;
-                left = commodityModel.getTotal() - tmp;
             }
             if(left <= 0) {
                 throw new ServiceException("对不起，库存不足了");

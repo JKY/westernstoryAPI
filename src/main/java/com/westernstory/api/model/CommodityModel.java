@@ -27,7 +27,6 @@ public class CommodityModel implements Serializable {
     private String summary;
     private String content;
     private Long tag;
-    private int total;
 
     public Long getId() {
         return id;
@@ -155,14 +154,6 @@ public class CommodityModel implements Serializable {
 
     public void setDiscount(Float discount) {
         this.discount = discount;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
     }
 
     public List<SpecModel> getSpecs() {

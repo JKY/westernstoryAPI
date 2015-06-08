@@ -219,16 +219,12 @@ public class CommodityService {
 
             List<SKUModel> skus = skuDao.getByCommodityId(cid);
             SKUModel sku = WsUtil.getSku(skus, info);
-            Integer left;
+            Integer left = 0;
             if (sku != null) {
                 left = sku.getTotal() - sku.getBuys();
-            } else {
-                Integer tmp = commodityDao.getBuyCountFromNoneSpec(cid);
-                tmp = tmp == null? 0: tmp;
-                left = commodityModel.getTotal() - tmp;
-            }
-            if(left <= 0) {
-                left = 0;
+                if(left <= 0) {
+                    left = 0;
+                }
             }
             return left;
         } catch (Exception e) {

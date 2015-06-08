@@ -4,7 +4,7 @@
 <mapper namespace="com.westernstory.api.dao.CommodityDao">
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 	<select id="get" resultType="CommodityModel">
-		SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total
+		SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary
 		FROM Commodity
 		WHERE IsActive = 1 AND status = 1 AND CategoryId = #{categoryId}
 		ORDER BY CreateTime DESC
@@ -18,7 +18,7 @@
     </select>
 
     <select id="getByKeyword" resultType="CommodityModel">
-        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total
+        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary
 		FROM Commodity
 		WHERE IsActive = 1 AND status = 1
         <if test="keyword != null and keyword != ''">
@@ -38,7 +38,7 @@
     </select>
 
     <select id="getLatest" resultType="CommodityModel">
-        SELECT t1.Id, t1.`Name`, t1.CategoryId, t1.Price, t1.CreateTime, t1.Summary, t1.Total, t2.name AS tagName
+        SELECT t1.Id, t1.`Name`, t1.CategoryId, t1.Price, t1.CreateTime, t1.Summary, t2.name AS tagName
         FROM Commodity t1
         LEFT JOIN DictionaryEntry t2 ON t2.id = t1.tag
         WHERE t1.IsActive = 1 AND t1.status = 1
@@ -53,7 +53,7 @@
     </select>
 
     <select id="getById" resultType="CommodityModel">
-        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Total, Content
+        SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary, Content
 		FROM Commodity
 		WHERE IsActive = 1 AND status = 1 AND id = #{id}
 		Limit 1
@@ -87,17 +87,6 @@
         LEFT JOIN SpecEntry t2 ON t2.id = t1.specEntryId
         LEFT JOIN Spec t3 ON t3.id = t2.specId
         WHERE t1.commodityId = #{cid}
-    </select>
-
-    <select id="getBuyCountFromNoneSpec" resultType="int">
-        SELECT t1.buys FROM (
-          SELECT sum(total) AS buys,commodityId
-          FROM `Order`
-          WHERE status != 5
-          GROUP BY commodityId
-        ) t1
-        LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
-        WHERE t2.isActive = 1 AND t2.status = 1 AND t1.commodityId = #{commodityId}
     </select>
 
 </mapper>
