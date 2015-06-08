@@ -9,7 +9,7 @@
 		  t2.name AS commodityName, t2.summary AS commoditySummary
 		FROM `Order` t1
 		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
-		WHERE t1.isActive = 1 AND t2.isActive = 1
+		WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
 		ORDER BY t1.createTime DESC
 		LIMIT #{start},#{limit}
 	</select>
@@ -18,7 +18,7 @@
         SELECT count(1)
         FROM `Order` t1
         LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
-        WHERE t1.isActive = 1 AND t2.isActive = 1
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
     </select>
 
     <select id="getById" resultType="OrderModel">
