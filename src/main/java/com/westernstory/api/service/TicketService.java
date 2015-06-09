@@ -1,19 +1,23 @@
 package com.westernstory.api.service;
 
+import com.google.common.io.Files;
 import com.westernstory.api.config.Config;
 import com.westernstory.api.dao.TicketDao;
 import com.westernstory.api.model.TicketModel;
 import com.westernstory.api.model.UserTicketModel;
+import com.westernstory.api.util.Md5;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
+import net.glxn.qrgen.javase.QRCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -86,7 +90,7 @@ public class TicketService {
      * @param userId userId
      * @throws ServiceException
      */
-    public void doGainTicket(Long ticketId, Long userId) throws ServiceException {
+    public void addUserTicket(Long ticketId, Long userId) throws ServiceException {
         try {
             UserTicketModel userTicket = ticketDao.getUserTicket(ticketId, userId);
             if (userTicket != null) {
@@ -98,7 +102,83 @@ public class TicketService {
             if(count >= ticket.getTotal()) {
                 throw new ServiceException("优惠券已领完");
             }
-            ticketDao.gain(ticketId, userId);
+
+            String qrURL = Config.URL_ROOT + "ticket/scan?" +
+                    "tid=" + ticketId +
+                    "&uid=" + userId +
+                    "&token=" + Md5.toMD5(ticketId+"#"+userId+"#"+Config.WEB_KEY);
+            File qrcodeFile = QRCode.from(qrURL).file();
+            byte[] qrcodeData = Files.toByteArray(qrcodeFile);
+
+            // generate QRCode file
+            String savePath = Config.PATH_UPLOAD + "/";
+            String saveUrl = Config.FOLDER_UPLOAD + "/";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String ymd = sdf.format(new Date());
+            savePath += ymd + "/";
+            saveUrl += ymd + "/";
+            File dirFile = new File(savePath);
+            if (!dirFile.exists()) {
+                boolean is = dirFile.mkdirs();
+                if (!is) {
+                    throw new ServiceException("创建dir失败");
+                }
+            }
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+            String fileName = df.format(new Date()) + "_" + new Random().nextInt(1000) + ".jpg";
+
+            FileOutputStream fos = new FileOutputStream(new File(savePath, fileName));
+            fos.write(qrcodeData, 0, qrcodeData.length);
+            fos.flush();
+            fos.close();
+
+            // 新增领取
+            UserTicketModel userTicketModel = new UserTicketModel();
+            userTicketModel.setTotal(1);
+            userTicketModel.setUserId(userId);
+            userTicketModel.setTicketId(ticketId);
+            userTicketModel.setIsUsed(false);
+            userTicketModel.setQrCode(saveUrl + fileName);
+
+            ticketDao.addUserTicket(userTicketModel);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 获取我的优惠券详情
+     * @param id id
+     * @return UserTicketModel
+     * @throws ServiceException
+     */
+    public UserTicketModel getMyTicketDetail(Long id) throws ServiceException {
+        try {
+            UserTicketModel m = ticketDao.getMyTicketDetail(id);
+            if (m.getQrCode() != null) {
+                if (!WsUtil.isEmpty(m.getQrCode())) {
+                    m.setQrCode(Config.URL_STATIC + m.getQrCode());
+                }
+            }
+            return m;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 过userId、ticketId获取用户的优惠券，并且更新为已经使用
+     * @param ticketId ticketId
+     * @param userId userId
+     * @throws ServiceException
+     */
+    public void doIdentify(Long ticketId, Long userId) throws ServiceException {
+        try {
+            ticketDao.updateUseTicket(userId, ticketId);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

@@ -8,7 +8,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
@@ -311,5 +313,46 @@ public class WsUtil {
 
     public static String getUniqNumber(Long userId) {
         return System.currentTimeMillis() + "_" + userId;
+    }
+
+
+    /**
+     * 获取本地Token
+     * @param request request
+     * @return json
+     */
+    public static String getCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        String cookieValue = null;
+        if(cookies != null) {
+            Cookie cookie = null;
+            for (Cookie c : cookies) {
+                if (cookieName.equals(c.getName())) {
+                    cookie = c;
+                    break;
+                }
+            }
+            if (cookie != null) {
+                cookieValue = cookie.getValue();
+            }
+        }
+        return cookieValue;
+    }
+
+    /**
+     * 设置cookie
+     * @param key key
+     * @param value value
+     * @param response response
+     * @param age age
+     * @throws Exception
+     */
+    public static void setCookie(String key, String value, HttpServletResponse response, int age) {
+        Cookie usercookie = new Cookie(key, value);
+        if(age != 0) {
+            usercookie.setMaxAge(age);
+        }
+        usercookie.setPath("/");
+        response.addCookie(usercookie);
     }
 }

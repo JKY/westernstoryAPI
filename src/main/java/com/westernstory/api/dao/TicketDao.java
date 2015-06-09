@@ -82,4 +82,27 @@ public interface TicketDao {
      * @throws Exception
      */
     UserTicketModel getUserTicket(@Param("ticketId")Long ticketId, @Param("userId")Long userId) throws Exception;
+
+    /**
+     * 领取优惠券
+     * @param userTicketModel userTicketModel
+     * @throws Exception
+     */
+    int addUserTicket(UserTicketModel userTicketModel) throws Exception;
+
+    /**
+     * 获取我的优惠券详情
+     * @param id id
+     * @return UserTicketModel
+     * @throws Exception
+     */
+    UserTicketModel getMyTicketDetail(Long id) throws Exception;
+
+    /**
+     * 通过userId、ticketId获取用户的优惠券，并且更新为已经使用
+     * @param userId userId
+     * @param ticketId ticketId
+     * @throws Exception
+     */
+    void updateUseTicket(@Param("userId")Long userId, @Param("ticketId")Long ticketId) throws Exception;
 }

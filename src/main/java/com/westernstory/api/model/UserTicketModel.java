@@ -7,16 +7,20 @@ public class UserTicketModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-    private Integer discount;
+    //
+    private Long startTime;
+    private Long endTime;
     private String thumbnail;
-    private Integer total;
     private String address;
-    private Long fromTime;
-    private Long toTime;
-    private Long createBy;
+    private String summary;
+
+    private Long id;
+    private Long userId;
+    private Long ticketId;
+    private Integer total;
+    private Boolean isUsed;
+    private Boolean isActive;
     private Long createTime;
-    private Long updateBy;
     private Long updateTime;
     private String qrCode;
 
@@ -28,20 +32,21 @@ public class UserTicketModel implements Serializable {
         this.id = id;
     }
 
-    public Integer getDiscount() {
-        return discount;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDiscount(Integer discount) {
-        this.discount = discount;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public Long getTicketId() {
+
+        return ticketId;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 
     public Integer getTotal() {
@@ -52,36 +57,20 @@ public class UserTicketModel implements Serializable {
         this.total = total;
     }
 
-    public String getAddress() {
-        return address;
+    public Boolean getIsUsed() {
+        return isUsed;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setIsUsed(Boolean isUsed) {
+        this.isUsed = isUsed;
     }
 
-    public Long getFromTime() {
-        return fromTime;
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setFromTime(Long fromTime) {
-        this.fromTime = fromTime;
-    }
-
-    public Long getToTime() {
-        return toTime;
-    }
-
-    public void setToTime(Long toTime) {
-        this.toTime = toTime;
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Long getCreateTime() {
@@ -90,14 +79,6 @@ public class UserTicketModel implements Serializable {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
     }
 
     public Long getUpdateTime() {
@@ -116,14 +97,43 @@ public class UserTicketModel implements Serializable {
         this.qrCode = qrCode;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public Long getStartTime() {
+        return startTime;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
     }
 
-    private Boolean isActive;
+    public Long getEndTime() {
+        return endTime;
+    }
 
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 }
