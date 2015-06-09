@@ -59,4 +59,11 @@ public interface CartDao {
      * @throws Exception
      */
     CartModel getById(@Param("id")Long id) throws Exception;
+    /**
+    * 购物车商品数量
+    * @param userId userId
+    * @return count
+    * @throws Exception
+    */
+    Integer countByUser(@Param("userId")Long userId) throws Exception;
 }

@@ -1,9 +1,6 @@
 package com.westernstory.api.service;
 
-import com.westernstory.api.dao.MsgDao;
-import com.westernstory.api.dao.OrderDao;
-import com.westernstory.api.dao.TicketDao;
-import com.westernstory.api.dao.UserInfoDao;
+import com.westernstory.api.dao.*;
 import com.westernstory.api.model.UserInfoModel;
 import com.westernstory.api.util.Md5;
 import com.westernstory.api.util.ServiceException;
@@ -29,6 +26,8 @@ public class UserInfoService {
     private OrderDao orderDao = null;
     @Autowired
     private TicketDao ticketDao = null;
+    @Autowired
+    private CartDao cartDao = null;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -132,6 +131,8 @@ public class UserInfoService {
                 map.put("order", orderDao.countProcessingOrders(userId));
                 // 优惠券
                 map.put("ticket", ticketDao.countUnusedTickets(userId));
+                // 购物车
+                map.put("cart", cartDao.countByUser(userId));
             }
             return map;
         } catch (Exception e) {

@@ -55,4 +55,8 @@
     <update id="removeAll">
         UPDATE Cart SET isActive = 0 WHERE userId = #{userId}
     </update>
+
+    <select id="countByUser" resultType="int">
+        SELECT COUNT(1) FROM Cart WHERE userId = #{userId} AND isActive = 1
+    </select>
 </mapper>

@@ -13,9 +13,9 @@ public class Config {
 
     public static final String COOKIE_TICKET_VENDOR_PASS = "369821";
 
-    public static final String URL_ROOT = "http://120.26.115.144:8080/wsapi/"; // API根路径
+    public static final String URL_ROOT = "http://127.0.0.1:8080/wsapi/"; // API根路径
 
-    public static final String URL_STATIC_NOSLASH = "http://120.26.115.144:808"; // 图片根路径
+    public static final String URL_STATIC_NOSLASH = "http://127.0.0.1/static"; // 图片根路径
 
     public static final String URL_STATIC = URL_STATIC_NOSLASH + "/"; // 图片根路径
 
