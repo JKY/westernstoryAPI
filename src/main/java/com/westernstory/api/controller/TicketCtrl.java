@@ -133,7 +133,7 @@ public class TicketCtrl {
                 request.setAttribute("uid", userIdStr);
                 request.setAttribute("tid", ticketIdStr);
                 request.setAttribute("token", token);
-                request.setAttribute("ticket", ticketService.getMyTicketDetail(ticketId));
+                request.setAttribute("ticket", ticketService.getMyTicketDetail(userId, ticketId));
                 return "ticket_identity_form";
             }
         } catch (ServiceException e) {

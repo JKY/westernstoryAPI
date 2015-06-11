@@ -175,6 +175,32 @@ public class TicketService {
     }
 
     /**
+     * 获取我的优惠券详情，通过userid、ticketid
+     * @param userId userId
+     * @param ticketId ticketId
+     * @return UserTicketModel
+     * @throws ServiceException
+     */
+    public UserTicketModel getMyTicketDetail(Long userId, Long ticketId) throws ServiceException {
+        try {
+            UserTicketModel m = ticketDao.getMyTicketDetailByUserIdTicketId(userId, ticketId);
+            if (m == null) {
+                throw new ServiceException("未找到对应的优惠券");
+            }
+            if (m.getQrCode() != null) {
+                if (!WsUtil.isEmpty(m.getQrCode())) {
+                    m.setQrCode(Config.URL_STATIC + m.getQrCode());
+                }
+            }
+            return m;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
      * 过userId、ticketId获取用户的优惠券，并且更新为已经使用
      * @param ticketId ticketId
      * @param userId userId

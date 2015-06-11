@@ -106,5 +106,20 @@ public interface TicketDao {
      */
     void updateUseTicket(@Param("userId")Long userId, @Param("ticketId")Long ticketId) throws Exception;
 
+    /**
+     * 获取优惠券密码
+     * @param ticketId ticketId
+     * @return password
+     * @throws Exception
+     */
     String getTicketPassword(@Param("ticketId")Long ticketId) throws Exception;
+
+    /**
+     * 获取我的优惠券详情，通过userid、ticketid
+     * @param userId userId
+     * @param ticketId ticketId
+     * @return UserTicketModel
+     * @throws Exception
+     */
+    UserTicketModel getMyTicketDetailByUserIdTicketId(@Param("userId")Long userId, @Param("ticketId")Long ticketId) throws Exception;
 }

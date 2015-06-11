@@ -108,6 +108,15 @@
         Limit 1
     </select>
 
+    <select id="getMyTicketDetailByUserIdTicketId" resultType="UserTicketModel">
+        SELECT t1.UserId, t1.TicketId, t1.Total, t1.IsUsed, t1.CreateTime, t1.qrCode,
+          t2.startTime, t2.endTime, t2.Thumbnail, t2.Address, t2.summary, t2.name
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId} AND t1.ticketId = #{ticketId}
+        Limit 1
+    </select>
+
     <update id="updateUseTicket">
         UPDATE UserTicket
         SET isUsed = 1
