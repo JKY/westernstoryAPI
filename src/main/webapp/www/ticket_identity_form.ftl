@@ -19,8 +19,10 @@
             overflow-y: auto;
         }
         .container {
-            margin: 60px 24px;
+            margin: 60px 4%;
             color: #fff;
+            border: 1px solid #fff;
+            padding: 12px;
         }
         form {
             width: 100%;
@@ -33,29 +35,57 @@
             font-size: 1.2em;
             margin-bottom: 24px;
         }
-        form input {
-            width: 100%;
-            padding: 0 12px;
-        }
         form .password,
         form .submit{
             border: 0;
             height: 32px;
         }
+
+        .ticket-wrap {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .ticket-wrap .name {
+            font-weight: bold;
+        }
         form .submit{
-            margin-top: 24px;
             background-color: #48ad2c;
             border: 1px solid #fff;
             color: #fff;
+            width: 80px;
+            height: 40px;
+            border-radius: 20px;
+            position: absolute;
+            left: 50%;
+            margin-left: -40px;
+        }
+        form .password {
+            width: 96%;
+            padding: 0 2%;
+        }
+        .submit-wrap {
+            position: relative;
+            height: 48px;
+            margin-top: 16px;
         }
     </style>
 </head>
 <body>
 	<div id="content" class="container">
+        <div class="ticket-wrap">
+            <div class="name">${ticket.name}</div>
+            <div class="address">${ticket.address}</div>
+            <div class="time">
+                ${ticket.startTime?number_to_datetime?string("yyyy年MM月dd日")}
+                    -
+                ${ticket.endTime?number_to_datetime?string("yyyy年MM月dd日")}
+            </div>
+        </div>
 		<form action="identify" method="POST">
-            <div class="item title">请输入密码：</div>
-            <div class="item"><input class="password" type="password" name="password"/></div>
-            <div class="item"><input class="submit" type="submit" value="确定"/></div>
+            <input class="password" type="password" name="password" placeholder="请输入密码"/>
+            <div class="submit-wrap">
+                <input class="submit" type="submit" value="确定"/>
+            </div>
 
             <input type="hidden" name="tid" value="${tid}"/>
             <input type="hidden" name="uid" value="${uid}"/>

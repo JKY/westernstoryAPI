@@ -13,6 +13,7 @@ public class UserTicketModel implements Serializable {
     private String thumbnail;
     private String address;
     private String summary;
+    private String name;
 
     private Long id;
     private Long userId;
@@ -131,6 +132,14 @@ public class UserTicketModel implements Serializable {
 
     public String getSummary() {
         return summary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setSummary(String summary) {

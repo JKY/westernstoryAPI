@@ -101,7 +101,7 @@
 
     <select id="getMyTicketDetail" resultType="UserTicketModel">
         SELECT t1.UserId, t1.TicketId, t1.Total, t1.IsUsed, t1.CreateTime, t1.qrCode,
-          t2.startTime, t2.endTime, t2.Thumbnail, t2.Address, t2.summary
+          t2.startTime, t2.endTime, t2.Thumbnail, t2.Address, t2.summary, t2.name
         FROM UserTicket t1
         LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
         WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.id = #{id}
@@ -113,4 +113,8 @@
         SET isUsed = 1
         WHERE userId = #{userId} AND ticketId = #{ticketId}
     </update>
+
+    <select id="getTicketPassword" resultType="string">
+        SELECT password FROM Ticket WHERE id = #{ticketId}
+    </select>
 </mapper>

@@ -158,6 +158,9 @@ public class TicketService {
     public UserTicketModel getMyTicketDetail(Long id) throws ServiceException {
         try {
             UserTicketModel m = ticketDao.getMyTicketDetail(id);
+            if (m == null) {
+                throw new ServiceException("未找到对应的优惠券");
+            }
             if (m.getQrCode() != null) {
                 if (!WsUtil.isEmpty(m.getQrCode())) {
                     m.setQrCode(Config.URL_STATIC + m.getQrCode());
@@ -180,6 +183,22 @@ public class TicketService {
     public void doIdentify(Long ticketId, Long userId) throws ServiceException {
         try {
             ticketDao.updateUseTicket(userId, ticketId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 通过优惠券id获取密码
+     * @param ticketId ticketId
+     * @return password
+     * @throws ServiceException
+     */
+    public String getTicketPassword(Long ticketId) throws ServiceException {
+        try {
+            return ticketDao.getTicketPassword(ticketId);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

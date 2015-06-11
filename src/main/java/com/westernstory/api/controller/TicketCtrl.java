@@ -1,6 +1,8 @@
 package com.westernstory.api.controller;
 
 import com.westernstory.api.config.Config;
+import com.westernstory.api.model.TicketModel;
+import com.westernstory.api.model.UserTicketModel;
 import com.westernstory.api.service.TicketService;
 import com.westernstory.api.util.Md5;
 import com.westernstory.api.util.Response;
@@ -107,6 +109,7 @@ public class TicketCtrl {
         String token = request.getParameter("token");
 
         try {
+
             if(WsUtil.isEmpty(userIdStr) || WsUtil.isEmpty(ticketIdStr) || WsUtil.isEmpty(token)) {
                 request.setAttribute("e", "无效的参数");
                 return "ticket_identity_result";
@@ -117,15 +120,20 @@ public class TicketCtrl {
                 return "ticket_identity_result";
             }
 
+            Long ticketId = Long.valueOf(ticketIdStr);
+            Long userId = Long.valueOf(userIdStr);
+
+            String password = ticketService.getTicketPassword(ticketId);
             String cookieValue = WsUtil.getCookie(request, Config.COOKIE_TICKET_IDENTIFY);
-            if (cookieValue != null) {
-                ticketService.doIdentify(Long.valueOf(userIdStr), Long.valueOf(ticketIdStr));
+            if (cookieValue != null && cookieValue.equals(Md5.toMD5(password))) {
+                ticketService.doIdentify(userId, ticketId);
                 return "ticket_identity_result";
             } else {
                 // 输入密码
                 request.setAttribute("uid", userIdStr);
                 request.setAttribute("tid", ticketIdStr);
                 request.setAttribute("token", token);
+                request.setAttribute("ticket", ticketService.getMyTicketDetail(ticketId));
                 return "ticket_identity_form";
             }
         } catch (ServiceException e) {
@@ -158,14 +166,18 @@ public class TicketCtrl {
                 return "ticket_identity_result";
             }
 
-            if(!password.equals(Config.COOKIE_TICKET_VENDOR_PASS)) {
+            Long ticketId = Long.valueOf(ticketIdStr);
+            Long userId = Long.valueOf(userIdStr);
+
+            String realPassword = ticketService.getTicketPassword(ticketId);
+            if(!password.equals(realPassword)) {
                 request.setAttribute("e", "密码不正确");
                 return "ticket_identity_result";
             }
 
-            ticketService.doIdentify(Long.valueOf(userIdStr), Long.valueOf(ticketIdStr));
-
-            WsUtil.setCookie(Config.COOKIE_TICKET_IDENTIFY, Config.COOKIE_TICKET_VENDOR_PASS, response, 3600 * 24);
+            ticketService.doIdentify(userId, ticketId);
+            // 存入cookie
+            WsUtil.setCookie(Config.COOKIE_TICKET_IDENTIFY, Md5.toMD5(password), response, 3600 * 24);
             return "ticket_identity_result";
         } catch (ServiceException e) {
             request.setAttribute("e", e.getMessage());

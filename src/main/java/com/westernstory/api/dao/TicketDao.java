@@ -105,4 +105,6 @@ public interface TicketDao {
      * @throws Exception
      */
     void updateUseTicket(@Param("userId")Long userId, @Param("ticketId")Long ticketId) throws Exception;
+
+    String getTicketPassword(@Param("ticketId")Long ticketId) throws Exception;
 }
