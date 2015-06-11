@@ -27,14 +27,7 @@
         form {
             width: 100%;
         }
-        form .item {
-            padding: 0 10%;
-        }
-        form .title {
-            text-align: center;
-            font-size: 1.2em;
-            margin-bottom: 24px;
-        }
+
         form .password,
         form .submit{
             border: 0;
@@ -44,10 +37,15 @@
         .ticket-wrap {
             text-align: center;
             margin-bottom: 16px;
+            line-height: 2em;
         }
         .ticket-wrap .name {
             font-weight: bold;
         }
+        .ticket-wrap .time {
+            font-size: 0.8em;
+        }
+
         form .submit{
             background-color: #48ad2c;
             border: 1px solid #fff;
