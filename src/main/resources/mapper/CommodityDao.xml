@@ -21,6 +21,9 @@
         SELECT Id, `Name`, CategoryId, Price, CreateTime, Summary
 		FROM Commodity
 		WHERE IsActive = 1 AND status = 1
+        <if test="categoryId != null and categoryId != ''">
+            AND categoryId = #{categoryId}
+        </if>
         <if test="keyword != null and keyword != ''">
             AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
         </if>
@@ -32,6 +35,9 @@
         SELECT count(1)
 		FROM Commodity
 		WHERE IsActive = 1 AND status = 1
+        <if test="categoryId != null and categoryId != ''">
+            AND categoryId = #{categoryId}
+        </if>
         <if test="keyword != null and keyword != ''">
             AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
         </if>

@@ -65,11 +65,11 @@ public class CommodityService {
      * @param limit limit
      * @return List<CommodityModel>
      */
-    public  Map<String, Object> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
+    public  Map<String, Object> getByKeyword(Long categoryId, String keyword, Integer start, Integer limit) throws ServiceException {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
 
-            List<CommodityModel> list = commodityDao.getByKeyword(keyword, start, limit);
+            List<CommodityModel> list = commodityDao.getByKeyword(categoryId, keyword, start, limit);
             for (CommodityModel model : list) {
                 CommodityImageModel thumbnail = commodityDao.getThumbnail(model.getId());
                 if (thumbnail != null) {
@@ -77,7 +77,7 @@ public class CommodityService {
                 }
             }
             map.put("items", list);
-            map.put("count", commodityDao.countByKeyword(keyword));
+            map.put("count", commodityDao.countByKeyword(categoryId, keyword));
             return map;
         } catch (Exception e) {
             e.printStackTrace();

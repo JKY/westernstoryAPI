@@ -9,6 +9,7 @@ public class TicketModel implements Serializable {
 
     //
     private Long ticketId;
+    private Integer sum;
 
     private Long id;
     private String name;
@@ -134,5 +135,13 @@ public class TicketModel implements Serializable {
 
     public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
+    }
+
+    public Integer getSum() {
+        return sum;
+    }
+
+    public void setSum(Integer sum) {
+        this.sum = sum;
     }
 }

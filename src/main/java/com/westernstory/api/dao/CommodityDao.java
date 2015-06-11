@@ -28,7 +28,7 @@ public interface CommodityDao {
      * @return List<CommodityModel>
      * @throws Exception
      */
-    List<CommodityModel> getByKeyword(@Param("keyword")String keyword, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<CommodityModel> getByKeyword(@Param("categoryId") Long categoryId, @Param("keyword")String keyword, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
 
     /**
      * 探索最新商品
@@ -99,7 +99,7 @@ public interface CommodityDao {
      * @return long
      * @throws Exception
      */
-    Long countByKeyword(@Param("keyword")String keyword) throws Exception;
+    Long countByKeyword(@Param("categoryId")Long categoryId, @Param("keyword")String keyword) throws Exception;
 
     /**
      * 获取最新商品总数

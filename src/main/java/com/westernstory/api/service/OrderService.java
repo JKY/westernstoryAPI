@@ -80,6 +80,9 @@ public class OrderService {
     public OrderModel getDetail(Integer id) throws ServiceException {
         try {
             OrderModel order = orderDao.getById(id);
+            if (order == null) {
+                throw new ServiceException("未找到该订单");
+            }
             String info = order.getInfo();
 
             if (!WsUtil.isEmpty(info)) {

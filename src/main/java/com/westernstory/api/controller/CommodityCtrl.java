@@ -81,6 +81,7 @@ public class CommodityCtrl {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public @ResponseBody Response search(@RequestParam(value = "keyword", required = false) String keyword,
+                                         @RequestParam(value = "categoryId", required = false) Long categoryId,
                                          @RequestParam(value = "page", required = false) Integer page,
                                          @RequestParam(value = "limit", required = false) Integer limit) {
         try {
@@ -91,7 +92,7 @@ public class CommodityCtrl {
                 limit = 10;
             }
             Integer start = (page - 1) * limit;
-            return new Response(true, commodityService.getByKeyword(keyword, start, limit));
+            return new Response(true, commodityService.getByKeyword(categoryId, keyword, start, limit));
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }

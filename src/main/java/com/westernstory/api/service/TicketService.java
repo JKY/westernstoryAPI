@@ -45,6 +45,7 @@ public class TicketService {
                 if (!WsUtil.isEmpty(model.getThumbnail())) {
                     model.setThumbnail(Config.URL_STATIC + model.getThumbnail());
                 }
+                model.setTotal(model.getTotal() - model.getSum());
             }
             map.put("items", list);
             map.put("count", ticketDao.count(keyword));

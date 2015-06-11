@@ -5,16 +5,20 @@
 	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
 
 	<select id="list" resultType="TicketModel">
-		SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, summary
-		FROM Ticket
-		WHERE isActive = 1
+		SELECT t1.id, t1.name, t1.thumbnail, t1.total, t1.address,
+          t1.startTime, t1.endTime, t1.createTime, t1.summary, t2.sum
+		FROM Ticket t1
+        LEFT JOIN (
+          SELECT sum(total) `sum`, ticketId FROM UserTicket WHERE isActive = 1 GROUP BY ticketId
+        ) t2 ON t2.ticketId = t1.id
+		WHERE t1.isActive = 1 AND t1.total != t2.sum
 		  <![CDATA[
             AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
 		  ]]>
         <if test="keyword != null and keyword != ''">
-            AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+            AND (t1.`Name` LIKE "%"#{keyword}"%" OR t1.Summary LIKE "%"#{keyword}"%")
         </if>
-		ORDER BY startTime DESC
+		ORDER BY t1.startTime DESC
 		Limit #{start}, #{limit}
 	</select>
 
