@@ -70,7 +70,11 @@ public class AddressService {
      */
     public void update(AddressModel address) throws ServiceException {
         try {
-            addressDao.clearDefault(address.getUserId());
+            AddressModel addressModel = addressDao.getById(address.getId());
+            if (addressModel == null) {
+                throw new ServiceException("地址未找到");
+            }
+            addressDao.clearDefault(addressModel.getUserId());
             addressDao.update(address);
         } catch (Exception e) {
             e.printStackTrace();
