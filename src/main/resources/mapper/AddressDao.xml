@@ -26,7 +26,8 @@
     </insert>
 
     <update id="update">
-        UPDATE Address SET address = #{address}, name = #{name}, mobile = #{mobile}, updateTime = (select UNIX_TIMESTAMP(NOW()) * 1000)
+        UPDATE Address SET address = #{address}, name = #{name}, mobile = #{mobile}, isDefault = #{isDefault},
+        updateTime = (select UNIX_TIMESTAMP(NOW()) * 1000)
         WHERE id = #{id}
     </update>
 

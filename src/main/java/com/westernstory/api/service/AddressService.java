@@ -70,6 +70,7 @@ public class AddressService {
      */
     public void update(AddressModel address) throws ServiceException {
         try {
+            addressDao.clearDefault(address.getUserId());
             addressDao.update(address);
         } catch (Exception e) {
             e.printStackTrace();

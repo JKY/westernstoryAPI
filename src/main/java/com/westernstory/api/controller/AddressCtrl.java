@@ -64,7 +64,8 @@ public class AddressCtrl {
         if(WsUtil.isEmpty(address.getId())
                 || WsUtil.isEmpty(address.getAddress())
                 || WsUtil.isEmpty(address.getMobile())
-                || WsUtil.isEmpty(address.getName())) {
+                || WsUtil.isEmpty(address.getName())
+                || WsUtil.isEmpty(address.getIsDefault())) {
             return new Response(false, "invalid params");
         }
         try {
