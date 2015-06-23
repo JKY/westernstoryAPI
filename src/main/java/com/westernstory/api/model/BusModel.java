@@ -15,6 +15,7 @@ public class BusModel implements Serializable {
     private Long createTime;
     private Long updateBy;
     private Long updateTime;
+    private String phone;
 
     public Long getId() {
         return id;
@@ -80,4 +81,11 @@ public class BusModel implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
