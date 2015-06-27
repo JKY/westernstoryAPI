@@ -1,6 +1,7 @@
 package com.westernstory.api.controller;
 
 import com.westernstory.api.service.MsgService;
+import com.westernstory.api.util.JPush;
 import com.westernstory.api.util.Response;
 import com.westernstory.api.util.ServiceException;
 import com.westernstory.api.util.WsUtil;
@@ -77,5 +78,16 @@ public class MsgCtrl {
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
         }
+    }
+
+    /**
+     * 测试推送消息
+     * @param title title
+     * @return json
+     */
+    @RequestMapping(value = "/push", method = RequestMethod.POST)
+    public @ResponseBody Response push(@RequestParam(value = "title", required = true) String title) {
+        JPush.push(title, JPush.TYPE_MSG, 1000L);
+        return new Response(true, "ok");
     }
 }
