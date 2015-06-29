@@ -46,7 +46,7 @@ public class CartService {
                     model.setCommodityThumbnail(Config.URL_STATIC + thumbnail.getImage());
                 }
                 // TODO discount
-                model.setDiscount(0f);
+                model.setDiscount(20f);
             }
             return list;
         } catch (Exception e) {
