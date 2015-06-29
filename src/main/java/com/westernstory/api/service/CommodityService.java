@@ -161,6 +161,10 @@ public class CommodityService {
                 model.setSpecs(specResult);
             }
 
+            if(model.getDiscount() == null) {
+                model.setDiscount(0.0f);
+            }
+
             // 商品图片
             List<CommodityImageModel> images = commodityDao.getImages(model.getId());
             for (CommodityImageModel image : images) {
