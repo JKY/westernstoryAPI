@@ -1,7 +1,6 @@
 package com.westernstory.api.util;
 
 import com.westernstory.api.config.Config;
-import com.westernstory.api.model.CommoditySpecModel;
 import com.westernstory.api.model.SKUModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -280,36 +279,36 @@ public class WsUtil {
         return model;
     }
 
-    /**
-     * info是否在规格列表中正确存在
-     * @param info info
-     * @param specs specs
-     * @return boolean
-     */
-    public static boolean isCorrectSpec(String info, List<CommoditySpecModel> specs) {
-        List<Long> infoArray = WsUtil.getInfoList(info);
-        if(infoArray.size() != specs.size()) {
-            return false;
-        }
-
-        List<Long> infoList = new ArrayList<Long>();
-        for (Long tmp : infoArray) {
-            boolean has = false;
-            for (CommoditySpecModel spec : specs) {
-                if(spec.getSpecEntryId().equals(tmp)) {
-                    has = true;
-                    break;
-                }
-            }
-            if(has && !infoList.contains(tmp)) {
-                infoList.add(tmp);
-            }
-        }
-        if (infoList.size() != specs.size()) {
-            return false;
-        }
-        return true;
-    }
+//    /**
+//     * info是否在规格列表中正确存在
+//     * @param info info
+//     * @param specs specs
+//     * @return boolean
+//     */
+//    public static boolean isCorrectSpec(String info, List<CommoditySpecModel> specs) {
+//        List<Long> infoArray = WsUtil.getInfoList(info);
+//        if(infoArray.size() != specs.size()) {
+//            return false;
+//        }
+//
+//        List<Long> infoList = new ArrayList<Long>();
+//        for (Long tmp : infoArray) {
+//            boolean has = false;
+//            for (CommoditySpecModel spec : specs) {
+//                if(spec.getSpecEntryId().equals(tmp)) {
+//                    has = true;
+//                    break;
+//                }
+//            }
+//            if(has && !infoList.contains(tmp)) {
+//                infoList.add(tmp);
+//            }
+//        }
+//        if (infoList.size() != specs.size()) {
+//            return false;
+//        }
+//        return true;
+//    }
 
     public static String getUniqNumber(Long userId) {
         return System.currentTimeMillis() + "_" + userId;

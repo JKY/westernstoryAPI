@@ -131,26 +131,22 @@ public class OrderService {
 
             // 获取info
             String info = order.getInfo();
-            if (!WsUtil.isEmpty(info)) {
-                List<CommoditySpecModel> specs = commodityDao.getSpec(cid);
-                if(WsUtil.isCorrectSpec(info, specs)) {
-                    order.setInfo(info);
-                } else {
-                    order.setInfo(null);
-                }
-            }
-
             ///////////////////// 验证数量 //////////////////////
             List<SKUModel> skus = skuDao.getByCommodityId(cid);
             SKUModel sku = WsUtil.getSku(skus, info);
-            Integer left = 0;
-            if (sku != null) {
-                left = sku.getTotal() - sku.getBuys();
+            if(sku == null) {
+                throw new ServiceException("错误的规格信息");
             }
+
+            Integer left = sku.getTotal() - sku.getBuys();
             if(left <= 0) {
+                throw new ServiceException("对不起，库存数量超限了");
+            }
+            if(order.getTotal() > left) {
                 throw new ServiceException("对不起，库存不足了");
             }
 
+            order.setInfo(info);
             order.setNumber(WsUtil.getUniqNumber(order.getUserId()));
             order.setIsPaid(false); // TODO
             order.setStatus(OrderModel.STATUS_ADD);
