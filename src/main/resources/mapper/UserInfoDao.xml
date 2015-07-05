@@ -46,4 +46,10 @@
         UPDATE UserInfo SET vcode = #{vcode}, updateTime = (select UNIX_TIMESTAMP(NOW()) * 1000)
         WHERE mobile = #{mobile}
     </update>
+
+    <select id="getUserByMobileVcode" resultType="UserInfoModel">
+        SELECT id, userName, nickName, vcode
+        FROM UserInfo
+        WHERE mobile = #{mobile} AND vcode = #{vcode}
+    </select>
 </mapper>

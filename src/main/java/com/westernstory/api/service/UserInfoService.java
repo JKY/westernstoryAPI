@@ -166,4 +166,26 @@ public class UserInfoService {
             throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
         }
     }
+
+    /**
+     * 根据用户名验证码获取用户
+     * @param mobile mobile
+     * @param vcode vcode
+     * @return UserInfoModel
+     * @throws ServiceException
+     */
+    public UserInfoModel getUserByMobileVcode(String mobile, String vcode) throws ServiceException {
+
+        try {
+            UserInfoModel userinfo = userInfoDao.getUserByMobileVcode(mobile, vcode);
+            if(userinfo == null) {
+                throw new ServiceException("验证码错误");
+            }
+            return userinfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
 }

@@ -61,4 +61,13 @@ public interface UserInfoDao {
      * @throws Exception
      */
     void makeVcode(@Param("mobile") String mobile, @Param("vcode") String vcode) throws Exception;
+
+    /**
+     *根据用户名验证码获取用户
+     * @param mobile mobile
+     * @param vcode vcode
+     * @return UserInfoModel
+     * @throws Exception
+     */
+    UserInfoModel getUserByMobileVcode(@Param("mobile") String mobile, @Param("vcode") String vcode) throws Exception;
 }

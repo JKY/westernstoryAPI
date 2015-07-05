@@ -145,4 +145,24 @@ public class UserDoorCtrl {
             return new Response(false, e.getMessage());
         }
     }
+
+    /**
+     * 个人中心badge 各种数量值
+     * @return json
+     */
+    @RequestMapping(value = "/checkvcode", method = RequestMethod.GET)
+    public @ResponseBody Response checkvcode(@RequestParam(value = "mobile", required = true) String mobile,
+                                             @RequestParam(value = "vcode", required = true) String vcode) {
+
+        try {
+            UserInfoModel userinfo = userInfoService.getUserByMobileVcode(mobile, vcode);
+            if (userinfo != null) {
+                return new Response(true, "ok");
+            } else {
+                return new Response(false, "failed");
+            }
+        } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
 }
