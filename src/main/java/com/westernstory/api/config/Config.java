@@ -7,6 +7,12 @@ public class Config {
 
     public static final String WEB_KEY = "43869527";
 
+    public static final String SMS_URL_ROOT = "http://114.255.71.158:8061/";
+    public static final String SMS_USERNAME = "xswl";
+    public static final String SMS_PASSWORD = "xswl123";
+    public static final String SMS_EPID = "120316";
+    public static final String SMS_SIGN = "【晓事科技】";
+
     public static final String FOLDER_UPLOAD = "upload";
 
     public static final String COOKIE_TICKET_IDENTIFY = "westernstory_ticket_identity";

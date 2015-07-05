@@ -354,4 +354,13 @@ public class WsUtil {
         usercookie.setPath("/");
         response.addCookie(usercookie);
     }
+
+    /**
+     * wrap SMS message
+     * @param content content
+     * @return string
+     */
+    public static String smsContent(String content) {
+        return Config.SMS_SIGN + content;
+    }
 }

@@ -12,6 +12,7 @@ public class UserInfoModel implements Serializable {
     private Long id;
     private String userName;
     private String password;
+    private String mobile;
     private String email;
     private String nickName;
     private Boolean isActive;
@@ -20,6 +21,7 @@ public class UserInfoModel implements Serializable {
     private Long lastLoginTime;
     private String lastLoginIp;
     private int credit;
+    private String vcode;
 
     public Long getId() {
         return id;
@@ -105,10 +107,26 @@ public class UserInfoModel implements Serializable {
         this.credit = credit;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public void setIsActive(Boolean isActive) {
 
 
         this.isActive = isActive;
 
+    }
+
+    public String getVcode() {
+        return vcode;
+    }
+
+    public void setVcode(String vcode) {
+        this.vcode = vcode;
     }
 }

@@ -12,10 +12,10 @@
 
     <insert id="add" parameterType="UserInfoModel">
         INSERT INTO WesternStory.UserInfo (
-          userName, password, nickName, isActive, isLocked, lastLoginIp, credit,
+          userName, password, nickName, mobile, isActive, isLocked, lastLoginIp, credit,
           createTime, lastLoginTime)
         VALUES (
-          #{userName}, #{password}, #{nickName}, 1, 0, #{lastLoginIp}, 0,
+          #{userName}, #{password}, #{nickName}, #{mobile}, 1, 0, #{lastLoginIp}, 0,
           (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000))
         <selectKey keyProperty="id" resultType="long">
             SELECT
@@ -41,4 +41,9 @@
     <select id="getPassword" resultType="string">
         SELECT password FROM UserInfo WHERE id = #{id}
     </select>
+
+    <update id="makeVcode">
+        UPDATE UserInfo SET vcode = #{vcode}, updateTime = (select UNIX_TIMESTAMP(NOW()) * 1000)
+        WHERE mobile = #{mobile}
+    </update>
 </mapper>

@@ -53,4 +53,12 @@ public interface UserInfoDao {
      * @throws Exception
      */
     String getPassword(Long id) throws Exception;
+
+    /**
+     * 生成验证码
+     * @param mobile mobile
+     * @return vcode
+     * @throws Exception
+     */
+    void makeVcode(@Param("mobile") String mobile, @Param("vcode") String vcode) throws Exception;
 }

@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // Created by fedor on 15/5/13.
 @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -82,6 +80,7 @@ public class UserInfoService {
             }
             UserInfoModel userinfo = new UserInfoModel();
             userinfo.setUserName(userName.toLowerCase());
+            userinfo.setMobile(userinfo.getUserName()); // mobile number
             userinfo.setPassword(Md5.toMD5(password.toLowerCase()));
             userinfo.setNickName(nickName);
             userinfo.setLastLoginIp(ip);
@@ -135,6 +134,32 @@ public class UserInfoService {
                 map.put("cart", cartDao.countByUser(userId));
             }
             return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new ServiceException(WsUtil.getServiceExceptionMessage(e));
+        }
+    }
+
+    /**
+     * 生成验证码
+     * @param mobile mobile
+     * @return vcode
+     */
+    public String doMakeVcode(String mobile) throws ServiceException {
+        try {
+            // make vcode
+            List<Integer> numbers = new ArrayList<Integer>();
+            for(int i = 0; i < 10; i++){
+                numbers.add(i);
+            }
+            Collections.shuffle(numbers);
+            String vcode = "";
+            for(int i = 0; i < 4; i++){
+                vcode += numbers.get(i).toString();
+            }
+            userInfoDao.makeVcode(mobile, vcode);
+            return vcode;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());

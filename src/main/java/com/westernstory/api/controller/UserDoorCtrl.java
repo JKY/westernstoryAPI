@@ -1,5 +1,9 @@
 package com.westernstory.api.controller;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.westernstory.api.config.Config;
 import com.westernstory.api.model.UserInfoModel;
 import com.westernstory.api.service.UserInfoService;
 import com.westernstory.api.util.Md5;
@@ -108,6 +112,36 @@ public class UserDoorCtrl {
         try {
             return new Response(true, userInfoService.getBadge(userId));
         } catch (ServiceException e) {
+            return new Response(false, e.getMessage());
+        }
+    }
+
+    /**
+     * 获取验证码（找回密码）
+     * @return json
+     */
+    @RequestMapping(value = "/getvcode", method = RequestMethod.POST)
+    public @ResponseBody Response getvcode(@RequestParam(value = "mobile", required = true) String mobile) {
+
+        try {
+            String vcode = userInfoService.doMakeVcode(mobile);
+            HttpResponse httpResponse = Unirest.post(Config.SMS_URL_ROOT)
+                    .field("username", Config.SMS_USERNAME)
+                    .field("password", Config.SMS_PASSWORD)
+                    .field("epid", Config.SMS_EPID)
+                    .field("mobile", mobile)
+                    .field("message", WsUtil.smsContent("尊敬的用户：您的验证码为 " + vcode))
+                            .asString();
+            int status = httpResponse.getStatus();
+
+            if (status == 200) {
+                Object obj = httpResponse.getBody();
+
+                return new Response(true, obj);
+            } else {
+                return new Response(false, "system error");
+            }
+        } catch (Exception e) {
             return new Response(false, e.getMessage());
         }
     }
