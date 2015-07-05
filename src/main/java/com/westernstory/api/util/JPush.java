@@ -32,7 +32,7 @@ public class JPush {
         final PushPayload payload = PushPayload.newBuilder()
                 .setPlatform(Platform.all())
                 .setAudience(Audience.all())
-                .setNotification(Notification.alert(alert))
+//                .setNotification(Notification.alert(alert))
                 .setMessage(Message.newBuilder()
                         .setMsgContent(alert)
                         .addExtra("id", id)
