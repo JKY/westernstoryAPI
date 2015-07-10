@@ -25,7 +25,7 @@ public class CommonPhoneService {
      * @param start start
      * @param limit limit
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Map<String, Object> listCategories(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
@@ -47,7 +47,7 @@ public class CommonPhoneService {
      * @param start start
      * @param limit limit
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public  Map<String, Object> listPhones(String keyword, Long categoryId, int start, Integer limit) throws ServiceException {
         try {

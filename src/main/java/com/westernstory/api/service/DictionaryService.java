@@ -24,7 +24,7 @@ public class DictionaryService {
      * 根据code获取 List<DictionaryEntry>
      * @param code code
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public List<DictionaryEntryModel> listDictionariesByCode(String code) throws ServiceException {
         try {

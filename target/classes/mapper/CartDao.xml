@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.CartDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="list" resultType="CartModel">
+		SELECT t1.id, t1.commodityId, t1.isActive, t1.userId, t1.total, t1.info, t1.createTime,
+		  t1.addressId, t2.price, t2.name AS commodityName, t3.address AS addressName
+		FROM Cart t1
+		LEFT JOIN Commodity t2 ON t2.id = t1.commodityId
+		LEFT JOIN Address t3 ON t3.id = t1.addressId
+		WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+		ORDER BY t1.createTime
+	</select>
+
+    <select id="getByUidCid" resultType="CartModel">
+        SELECT id, commodityId, isActive, userId, total, info, createTime
+        FROM Cart
+        WHERE isActive = 1 AND userId = #{userId} AND commodityId = #{commodityId}
+        Limit 1
+    </select>
+
+    <select id="getById" resultType="CartModel">
+        SELECT id, commodityId, isActive, userId, total, info, createTime
+        FROM Cart
+        WHERE isActive = 1 AND id = #{id}
+        Limit 1
+    </select>
+
+    <insert id="add">
+        INSERT INTO Cart (
+          commodityId, isActive, userId, total, info, addressId,
+          createTime, updateTime
+        ) VALUES (
+          #{commodityId}, 1, #{userId}, #{total}, #{info}, #{addressId},
+          (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
+        )
+        <selectKey keyProperty="id" resultType="long">
+            SELECT
+            LAST_INSERT_ID() AS id
+        </selectKey>
+    </insert>
+
+    <update id="update">
+        UPDATE Cart
+        SET total = #{total}, addressId = #{addressId}, info = #{info}
+        WHERE id = #{id}
+    </update>
+
+    <update id="remove">
+        UPDATE Cart SET isActive = 0 WHERE id = #{id}
+    </update>
+
+    <update id="removeAll">
+        UPDATE Cart SET isActive = 0 WHERE userId = #{userId}
+    </update>
+
+    <select id="countByUser" resultType="int">
+        SELECT COUNT(1) FROM Cart WHERE userId = #{userId} AND isActive = 1
+    </select>
+</mapper>

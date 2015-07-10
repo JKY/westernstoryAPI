@@ -13,7 +13,7 @@ public interface DictionaryDao {
      * @return List<DictionaryEntry>
      * @throws Exception
      */
-    List<DictionaryEntryModel> listDictionariesByCode(@Param("code")String code) throws Exception;
+    List<DictionaryEntryModel> listDictionariesByCode(@Param("code") String code) throws Exception;
 
     /**
      * 通过dict codes 获取 SKU数据
@@ -21,7 +21,7 @@ public interface DictionaryDao {
      * @return List<DictionaryEntryModel>
      * @throws Exception
      */
-    List<DictionaryEntryModel> getByDictCodes(@Param("codes")String[] codes) throws Exception;
+    List<DictionaryEntryModel> getByDictCodes(@Param("codes") String[] codes) throws Exception;
 
     /**
      * 根据entry codes 获取 SKU数据

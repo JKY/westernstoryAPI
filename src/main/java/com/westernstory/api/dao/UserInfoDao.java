@@ -44,7 +44,7 @@ public interface UserInfoDao {
      * @param password password
      * @throws Exception
      */
-    void updatePassword(@Param("id")Long id, @Param("password")String password) throws Exception;
+    void updatePassword(@Param("id") Long id, @Param("password") String password) throws Exception;
 
     /**
      * 通过用户密码

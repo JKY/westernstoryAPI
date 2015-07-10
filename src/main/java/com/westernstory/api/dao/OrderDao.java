@@ -15,7 +15,7 @@ public interface OrderDao {
      * @return List
      * @throws Exception
      */
-    List<OrderModel> list(@Param("userId")Long userId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<OrderModel> list(@Param("userId") Long userId, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 根据id获取订单
@@ -31,7 +31,7 @@ public interface OrderDao {
      * @return Integer
      * @throws Exception
      */
-    Integer countProcessingOrders(@Param("userId")Long userId) throws Exception;
+    Integer countProcessingOrders(@Param("userId") Long userId) throws Exception;
 
     /**
      * 生成订单
@@ -53,4 +53,20 @@ public interface OrderDao {
      * @throws Exception
      */
     Long count(@Param("userId") Long userId) throws Exception;
+
+    /**
+     * 更新订单状态
+     * @param id
+     * @param status
+     * @throws Exception
+     */
+    void updateStatus(@Param("id") Long id, @Param("status") String status) throws Exception;
+
+
+    /**
+     * 标记订单为已付款
+     * @param id
+     * @throws Exception
+     */
+    void paid(@Param("id") Long id) throws Exception;
 }

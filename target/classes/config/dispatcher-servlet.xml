@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+
+    <context:annotation-config />
+
+    <context:property-placeholder location= "classpath:config/config.properties"/>
+
+    <context:component-scan base-package="com.westernstory.api.controller">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+    </context:component-scan>
+
+    <!-- GSON -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter" />
+            </list>
+        </property>
+    </bean>
+    <!-- 文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8" />
+        <property name="maxUploadSize" value="1048576000" />  <!-- 1000MB -->
+        <property name="maxInMemorySize" value="40960" />
+    </bean>
+
+    <!-- Case insensitive -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="order" value="0" />
+        <property name="pathMatcher">
+            <bean class="com.westernstory.api.util.CaseInsensitivePathMatcher" />
+        </property>
+    </bean>
+
+    <!--  freemarker的配置  -->
+    <bean id="freemarkerConfigurer"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="${freemarker.ftl_path}"/>
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">${freemarker.template_update_delay}</prop>
+                <prop key="classic_compatible">true</prop>
+                <prop key="locale">zh_CN</prop>
+                <prop key="output_encoding">UTF-8</prop>
+                <prop key="number_format">0</prop>
+                <prop key="date_format">yyyy年MM月dd</prop>
+                <prop key="time_format">HH:mm</prop>
+                <prop key="datetime_format">yyyy年MM月dd日 HH:mm</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+        <property name="suffix" value=".ftl" />
+        <property name="cache" value="true" />
+        <property name="order" value="0"/>
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="exposeRequestAttributes" value="true" />
+        <property name="exposeSessionAttributes" value="true" />
+        <property name="exposeSpringMacroHelpers" value="true" />
+    </bean>
+
+    <mvc:resources mapping="/css/**" location="/www/css/" cache-period="31536000" />
+    <mvc:annotation-driven />
+</beans>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.AdDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="getLaunch" resultType="AdModel">
+		SELECT id, name, content, image, link, startTime, endTime
+		FROM Ad
+		WHERE isActive = 1 AND categoryId = (SELECT id FROM DictionaryEntry WHERE code = 'ad_launch')
+		  <![CDATA[
+            AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+		Limit 1
+	</select>
+</mapper>

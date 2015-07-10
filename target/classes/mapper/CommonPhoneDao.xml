@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.CommonPhoneDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="listCategories" resultType="CommonPhoneModel">
+		SELECT id, `name`, isActive, createTime, `order`
+		FROM CommonPhone
+		WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
+		ORDER BY createTime DESC
+		Limit #{start}, #{limit}
+	</select>
+
+    <select id="countCategories" resultType="long">
+        SELECT count(1)
+        FROM CommonPhone
+        WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
+    </select>
+
+    <select id="listPhones" resultType="CommonPhoneEntryModel">
+        SELECT Id, CommonPhoneId, Name, Phone, IsActive, CreateTime
+		FROM CommonPhoneEntry
+		WHERE isActive = 1 AND CommonPhoneId = (SELECT id FROM CommonPhone WHERE id = #{categoryId} AND isActive = 1)
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
+		ORDER BY createTime DESC
+		Limit #{start}, #{limit}
+    </select>
+
+    <select id="countPhones" resultType="long">
+        SELECT count(1)
+        FROM CommonPhoneEntry
+        WHERE isActive = 1 AND CommonPhoneId = (SELECT id FROM CommonPhone WHERE id = #{categoryId} AND isActive = 1)
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%")
+        </if>
+    </select>
+</mapper>

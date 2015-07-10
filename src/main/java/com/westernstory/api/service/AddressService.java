@@ -24,7 +24,7 @@ public class AddressService {
      * 获取地址列表
      * @param userId userId
      * @return list
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public List<AddressModel> list(Long userId) throws ServiceException {
         try {
@@ -40,7 +40,7 @@ public class AddressService {
      * 地址列表
      * @param address address
      * @return id
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Long add(AddressModel address) throws ServiceException {
         try {
@@ -66,7 +66,7 @@ public class AddressService {
     /**
      * 修改地址
      * @param address address
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void update(AddressModel address) throws ServiceException {
         try {
@@ -86,7 +86,7 @@ public class AddressService {
     /**
      * 删除地址
      * @param id id
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void remove(Long id) throws ServiceException {
         try {
@@ -109,7 +109,7 @@ public class AddressService {
      * 设置为默认地址
      * @param id id
      * @param userId userId
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void updateDefault(Long id, Long userId) throws ServiceException {
         try {

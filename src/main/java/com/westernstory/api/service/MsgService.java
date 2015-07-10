@@ -29,7 +29,7 @@ public class MsgService {
      * @param start start
      * @param limit limit
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Map<String, Object> list(Long userId, Integer start, Integer limit) throws ServiceException {
         try {

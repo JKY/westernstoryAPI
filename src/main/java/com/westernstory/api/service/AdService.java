@@ -22,7 +22,7 @@ public class AdService {
     /**
      * 获取最新开机广告
      * @return AdModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public AdModel getLaunch() throws ServiceException {
         try {

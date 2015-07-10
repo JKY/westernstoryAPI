@@ -15,7 +15,7 @@ public interface MsgDao {
      * @return List
      * @throws Exception
      */
-    List<MsgModel> list(@Param("userId")Long userId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<MsgModel> list(@Param("userId") Long userId, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 根据uid标记消息已读（批量）
@@ -29,14 +29,14 @@ public interface MsgDao {
      * @param id id
      * @throws Exception
      */
-    void remove(@Param("id")Long id) throws Exception;
+    void remove(@Param("id") Long id) throws Exception;
     /**
      * 获取未读消息
      * @param userId userId
      * @return list
      * @throws Exception
      */
-    List<MsgModel> getUnreadMsgs(@Param("userId")Long userId) throws Exception;
+    List<MsgModel> getUnreadMsgs(@Param("userId") Long userId) throws Exception;
 
     /**
      * 获取未读消息数量
@@ -44,7 +44,7 @@ public interface MsgDao {
      * @return Integer
      * @throws Exception
      */
-    Integer countUnreadMsgs(@Param("userId")Long userId) throws Exception;
+    Integer countUnreadMsgs(@Param("userId") Long userId) throws Exception;
 
     /**
      * 根据用户id查询总消息数
@@ -52,5 +52,5 @@ public interface MsgDao {
      * @return long
      * @throws Exception
      */
-    Long count(@Param("userId")Long userId) throws Exception;
+    Long count(@Param("userId") Long userId) throws Exception;
 }

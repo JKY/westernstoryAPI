@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.AdDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+	<select id="getById" resultType="ChargeModel">
+		SELECT id, uid, orderIds, status
+		FROM Payment
+		WHERE id = #{id}
+	</select>
+	<insert id="add">
+		INSERT INTO Payment (
+		uid, orderIds, status
+		) VALUE ( #{uid}, #{orderIds},#{status})
+	</insert>
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.BusDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+	<select id="list" resultType="BusModel">
+		SELECT id, `From`, `To`, IsActive, CreateTime, Phone
+		FROM Bus
+		WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`from` LIKE "%"#{keyword}"%" OR `to` LIKE "%"#{keyword}"%")
+        </if>
+		ORDER BY `From` DESC
+		Limit #{start}, #{limit}
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(1)
+		FROM Bus
+		WHERE isActive = 1
+        <if test="keyword != null and keyword != ''">
+            AND (`from` LIKE "%"#{keyword}"%" OR `to` LIKE "%"#{keyword}"%")
+        </if>
+    </select>
+
+    <select id="getDetailById" resultType="BusEntryModel">
+        SELECT Id, BusId, `From`, `To`, FromTime, ToTime, IsActive, CreateTime, `Order`, isSecondDay
+		FROM BusEntry
+		WHERE isActive = 1 AND BusId = (SELECT id FROM Bus WHERE id = #{busId} AND isActive = 1)
+		ORDER BY `Order` ASC
+    </select>
+
+    <select id="getByKeyword" resultType="BusModel">
+        SELECT id, `From`, `To`, IsActive, CreateTime, Phone
+		FROM Bus
+		WHERE isActive = 1 AND (`from` LIKE "%"#{keyword}"%" OR `to` LIKE "%"#{keyword}"%")
+		ORDER BY `From` DESC
+		Limit #{start}, #{limit}
+    </select>
+</mapper>

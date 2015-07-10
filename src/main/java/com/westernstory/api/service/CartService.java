@@ -34,7 +34,7 @@ public class CartService {
      * 购物车列表
      * @param userId userId
      * @return List<CartModel>
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public List<CartModel> list(Long userId) throws ServiceException {
         try {
@@ -59,7 +59,7 @@ public class CartService {
     /**
      * 添加到购物车
      * @param cart cart
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Long add(CartModel cart) throws ServiceException {
         try {
@@ -126,7 +126,7 @@ public class CartService {
     /**
      * 删除购物车某件商品
      * @param id id
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void remove(Long id) throws ServiceException {
         try {
@@ -140,7 +140,7 @@ public class CartService {
     /**
      * 清空购物车
      * @param userId userId
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void removeAll(Long userId) throws ServiceException {
         try {

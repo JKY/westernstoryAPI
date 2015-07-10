@@ -27,7 +27,7 @@ public class BusService {
      * @param start start
      * @param limit limit
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Map<String, Object> list(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
@@ -46,7 +46,7 @@ public class BusService {
      * 获取班车详情
      * @param busId busId
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public List<BusEntryModel> getDetailById(Long busId) throws ServiceException {
         try {
@@ -64,7 +64,7 @@ public class BusService {
      * @param start page
      * @param limit limit
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Map<String, Object> getByKeyword(String keyword, Integer start, Integer limit) throws ServiceException {
         Map<String, Object> map = new HashMap<String, Object>();

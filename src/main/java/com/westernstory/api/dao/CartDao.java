@@ -13,7 +13,7 @@ public interface CartDao {
      * @return List<CartModel>
      * @throws Exception
      */
-    List<CartModel> list(@Param("userId")Long userId) throws Exception;
+    List<CartModel> list(@Param("userId") Long userId) throws Exception;
 
     /**
      * 添加到购物车
@@ -36,14 +36,14 @@ public interface CartDao {
      * @return CartModel
      * @throws Exception
      */
-    CartModel getByUidCid(@Param("userId")Long userId, @Param("commodityId")Long cid) throws Exception;
+    CartModel getByUidCid(@Param("userId") Long userId, @Param("commodityId") Long cid) throws Exception;
 
     /**
      * 删除购物车某件商品
      * @param id id
      * @throws Exception
      */
-    void remove(@Param("id")Long id) throws Exception;
+    void remove(@Param("id") Long id) throws Exception;
 
     /**
      * 清空购物车
@@ -58,12 +58,12 @@ public interface CartDao {
      * @return CartModel
      * @throws Exception
      */
-    CartModel getById(@Param("id")Long id) throws Exception;
+    CartModel getById(@Param("id") Long id) throws Exception;
     /**
     * 购物车商品数量
     * @param userId userId
     * @return count
     * @throws Exception
     */
-    Integer countByUser(@Param("userId")Long userId) throws Exception;
+    Integer countByUser(@Param("userId") Long userId) throws Exception;
 }

@@ -15,7 +15,7 @@ public interface TicketDao {
      * @return List
      * @throws Exception
      */
-    List<TicketModel> list(@Param("keyword")String keyword, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<TicketModel> list(@Param("keyword") String keyword, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 我的优惠券列表
@@ -25,7 +25,7 @@ public interface TicketDao {
      * @return List<TicketModel>
      * @throws Exception
      */
-    List<TicketModel> getMyList(@Param("userId")Long userId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<TicketModel> getMyList(@Param("userId") Long userId, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 获取ticket
@@ -33,14 +33,14 @@ public interface TicketDao {
      * @param userId userId
      * @throws Exception
      */
-    void gain(@Param("ticketId")Long ticketId, @Param("userId")Long userId) throws Exception;
+    void gain(@Param("ticketId") Long ticketId, @Param("userId") Long userId) throws Exception;
 
     /**
      * 获取优惠券领取数量
      * @param id id
      * @throws Exception
      */
-    Integer getCount(@Param("id")Long id) throws Exception;
+    Integer getCount(@Param("id") Long id) throws Exception;
 
     /**
      * 通过id获取ticket
@@ -48,7 +48,7 @@ public interface TicketDao {
      * @return TicketModel
      * @throws Exception
      */
-    TicketModel getById(@Param("id")Long id) throws Exception;
+    TicketModel getById(@Param("id") Long id) throws Exception;
 
     /**
      * 获取未被使用的优惠券的数量
@@ -56,7 +56,7 @@ public interface TicketDao {
      * @return Integer
      * @throws Exception
      */
-    Integer countUnusedTickets(@Param("userId")Long userId) throws Exception;
+    Integer countUnusedTickets(@Param("userId") Long userId) throws Exception;
 
     /**
      * 根据关键字查询总数
@@ -64,7 +64,7 @@ public interface TicketDao {
      * @return long
      * @throws Exception
      */
-    Long count(@Param("keyword")String keyword) throws Exception;
+    Long count(@Param("keyword") String keyword) throws Exception;
 
     /**
      * 通过user id 获取总数
@@ -72,7 +72,7 @@ public interface TicketDao {
      * @return long
      * @throws Exception
      */
-    Long countByUser(@Param("userId")Long userId) throws Exception;
+    Long countByUser(@Param("userId") Long userId) throws Exception;
 
     /**
      * 通过id、userId 获取优惠券
@@ -81,7 +81,7 @@ public interface TicketDao {
      * @return UserTicketModel
      * @throws Exception
      */
-    UserTicketModel getUserTicket(@Param("ticketId")Long ticketId, @Param("userId")Long userId) throws Exception;
+    UserTicketModel getUserTicket(@Param("ticketId") Long ticketId, @Param("userId") Long userId) throws Exception;
 
     /**
      * 领取优惠券
@@ -104,7 +104,7 @@ public interface TicketDao {
      * @param ticketId ticketId
      * @throws Exception
      */
-    void updateUseTicket(@Param("userId")Long userId, @Param("ticketId")Long ticketId) throws Exception;
+    void updateUseTicket(@Param("userId") Long userId, @Param("ticketId") Long ticketId) throws Exception;
 
     /**
      * 获取优惠券密码
@@ -112,7 +112,7 @@ public interface TicketDao {
      * @return password
      * @throws Exception
      */
-    String getTicketPassword(@Param("ticketId")Long ticketId) throws Exception;
+    String getTicketPassword(@Param("ticketId") Long ticketId) throws Exception;
 
     /**
      * 获取我的优惠券详情，通过userid、ticketid
@@ -121,5 +121,5 @@ public interface TicketDao {
      * @return UserTicketModel
      * @throws Exception
      */
-    UserTicketModel getMyTicketDetailByUserIdTicketId(@Param("userId")Long userId, @Param("ticketId")Long ticketId) throws Exception;
+    UserTicketModel getMyTicketDetailByUserIdTicketId(@Param("userId") Long userId, @Param("ticketId") Long ticketId) throws Exception;
 }

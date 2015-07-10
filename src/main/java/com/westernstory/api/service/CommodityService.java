@@ -33,7 +33,7 @@ public class CommodityService {
      * @param categoryId categoryId
      * @param start start
      * @return List<CommodityModel>
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Map<String, Object> get(Integer categoryId, Integer start, Integer limit) throws ServiceException {
         try {
@@ -117,7 +117,7 @@ public class CommodityService {
      * 通过id获取商品详情
      * @param id id
      * @return CommodityModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public CommodityModel getDetail(Long id) throws ServiceException {
         try {
@@ -186,7 +186,7 @@ public class CommodityService {
     /**
      * 获取推荐类别
      * @return CommodityCategoryClass
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public DictionaryEntryModel getHeadline() throws ServiceException {
         try {
@@ -209,7 +209,7 @@ public class CommodityService {
      * @param cid cid
      * @param info info
      * @return int
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Integer getSkuSum(Long cid, String info) throws ServiceException {
 

@@ -35,7 +35,7 @@ public class UserInfoService {
      * @param password password
      * @param ip ip
      * @return UserInfoModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public UserInfoModel doLogin(String userName, String password, String ip) throws ServiceException {
         UserInfoModel userinfo;
@@ -69,7 +69,7 @@ public class UserInfoService {
      * @param nickName nickName
      * @param ip ip
      * @return id
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public UserInfoModel add(String userName, String password, String nickName, String ip) throws ServiceException {
 
@@ -99,7 +99,7 @@ public class UserInfoService {
      * @param id id
      * @param oldpass 旧密码
      * @param newpass 新密码
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void updatePassword(Long id, String oldpass, String newpass) throws ServiceException {
         try {
@@ -172,7 +172,7 @@ public class UserInfoService {
      * @param mobile mobile
      * @param vcode vcode
      * @return UserInfoModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public UserInfoModel getUserByMobileVcode(String mobile, String vcode) throws ServiceException {
 

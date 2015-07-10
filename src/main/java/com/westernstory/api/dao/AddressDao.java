@@ -20,7 +20,7 @@ public interface AddressDao {
      * @return list
      * @throws Exception
      */
-    List<AddressModel> list(@Param("userId")Long userId) throws Exception;
+    List<AddressModel> list(@Param("userId") Long userId) throws Exception;
 
     /**
      * 地址列表
@@ -34,7 +34,7 @@ public interface AddressDao {
      * @param userId userId
      * @throws Exception
      */
-    void clearDefault(@Param("userId")Long userId) throws Exception;
+    void clearDefault(@Param("userId") Long userId) throws Exception;
 
     /**
      * 修改地址
@@ -48,7 +48,7 @@ public interface AddressDao {
      * @param id id
      * @throws Exception
      */
-    void remove(@Param("id")Long id) throws Exception;
+    void remove(@Param("id") Long id) throws Exception;
 
     /**
      * 设置为默认地址
@@ -63,5 +63,5 @@ public interface AddressDao {
      * @return AddressModel
      * @throws Exception
      */
-    AddressModel getById(@Param("id")Long id) throws Exception;
+    AddressModel getById(@Param("id") Long id) throws Exception;
 }

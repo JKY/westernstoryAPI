@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.DictionaryDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="listDictionariesByCode" resultType="DictionaryEntryModel">
+		SELECT id, `name`, dictionaryId, code, info, icon
+		FROM DictionaryEntry
+		WHERE isActive = 1 AND dictionaryId =
+		  (SELECT id FROM Dictionary WHERE code = #{code} AND isActive = 1)
+		ORDER BY createTime
+	</select>
+
+    <select id="getByDictCodes" resultType="DictionaryEntryModel">
+        SELECT t1.id, t1.dictionaryId, t1.name AS entryName, t1.code AS entryCode, t1.icon,
+          t2.name AS dictName, t2.code AS dictCode
+        FROM DictionaryEntry t1
+        LEFT JOIN Dictionary t2 ON t2.id = t1.dictionaryId
+            AND t2.code IN (
+            <trim suffix="" suffixOverrides=",">
+                <foreach item="o" index="index" collection="codes">
+                    '${o}',
+                </foreach>
+            </trim>
+            )
+        WHERE t1.isActive = 1 AND t2.isActive = 1
+    </select>
+
+    <select id="getByEntryCodes" resultType="DictionaryEntryModel">
+        SELECT t1.id, t1.dictionaryId, t1.name AS entryName, t1.code AS entryCode, t1.icon,
+          t2.name AS dictName, t2.code AS dictCode
+        FROM DictionaryEntry t1
+        LEFT JOIN Dictionary t2 ON t2.id = t1.dictionaryId
+        WHERE t1.isActive = 1 AND t1.code IN (
+        <trim suffix="" suffixOverrides=",">
+            <foreach item="o" index="index" collection="codes">
+                '${o}',
+            </foreach>
+        </trim>
+        )
+    </select>
+
+    <select id="getInfoName" resultType="string">
+        SELECT `name`
+        FROM DictionaryEntry
+        WHERE code IN (
+        <trim suffix="" suffixOverrides=",">
+            <foreach item="o" index="index" collection="codes">
+                '${o}',
+            </foreach>
+        </trim>
+        )
+    </select>
+</mapper>

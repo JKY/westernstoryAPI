@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.MsgDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="list" resultType="MsgModel">
+		SELECT t1.id, t2.title, t2.summary, t2.thumbnail, t1.createTime, t1.isReaded, t2.link
+		FROM MsgEntry t1
+		LEFT JOIN Msg t2 ON t2.id = t1.msgId
+		WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+		ORDER BY t1.createTime DESC
+		LIMIT #{start},#{limit}
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM MsgEntry t1
+        LEFT JOIN Msg t2 ON t2.id = t1.msgId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+    </select>
+
+    <update id="readByUid">
+        UPDATE MsgEntry SET isReaded = 1 WHERE userId = #{userId}
+    </update>
+
+    <update id="remove">
+        UPDATE MsgEntry SET isActive = 0 WHERE id = #{id}
+    </update>
+
+    <select id="getUnreadMsgs" resultType="MsgModel">
+        SELECT t1.id, t2.title, t2.summary, t2.thumbnail, t1.createTime, t2.link
+        FROM MsgEntry t1
+        LEFT JOIN Msg t2 ON t2.id = t1.msgId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.UserId = #{userId} AND t1.isReaded = 0
+    </select>
+
+    <select id="countUnreadMsgs" resultType="int">
+        SELECT count(t1.id)
+        FROM MsgEntry t1
+        LEFT JOIN Msg t2 ON t2.id = t1.msgId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.UserId = #{userId} AND t1.isReaded = 0
+    </select>
+</mapper>

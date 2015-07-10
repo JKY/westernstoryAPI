@@ -79,7 +79,7 @@ public class ArticleService {
      * 获取文章详情
      * @param id id
      * @return ArticleModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public ArticleModel getDetail(Long id) throws ServiceException {
         try {

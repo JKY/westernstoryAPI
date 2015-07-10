@@ -9,6 +9,7 @@ public class OrderModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final Integer STATUS_ADD = 1; // 已下单
+    public static final Integer STATUS_PAID = 2; // 已支付
 
     //
     private String commodityName;

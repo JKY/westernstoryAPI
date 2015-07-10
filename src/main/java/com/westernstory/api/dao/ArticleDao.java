@@ -16,7 +16,7 @@ public interface ArticleDao {
      * @return List<ArticleModel>
      * @throws Exception
      */
-    List<ArticleModel> list(@Param("categoryId")Long categoryId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<ArticleModel> list(@Param("categoryId") Long categoryId, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 通过articleIds 获取文章tags
@@ -24,7 +24,7 @@ public interface ArticleDao {
      * @return List<ArticleTagModel>
      * @throws Exception
      */
-    List<ArticleTagModel> getTagsByActicleIds(@Param("articleIds")List<Long> articleIds) throws Exception;
+    List<ArticleTagModel> getTagsByActicleIds(@Param("articleIds") List<Long> articleIds) throws Exception;
 
     /**
      * 根据id获取文章详情
@@ -32,7 +32,7 @@ public interface ArticleDao {
      * @return ArticleModel
      * @throws Exception
      */
-    ArticleModel getById(@Param("id")Long id) throws Exception;
+    ArticleModel getById(@Param("id") Long id) throws Exception;
 
     /**
      * 根据文章id获取文章tags
@@ -40,7 +40,7 @@ public interface ArticleDao {
      * @return List<ArticleTagModel>
      * @throws Exception
      */
-    List<ArticleTagModel> getTagsByActicleId(@Param("articleId")Long articleId) throws Exception;
+    List<ArticleTagModel> getTagsByActicleId(@Param("articleId") Long articleId) throws Exception;
 
     /**
      * 总数
@@ -48,5 +48,5 @@ public interface ArticleDao {
      * @return long
      * @throws Exception
      */
-    Long count(@Param("categoryId")Long categoryId) throws Exception;
+    Long count(@Param("categoryId") Long categoryId) throws Exception;
 }

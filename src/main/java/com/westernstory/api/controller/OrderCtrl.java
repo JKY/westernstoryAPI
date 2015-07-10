@@ -19,17 +19,21 @@ public class OrderCtrl {
 
     @Autowired
     private OrderService orderService = null;
+
     /**
      * 订单列表
+     *
      * @return json
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public @ResponseBody Response list(HttpServletRequest request,
-                                       @RequestParam(value = "page", required = false) Integer page,
-                                       @RequestParam(value = "limit", required = false) Integer limit) {
+    public
+    @ResponseBody
+    Response list(HttpServletRequest request,
+                  @RequestParam(value = "page", required = false) Integer page,
+                  @RequestParam(value = "limit", required = false) Integer limit) {
 
         String userId = request.getParameter("userId");
-        if(WsUtil.isEmpty(userId)) {
+        if (WsUtil.isEmpty(userId)) {
             return new Response(false, "invalid params");
         }
         if (page == null) {
@@ -47,13 +51,17 @@ public class OrderCtrl {
         }
     }
 
+
     /**
      * 订单详情
+     *
      * @param id id
      * @return json
      */
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
-    public @ResponseBody Response detail(@RequestParam(value = "id", required = true) Integer id) {
+    public
+    @ResponseBody
+    Response detail(@RequestParam(value = "id", required = true) Integer id) {
 
         try {
             return new Response(true, orderService.getDetail(id));
@@ -62,14 +70,18 @@ public class OrderCtrl {
         }
     }
 
+
     /**
      * 立刻购买
+     *
      * @return json
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody Response add(@ModelAttribute("order") OrderModel order) {
+    public
+    @ResponseBody
+    Response add(@ModelAttribute("order") OrderModel order, HttpServletRequest request) {
         try {
-            orderService.add(order);
+            orderService.add(order, request.getRemoteAddr());
             return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
@@ -78,14 +90,17 @@ public class OrderCtrl {
 
     /**
      * 从购物车中购买
+     *
      * @param userId userId
      * @return json
      */
     @RequestMapping(value = "/addfromcart", method = RequestMethod.POST)
-    public @ResponseBody Response addFromCart(@RequestParam(value = "userId", required = true) Long userId) {
+    public
+    @ResponseBody
+    Response addFromCart(@RequestParam(value = "userId", required = true) Long userId, HttpServletRequest request) {
 
         try {
-            orderService.addFromCart(userId);
+            orderService.addFromCart(userId, request.getRemoteAddr());
             return new Response(true, "ok");
         } catch (ServiceException e) {
             return new Response(false, e.getMessage());
@@ -94,13 +109,16 @@ public class OrderCtrl {
 
     /**
      * 取消订单
-     * @param id id
+     *
+     * @param id     id
      * @param reason reason
      * @return json
      */
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    public @ResponseBody Response cancel(@RequestParam(value = "id", required = true) Long id,
-                                         @RequestParam(value = "reason", required = true) String reason) {
+    public
+    @ResponseBody
+    Response cancel(@RequestParam(value = "id", required = true) Long id,
+                    @RequestParam(value = "reason", required = true) String reason) {
         try {
             orderService.doCancel(id, reason);
             return new Response(true, "ok");

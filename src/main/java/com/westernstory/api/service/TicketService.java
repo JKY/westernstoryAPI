@@ -33,7 +33,7 @@ public class TicketService {
      * @param start start
      * @param limit limit
      * @return List
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public Map<String, Object> list(String keyword, Integer start, Integer limit) throws ServiceException {
         try {
@@ -89,7 +89,7 @@ public class TicketService {
      * 获取ticket
      * @param ticketId ticketId
      * @param userId userId
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void addUserTicket(Long ticketId, Long userId) throws ServiceException {
         try {
@@ -153,7 +153,7 @@ public class TicketService {
      * 获取我的优惠券详情
      * @param id id
      * @return UserTicketModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public UserTicketModel getMyTicketDetail(Long id) throws ServiceException {
         try {
@@ -179,7 +179,7 @@ public class TicketService {
      * @param userId userId
      * @param ticketId ticketId
      * @return UserTicketModel
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public UserTicketModel getMyTicketDetail(Long userId, Long ticketId) throws ServiceException {
         try {
@@ -204,7 +204,7 @@ public class TicketService {
      * 过userId、ticketId获取用户的优惠券，并且更新为已经使用
      * @param ticketId ticketId
      * @param userId userId
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public void doIdentify(Long ticketId, Long userId) throws ServiceException {
         try {
@@ -220,7 +220,7 @@ public class TicketService {
      * 通过优惠券id获取密码
      * @param ticketId ticketId
      * @return password
-     * @throws ServiceException
+     * @throws com.westernstory.api.util.ServiceException
      */
     public String getTicketPassword(Long ticketId) throws ServiceException {
         try {

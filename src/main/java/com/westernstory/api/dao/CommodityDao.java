@@ -18,7 +18,7 @@ public interface CommodityDao {
      * @return List<CommodityModel>
      * @throws Exception
      */
-    List<CommodityModel> get(@Param("categoryId")Integer categoryId, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<CommodityModel> get(@Param("categoryId") Integer categoryId, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 关键字查询商品
@@ -28,7 +28,7 @@ public interface CommodityDao {
      * @return List<CommodityModel>
      * @throws Exception
      */
-    List<CommodityModel> getByKeyword(@Param("categoryId") Long categoryId, @Param("keyword")String keyword, @Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<CommodityModel> getByKeyword(@Param("categoryId") Long categoryId, @Param("keyword") String keyword, @Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 探索最新商品
@@ -37,7 +37,7 @@ public interface CommodityDao {
      * @return List<CommodityModel>
      * @throws Exception
      */
-    List<CommodityModel> getLatest(@Param("start")Integer start, @Param("limit")Integer limit) throws Exception;
+    List<CommodityModel> getLatest(@Param("start") Integer start, @Param("limit") Integer limit) throws Exception;
 
     /**
      * 通过id获取商品详情
@@ -45,7 +45,7 @@ public interface CommodityDao {
      * @return CommodityModel
      * @throws Exception
      */
-    CommodityModel getById(@Param("id")Long id) throws Exception;
+    CommodityModel getById(@Param("id") Long id) throws Exception;
 
     /**
      * 获取推荐类别
@@ -60,7 +60,7 @@ public interface CommodityDao {
      * @return CommodityImageModel
      * @throws Exception
      */
-    CommodityImageModel getThumbnail(@Param("commodityId")Long commodityId) throws Exception;
+    CommodityImageModel getThumbnail(@Param("commodityId") Long commodityId) throws Exception;
 
     /**
      *  根据商品id获取商品图片
@@ -68,7 +68,7 @@ public interface CommodityDao {
      * @return List<CommodityImageModel>
      * @throws Exception
      */
-    List<CommodityImageModel> getImages(@Param("commodityId")Long commodityId) throws Exception;
+    List<CommodityImageModel> getImages(@Param("commodityId") Long commodityId) throws Exception;
     /**
      * 通过商品id获取商品规格
      * @param cid cid
@@ -91,7 +91,7 @@ public interface CommodityDao {
      * @return long
      * @throws Exception
      */
-    Long count(@Param("categoryId")Integer categoryId) throws Exception;
+    Long count(@Param("categoryId") Integer categoryId) throws Exception;
 
     /**
      * 根据关键查询商品总数
@@ -99,7 +99,7 @@ public interface CommodityDao {
      * @return long
      * @throws Exception
      */
-    Long countByKeyword(@Param("categoryId")Long categoryId, @Param("keyword")String keyword) throws Exception;
+    Long countByKeyword(@Param("categoryId") Long categoryId, @Param("keyword") String keyword) throws Exception;
 
     /**
      * 获取最新商品总数

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <mappers>
+        <mapper resource="mapper/DictionaryDao.xml"></mapper>
+        <mapper resource="mapper/UserInfoDao.xml"></mapper>
+        <mapper resource="mapper/AdDao.xml"></mapper>
+        <mapper resource="mapper/AddressDao.xml"></mapper>
+        <mapper resource="mapper/MsgDao.xml"></mapper>
+        <mapper resource="mapper/OrderDao.xml"></mapper>
+        <mapper resource="mapper/ArticleDao.xml"></mapper>
+        <mapper resource="mapper/CommonPhoneDao.xml"></mapper>
+        <mapper resource="mapper/BusDao.xml"></mapper>
+        <mapper resource="mapper/TicketDao.xml"></mapper>
+        <mapper resource="mapper/CommodityDao.xml"></mapper>
+        <mapper resource="mapper/CartDao.xml"></mapper>
+        <mapper resource="mapper/SpecDao.xml"></mapper>
+        <mapper resource="mapper/SkuDao.xml"></mapper>
+    </mappers>
+</configuration>  

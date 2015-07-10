@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.westernstory.api.dao.TicketDao">
+	<!--<cache eviction="FIFO" flushInterval="10000" size="512" readOnly="true" />-->
+
+	<select id="list" resultType="TicketModel">
+		SELECT t1.id, t1.name, t1.thumbnail, t1.total, t1.address,
+          t1.startTime, t1.endTime, t1.createTime, t1.summary, t2.sum
+		FROM Ticket t1
+        LEFT JOIN (
+          SELECT sum(total) `sum`, ticketId FROM UserTicket WHERE isActive = 1 GROUP BY ticketId
+        ) t2 ON t2.ticketId = t1.id
+		WHERE t1.isActive = 1 AND t1.total != t2.sum
+		  <![CDATA[
+            AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+        <if test="keyword != null and keyword != ''">
+            AND (t1.`Name` LIKE "%"#{keyword}"%" OR t1.Summary LIKE "%"#{keyword}"%")
+        </if>
+		ORDER BY t1.startTime DESC
+		Limit #{start}, #{limit}
+	</select>
+
+    <select id="count" resultType="long">
+        SELECT count(1)
+        FROM Ticket
+        WHERE isActive = 1
+        <![CDATA[
+            AND endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+        <if test="keyword != null and keyword != ''">
+            AND (`Name` LIKE "%"#{keyword}"%" OR Summary LIKE "%"#{keyword}"%")
+        </if>
+    </select>
+
+    <select id="getMyList" resultType="TicketModel">
+        SELECT t1.id, t1.TicketId, t1.createTime,
+          t2.name, t2.thumbnail, t2.total, t2.address, t2.startTime, t2.endTime, t2.summary
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t2.isActive = 1 AND t1.isActive = 1 AND t1.userId = #{userId}
+        ORDER BY t1.createTime DESC
+        Limit #{start}, #{limit}
+    </select>
+
+    <select id="countByUser" resultType="long">
+        SELECT count(1)
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t2.isActive = 1 AND t1.isActive = 1 AND t1.userId = #{userId}
+    </select>
+
+    <insert id="gain">
+      INSERT INTO UserTicket (
+        UserId, TicketId, Total, IsUsed, IsActive, CreateTime, UpdateTime
+      ) VALUE (
+        #{userId}, #{ticketId}, 1, 0, 1, (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
+      )
+    </insert>
+
+    <insert id="addUserTicket">
+        INSERT INTO UserTicket (
+        UserId, TicketId, Total, IsUsed, IsActive, qrCode,
+          CreateTime, UpdateTime
+        ) VALUE (
+        #{userId}, #{ticketId}, #{total}, 0, 1, #{qrCode},
+          (select UNIX_TIMESTAMP(NOW()) * 1000), (select UNIX_TIMESTAMP(NOW()) * 1000)
+        )
+    </insert>
+
+    <select id="getCount" resultType="int">
+        SELECT count(id)
+        FROM UserTicket
+        WHERE isActive = 1 AND ticketId = #{id}
+    </select>
+
+    <select id="getById" resultType="TicketModel">
+        SELECT id, name, thumbnail, total, address, startTime, endTime, createTime, summary
+        FROM Ticket
+        WHERE isActive = 1 AND id = #{id}
+        Limit 1
+    </select>
+
+    <select id="getUserTicket" resultType="UserTicketModel">
+        SELECT id, ticketId, userId
+        FROM UserTicket
+        WHERE isActive = 1 AND ticketId = #{ticketId} AND userId = #{userId}
+        Limit 1
+    </select>
+
+    <select id="countUnusedTickets" resultType="int">
+        SELECT count(1)
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId}
+        AND t1.isUsed = 0 AND <![CDATA[
+              t2.endTime  > (select UNIX_TIMESTAMP(NOW()) * 1000)
+		  ]]>
+    </select>
+
+    <select id="getMyTicketDetail" resultType="UserTicketModel">
+        SELECT t1.UserId, t1.TicketId, t1.Total, t1.IsUsed, t1.CreateTime, t1.qrCode,
+          t2.startTime, t2.endTime, t2.Thumbnail, t2.Address, t2.summary, t2.name
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.id = #{id}
+        Limit 1
+    </select>
+
+    <select id="getMyTicketDetailByUserIdTicketId" resultType="UserTicketModel">
+        SELECT t1.UserId, t1.TicketId, t1.Total, t1.IsUsed, t1.CreateTime, t1.qrCode,
+          t2.startTime, t2.endTime, t2.Thumbnail, t2.Address, t2.summary, t2.name
+        FROM UserTicket t1
+        LEFT JOIN Ticket t2 ON t2.id = t1.ticketId
+        WHERE t1.isActive = 1 AND t2.isActive = 1 AND t1.userId = #{userId} AND t1.ticketId = #{ticketId}
+        Limit 1
+    </select>
+
+    <update id="updateUseTicket">
+        UPDATE UserTicket
+        SET isUsed = 1
+        WHERE userId = #{userId} AND ticketId = #{ticketId}
+    </update>
+
+    <select id="getTicketPassword" resultType="string">
+        SELECT password FROM Ticket WHERE id = #{ticketId}
+    </select>
+</mapper>
